@@ -51,8 +51,9 @@ export function createTestService(deps: {
     },
 
     async submitTest(userId, chapterId, _summary) {
-      // 成绩本身不入库（Chapter 04 未要求持久化成绩，结果页数据由页面传递）
-      await deps.learningRecordRepository.updateState(userId, chapterId, 'TESTED');
+      // 成绩本身不入库（Chapter 04 未要求持久化成绩，结果页数据由页面传递）。
+      // Chapter 05 §6（Q1）：交卷后 TESTED → REVIEW_DUE（复习任务已在 finishLearning 创建）。
+      await deps.learningRecordRepository.updateState(userId, chapterId, 'REVIEW_DUE');
     },
   };
 }

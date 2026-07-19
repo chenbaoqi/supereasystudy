@@ -14,16 +14,17 @@
 
 ## 当前状态（Phase 2 进行中）
 
-| Repository                 | 集合                     | 关键方法                                      |
-| -------------------------- | ------------------------ | --------------------------------------------- |
-| `subjectRepository`        | subjects                 | listAll                                       |
-| `learningPathRepository`   | learning_paths           | listBySubject                                 |
-| `textbookRepository`       | textbooks                | listByLearningPath                            |
-| `semesterRepository`       | semesters                | listByTextbook                                |
-| `chapterRepository`        | chapters                 | listBySemester                                |
-| `knowledgeRepository`      | knowledge                | listByChapter（V1 单章 ≤100 条）              |
-| `learningRecordRepository` | learning_records         | find/upsert/updateState/listByUserAndChapters |
-| `favoriteRepository`       | favorites（ADR-005）     | listByUser / add（防重）/ remove              |
-| `userRepository`           | users（经 login 云函数） | fetchCurrent                                  |
+| Repository                 | 集合                            | 关键方法                                                                        |
+| -------------------------- | ------------------------------- | ------------------------------------------------------------------------------- |
+| `subjectRepository`        | subjects                        | listAll                                                                         |
+| `learningPathRepository`   | learning_paths                  | listBySubject                                                                   |
+| `textbookRepository`       | textbooks                       | listByLearningPath                                                              |
+| `semesterRepository`       | semesters                       | listByTextbook                                                                  |
+| `chapterRepository`        | chapters                        | listBySemester                                                                  |
+| `knowledgeRepository`      | knowledge                       | listByChapter（V1 单章 ≤100 条）                                                |
+| `learningRecordRepository` | learning_records                | find/upsert/updateState/listByUserAndChapters                                   |
+| `favoriteRepository`       | favorites（ADR-005）            | listByUser / add（防重）/ remove                                                |
+| `userRepository`           | users（经 login 云函数）        | fetchCurrent                                                                    |
+| `reviewRepository`         | review_records（Chapter 05 §8） | listDueByUser / createMany / update / countReviewedSince / resetReviewingByUser |
 
 字段级设计依据：Chapter 04 §5/§7 + `miniprogram/core/`；`cloud/database/collections.json`。

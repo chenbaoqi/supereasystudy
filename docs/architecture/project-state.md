@@ -62,20 +62,20 @@ supereasystudy/
 
 环境 `cloud1-d8g6b7jctd1a3be1c`；字段级依据 Chapter 04 §5/§7 + `miniprogram/core/`。
 
-| 集合                              | 字段（核心）                                                                        | 数据                       |
-| --------------------------------- | ----------------------------------------------------------------------------------- | -------------------------- |
-| users                             | openid                                                                              | 登录自动建档               |
-| subjects                          | name/open/order                                                                     | 种子 ×9（英语开放）        |
-| learning_paths                    | subjectId/name/open/order                                                           | 种子 ×2（Vocabulary 开放） |
-| textbooks                         | learningPathId/name/order                                                           | 种子 ×1                    |
-| semesters                         | textbookId/name/order                                                               | 种子 ×1                    |
-| chapters                          | semesterId/title/order                                                              | 种子 ×2                    |
-| knowledge                         | chapterId/word/ipa/pronunciation?/meaning/partOfSpeech?/example?/translation?/order | 种子 ×20                   |
-| learning_records                  | userId/chapterId/currentKnowledgeId?/progress/state                                 | 运行时                     |
-| favorites                         | userId/knowledgeId（ADR-005）                                                       | 运行时                     |
-| stages / grades                   | 仅基础字段（待 Specification 第 13 章）                                             | —                          |
-| practice_records / review_records | 仅基础字段                                                                          | —                          |
-| banners / notices                 | 仅基础字段                                                                          | —                          |
+| 集合                              | 字段（核心）                                                                        | 数据                                 |
+| --------------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------ |
+| users                             | openid                                                                              | 登录自动建档                         |
+| subjects                          | name/open/order                                                                     | 种子 ×9（英语开放）                  |
+| learning_paths                    | subjectId/name/open/order                                                           | 种子 ×2（词汇 开放 / 语法 敬请期待） |
+| textbooks                         | learningPathId/name/order                                                           | 种子 ×1                              |
+| semesters                         | textbookId/name/order                                                               | 种子 ×1                              |
+| chapters                          | semesterId/title/order                                                              | 种子 ×2                              |
+| knowledge                         | chapterId/word/ipa/pronunciation?/meaning/partOfSpeech?/example?/translation?/order | 种子 ×20                             |
+| learning_records                  | userId/chapterId/currentKnowledgeId?/progress/state                                 | 运行时                               |
+| favorites                         | userId/knowledgeId（ADR-005）                                                       | 运行时                               |
+| stages / grades                   | 仅基础字段（待 Specification 第 13 章）                                             | —                                    |
+| practice_records / review_records | 仅基础字段                                                                          | —                                    |
+| banners / notices                 | 仅基础字段                                                                          | —                                    |
 
 ## 4. 已实现模块
 

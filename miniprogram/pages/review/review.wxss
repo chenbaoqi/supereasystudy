@@ -1,1 +1,37 @@
-/* 复习页样式。UI 规范以 Specification 第 12 章为准（待补写）。 */
+/* 复习页样式（§15：UI 从简） */
+.hint {
+  padding: 120rpx 0;
+  text-align: center;
+  color: #999999;
+  font-size: 28rpx;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-around;
+  margin: 40rpx 30rpx;
+  padding: 40rpx 0;
+  background: #ffffff;
+  border-radius: 16rpx;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.num {
+  font-size: 44rpx;
+  font-weight: 600;
+}
+
+.label {
+  color: #999999;
+  font-size: 24rpx;
+}
+
+.start {
+  margin: 60rpx 30rpx;
+}

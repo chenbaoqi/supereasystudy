@@ -15,6 +15,6 @@
 ## 当前状态（Phase 2 进行中）
 
 - `userService.ts`：登录 / 恢复 / 取当前用户（登录态写入 globalData 的唯一位置）
-- `learningService.ts`：Chapter 04 §10 五方法（start/continue/finish/updateProgress/getCurrentKnowledge）
-- `testService.ts`：出题（B 方案英译中四选一）+ 交卷置 TESTED
-  （Chapter 04 §10 未将其列入 LearningService，按单一职责拆分，Baseline Spec §9 允许）
+- `learningService.ts`：Chapter 04 §10 五方法；finishLearning 内置复习任务创建钩子（Chapter 05 §3，经 `ReviewTaskCreator` 端口依赖，服务间不硬耦合）
+- `testService.ts`：出题（B 方案英译中四选一）+ 交卷置 REVIEW_DUE（Chapter 05 §6）
+- `reviewService.ts`：Chapter 05 §9 四方法 + §3 复习任务创建；排期算法集中（1/3/7/15/30 天，`config/reviewPlan.ts` 可替换）

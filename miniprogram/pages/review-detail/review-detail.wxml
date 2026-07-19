@@ -1,0 +1,18 @@
+<view wx:if="{{loading}}" class="hint">加载中…</view>
+<view wx:elif="{{!current}}" class="hint">今天没有待复习内容</view>
+<view wx:else class="card">
+  <view class="word-row">
+    <text class="word">{{current.knowledge.word}}</text>
+    <text class="ipa" wx:if="{{current.knowledge.ipa}}">/{{current.knowledge.ipa}}/</text>
+    <button wx:if="{{current.knowledge.pronunciation}}" size="mini" bindtap="onPlayAudio">🔊</button>
+  </view>
+  <view class="line meaning">{{current.knowledge.meaning}}</view>
+  <view class="line" wx:if="{{current.knowledge.example}}">{{current.knowledge.example}}</view>
+
+  <view class="progress">{{index + 1}} / {{total}}</view>
+
+  <view class="nav">
+    <button class="unknown" bindtap="onUnknown">不认识</button>
+    <button type="primary" bindtap="onKnown">认识</button>
+  </view>
+</view>

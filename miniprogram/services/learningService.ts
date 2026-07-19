@@ -8,6 +8,7 @@ import {
   learningRecordRepository,
   type LearningRecordRepository,
 } from '../repositories/learningRecordRepository';
+import { reviewService } from './reviewService';
 
 export interface LearningSession {
   readonly chapterId: string;
@@ -29,9 +30,16 @@ export interface LearningService {
   getCurrentKnowledge(userId: string, chapterId: string): Promise<Knowledge | null>;
 }
 
+// 复习任务创建端口（Chapter 05 §3）：LearningService 不 import ReviewService 实现，
+// 依赖最小接口，避免服务间硬耦合（端口模式）。
+export interface ReviewTaskCreator {
+  createReviewTasksForChapter(userId: string, chapterId: string): Promise<number>;
+}
+
 export interface LearningServiceDeps {
   knowledgeRepository: KnowledgeRepository;
   learningRecordRepository: LearningRecordRepository;
+  reviewTaskCreator: ReviewTaskCreator;
 }
 
 export function createLearningService(deps: LearningServiceDeps): LearningService {
@@ -76,13 +84,16 @@ export function createLearningService(deps: LearningServiceDeps): LearningServic
     async finishLearning(userId, chapterId) {
       const total = (await deps.knowledgeRepository.listByChapter(chapterId)).length;
       const existing = await deps.learningRecordRepository.findByUserAndChapter(userId, chapterId);
-      return deps.learningRecordRepository.upsert({
+      const record = await deps.learningRecordRepository.upsert({
         userId,
         chapterId,
         currentKnowledgeId: existing?.currentKnowledgeId,
         progress: total,
         state: 'COMPLETED',
       });
+      // Chapter 05 §3「Study Complete → Create Review Task」（Q1）：学习完成即生成复习任务
+      await deps.reviewTaskCreator.createReviewTasksForChapter(userId, chapterId);
+      return record;
     },
 
     async updateProgress(userId, chapterId, knowledgeId, progress) {
@@ -108,4 +119,5 @@ export function createLearningService(deps: LearningServiceDeps): LearningServic
 export const learningService = createLearningService({
   knowledgeRepository,
   learningRecordRepository,
+  reviewTaskCreator: reviewService,
 });

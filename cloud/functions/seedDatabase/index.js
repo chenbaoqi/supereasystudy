@@ -35,7 +35,7 @@ exports.main = async () => {
       const pathId = track(
         await ensureDoc('learning_paths', { subjectId, name: path.name }, { ...path, subjectId }),
       );
-      if (path.name !== 'Vocabulary') continue;
+      if (path.name !== '词汇') continue;
 
       for (const textbook of seed.english.vocabulary.textbooks) {
         const textbookId = track(

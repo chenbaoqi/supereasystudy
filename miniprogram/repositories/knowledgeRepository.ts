@@ -4,6 +4,8 @@ import type { Knowledge } from '../core/knowledge';
 
 export interface KnowledgeRepository {
   listByChapter(chapterId: string): Promise<Knowledge[]>;
+  // 按 id 批量取（复习页用：review_records 仅存 knowledgeId，卡片内容需 join）
+  listByIds(ids: string[]): Promise<Knowledge[]>;
 }
 
 export const knowledgeRepository: KnowledgeRepository = {
@@ -13,6 +15,17 @@ export const knowledgeRepository: KnowledgeRepository = {
       .collection('knowledge')
       .where({ chapterId })
       .orderBy('order', 'asc')
+      .limit(100)
+      .get();
+    return res.data as Knowledge[];
+  },
+
+  async listByIds(ids) {
+    if (ids.length === 0) return [];
+    const db = wx.cloud.database();
+    const res = await db
+      .collection('knowledge')
+      .where({ _id: db.command.in(ids) })
       .limit(100)
       .get();
     return res.data as Knowledge[];

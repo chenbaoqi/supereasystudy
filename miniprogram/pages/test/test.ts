@@ -12,6 +12,7 @@ Page({
     total: 0,
     selected: -1,
     answered: false,
+    isCorrect: false,
     correctCount: 0,
     isLastQuestion: false,
     loading: true,
@@ -45,9 +46,14 @@ Page({
       currentIndex: index,
       selected: -1,
       answered: false,
+      isCorrect: false,
       isLastQuestion: index >= this.data.questions.length - 1,
     });
   },
+
+  // 答对自动进下一题的延时（ms）：留一拍展示绿色反馈，避免闪烁感
+  autoNextDelay: 500,
+  autoNextTimer: 0 as number | undefined,
 
   onSelect(event: WechatMiniprogram.TouchEvent) {
     if (this.data.answered || !this.data.question) return;
@@ -56,8 +62,19 @@ Page({
     this.setData({
       selected: index,
       answered: true,
+      isCorrect: correct,
       correctCount: this.data.correctCount + (correct ? 1 : 0),
     });
+    // Owner 2026-07-19：答对自动下一题（无需再点）；答错停留看反馈，手动继续
+    if (correct) {
+      this.autoNextTimer = setTimeout(() => {
+        void this.onNext();
+      }, this.autoNextDelay) as unknown as number;
+    }
+  },
+
+  onUnload() {
+    if (this.autoNextTimer !== undefined) clearTimeout(this.autoNextTimer);
   },
 
   async onNext() {

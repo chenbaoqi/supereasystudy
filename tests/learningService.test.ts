@@ -24,6 +24,7 @@ const knowledgeList = [makeKnowledge('k1', 1), makeKnowledge('k2', 2), makeKnowl
 function createFakes() {
   const store = new Map<string, LearningRecord>();
   const key = (userId: string, chapterId: string) => `${userId}:${chapterId}`;
+  const reviewTaskCalls: string[] = [];
   const learningRecordRepository = {
     async findByUserAndChapter(userId: string, chapterId: string) {
       return store.get(key(userId, chapterId)) ?? null;
@@ -53,8 +54,18 @@ function createFakes() {
     async listByChapter() {
       return knowledgeList;
     },
+    async listByIds(ids: string[]) {
+      return knowledgeList.filter((item) => ids.includes(item._id));
+    },
   };
-  return { learningRecordRepository, knowledgeRepository };
+  // Chapter 05 §3：finishLearning 触发复习任务创建（此处仅为 spy）
+  const reviewTaskCreator = {
+    async createReviewTasksForChapter(_userId: string, chapterId: string) {
+      reviewTaskCalls.push(chapterId);
+      return 0;
+    },
+  };
+  return { learningRecordRepository, knowledgeRepository, reviewTaskCreator, reviewTaskCalls };
 }
 
 describe('LearningService', () => {
@@ -99,6 +110,13 @@ describe('LearningService', () => {
     const record = await service.finishLearning(USER, CHAPTER);
     expect(record.state).toBe('COMPLETED');
     expect(record.progress).toBe(3);
+  });
+
+  it('finishLearning：同时触发复习任务创建（Chapter 05 §3）', async () => {
+    const fakes = createFakes();
+    const service = createLearningService(fakes);
+    await service.finishLearning(USER, CHAPTER);
+    expect(fakes.reviewTaskCalls).toEqual([CHAPTER]);
   });
 
   it('getCurrentKnowledge：返回学习位置对应的知识点', async () => {

@@ -4,6 +4,21 @@
 
 ## [Unreleased]
 
+### Added - 2026-07-19（Phase 2：复习系统，Chapter 05）
+
+- `core/reviewStatus.ts` + `core/reviewRecord.ts`（§5 显式字段）；`learningState` 追加 `REVIEW_DUE`（§6，向后兼容）
+- `repositories/reviewRepository.ts`（§8）；`knowledgeRepository` 增加 `listByIds`（复习卡片 join）
+- `services/reviewService.ts`（§9 四方法 + §3 任务创建；排期算法集中，Repository 无业务）
+- `config/reviewPlan.ts`（§6 复习计划 1/3/7/15/30 天，配置优先、算法可替换）；`utils/date.ts`（首个工具函数）
+- 复习双页：`review`（今日待复习/已完成/完成率/开始复习，§4 空状态）+ `review-detail`（认识/不认识自评）
+- 接线：`finishLearning` 自动创建复习任务（Q1）；`submitTest` 后状态 TESTED→REVIEW_DUE（Q1）；测试结果页加「去复习」入口（Q5）
+- 单测 +9：reviewService ×8（固定时钟注入）、finishLearning 钩子 ×1；testService 期望更新为 REVIEW_DUE
+
+### Changed - 2026-07-19（Chapter 05 配套）
+
+- 卡片样式抽取 `pages/shared/card.wxss`（study-detail 与 review-detail 共享，DRY）
+- 测试页交互（Owner 要求）：答对自动进下一题（500ms 反馈延时），答错停留手动继续
+
 ### Added - 2026-07-19（Phase 2：学习链路垂直切片，Chapter 04）
 
 - core 领域类型 ×10：`learningState`（§6 状态机）/ `subject` / `learningPath` / `textbook` / `semester` / `chapter` / `knowledge`（§5 显式字段）/ `learningRecord`（§7）/ `favorite`（ADR-005）/ `user`（+openid）
@@ -20,6 +35,7 @@
 - `app.ts`：入口路由策略（恢复登录态后 reLaunch 学科页 / 登录页）
 - ESLint：`no-unused-vars` 支持下划线前缀「刻意未使用」约定
 - UI 文本中文化：Coming Soon →「敬请期待」（列表标签 + 落地页，Owner 要求）
+- 种子数据中文化：学习路径 Vocabulary/Grammar →「词汇/语法」（Owner 要求；库内已有记录需同步改名）
 - 学科/列表页采用纵向列表布局（非九宫格），Owner 确认保留
 
 ### Added - 2026-07-19（Phase 1：页面路由 / 云初始化 / 骨架）

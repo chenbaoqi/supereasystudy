@@ -72,7 +72,7 @@ describe('TestService.generateQuestions', () => {
 });
 
 describe('TestService.submitTest', () => {
-  it('交卷后状态流转为 TESTED（§6）', async () => {
+  it('交卷后状态流转为 REVIEW_DUE（Chapter 05 §6，Q1：TESTED→REVIEW_DUE）', async () => {
     const repo = createFakeRepo();
     await repo.upsert({
       userId: 'user-1',
@@ -83,7 +83,7 @@ describe('TestService.submitTest', () => {
     const { submitTest } = createTestService({ learningRecordRepository: repo });
     await submitTest('user-1', 'chapter-1', { correctCount: 4, totalCount: 5 });
     const record = await repo.findByUserAndChapter('user-1', 'chapter-1');
-    expect(record?.state).toBe('TESTED');
+    expect(record?.state).toBe('REVIEW_DUE');
     expect(record?.progress).toBe(5); // 进度不受测试影响
   });
 });

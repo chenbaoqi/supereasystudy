@@ -29,4 +29,9 @@ Page({
   onBackToChapter() {
     wx.reLaunch({ url: `/pages/chapter/chapter?semesterId=${this.data.semesterId}` });
   },
+
+  onGoReview() {
+    // 去复习（Chapter 05 Q5：Review 页入口）
+    wx.reLaunch({ url: '/pages/review/review' });
+  },
 });

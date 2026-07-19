@@ -14,6 +14,7 @@
     "pages/test/test",
     "pages/test-result/test-result",
     "pages/review/review",
+    "pages/review-detail/review-detail",
     "pages/favorite/favorite",
     "pages/settings/settings",
     "pages/coming-soon/coming-soon"

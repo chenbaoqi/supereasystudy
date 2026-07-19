@@ -1,0 +1,14 @@
+/* 复习详情页样式（§15：UI 从简；卡片与 study-detail 共享） */
+@import '../shared/card.wxss';
+
+.hint {
+  padding: 120rpx 0;
+  text-align: center;
+  color: #999999;
+  font-size: 28rpx;
+}
+
+.unknown {
+  background: #fa5151;
+  color: #ffffff;
+}

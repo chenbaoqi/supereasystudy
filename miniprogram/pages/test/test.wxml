@@ -14,7 +14,8 @@
       {{item}}
     </button>
   </view>
-  <button wx:if="{{answered}}" type="primary" bindtap="onNext">
+  <!-- 答对自动进下一题（无需按钮）；答错才显示手动继续 -->
+  <button wx:if="{{answered && !isCorrect}}" type="primary" bindtap="onNext">
     {{isLastQuestion ? '查看结果' : '下一题'}}
   </button>
 </view>

@@ -17,8 +17,8 @@
 
 - **学习链路 9 页已实现**（Chapter 04 垂直切片，§15 UI 从简）：
   login / subject / learning-path / textbook / semester / chapter / study-detail / test / test-result
-- `shared/`：四个列表页（subject/learning-path/textbook/semester）的共享脚手架
-  （`createListPage.ts` + `list.wxml` + `list.wxss`），同构页面禁止复制粘贴（DRY）
-- 其余 8 页仍为占位：home / study / practice / mine（TabBar）+ favorite / review / settings / coming-soon
+- **复习 2 页已实现**（Chapter 05）：review（统计+开始）/ review-detail（认识·不认识自评）
+- `shared/`：列表页脚手架（createListPage + list.wxml/wxss）+ 知识卡共享样式（card.wxss）
+- 其余 7 页仍为占位：home / study / practice / mine（TabBar）+ favorite / settings / coming-soon
 
 页面流程与 UI 规范以 Specification 第十二章（待补写）为准。

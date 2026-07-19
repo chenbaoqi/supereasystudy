@@ -1,3 +1,23 @@
-<view class="page-placeholder">
-  <text>复习 · Phase 2</text>
+<view wx:if="{{loading}}" class="hint">加载中…</view>
+<view wx:elif="{{loadFailed}}" class="hint">
+  <text>加载失败，请检查网络</text>
+  <button size="mini" bindtap="onRetry">重试</button>
 </view>
+<block wx:else>
+  <view class="stats">
+    <view class="stat">
+      <text class="num">{{dueCount}}</text>
+      <text class="label">今日待复习</text>
+    </view>
+    <view class="stat">
+      <text class="num">{{doneCount}}</text>
+      <text class="label">已完成</text>
+    </view>
+    <view class="stat">
+      <text class="num">{{completionRate}}%</text>
+      <text class="label">完成率</text>
+    </view>
+  </view>
+  <view wx:if="{{dueCount === 0}}" class="hint">今天没有待复习内容</view>
+  <button wx:else type="primary" class="start" bindtap="onStart">开始复习</button>
+</block>

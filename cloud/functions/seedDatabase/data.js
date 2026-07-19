@@ -14,11 +14,11 @@ module.exports = {
     { name: '地理', open: false, order: 8 },
     { name: '政治', open: false, order: 9 },
   ],
-  // 仅挂在「英语」下（§5：Vocabulary 开放，其余 Coming Soon）
+  // 仅挂在「英语」下（§5：词汇 开放，其余 敬请期待）
   english: {
     learningPaths: [
-      { name: 'Vocabulary', open: true, order: 1 },
-      { name: 'Grammar', open: false, order: 2 },
+      { name: '词汇', open: true, order: 1 },
+      { name: '语法', open: false, order: 2 },
     ],
     vocabulary: {
       textbooks: [{ name: '人教版 PEP', order: 1 }],
