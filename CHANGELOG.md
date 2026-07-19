@@ -4,6 +4,21 @@
 
 ## [Unreleased]
 
+### Added - 2026-07-19（规范冻结 + Chapter 06：首页/收藏/统计）
+
+- **Specification 第 12 章（UI/UX 规范）与第 13 章（数据模型）正式冻结**（Owner 逐项确认 Q1-Q7）
+- 首页 Dashboard（Specification §12.5）：Banner 轮播（无数据隐藏）/ 统计条（今日复习+连续天数）/ 最近学习（前 3，点击续学）/ 学科入口；`homeService` 聚合
+- 收藏页真实化：按收藏时间倒序（favorites join knowledge），点击进所属章节学习详情（Q5）
+- 学习统计页（pages/statistics）：今日复习/今日学习章节/累计知识点/连续天数；入口在「我的」tab（Q6）
+- `statisticsService`（§13.3 口径：连续天数两表日期去重实时计算，Q2-A 零新字段）+ `favoriteService` + `utils/date.countStreakDays`
+- `core/banner.ts` + `bannerRepository`（§13.2 冻结字段）；`learningRecordRepository.listByUser`、`chapterRepository.listByIds`、`reviewRepository.listByUser` 扩展
+- 单测 +7（statisticsService 口径 + countStreakDays 边界：断档/今日无活动/空）
+
+### Changed - 2026-07-19（Chapter 06 配套）
+
+- 应用入口与登录成功跳转：学科页 → 首页 Dashboard（home tab 正式启用）
+- 收藏列表按 createdAt 倒序（§12.5）
+
 ### Added - 2026-07-19（Phase 2：复习系统，Chapter 05）
 
 - `core/reviewStatus.ts` + `core/reviewRecord.ts`（§5 显式字段）；`learningState` 追加 `REVIEW_DUE`（§6，向后兼容）
@@ -18,6 +33,7 @@
 
 - 卡片样式抽取 `pages/shared/card.wxss`（study-detail 与 review-detail 共享，DRY）
 - 测试页交互（Owner 要求）：答对自动进下一题（500ms 反馈延时），答错停留手动继续
+- 修复（Owner 反馈）：已完成章节再次进入直接停在最后一条 → 改为从第一条重新浏览（仅 LEARNING 状态恢复位置，记录不重置）
 
 ### Added - 2026-07-19（Phase 2：学习链路垂直切片，Chapter 04）
 

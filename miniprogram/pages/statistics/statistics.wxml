@@ -1,0 +1,23 @@
+<view wx:if="{{loading}}" class="hint">加载中…</view>
+<view wx:elif="{{loadFailed}}" class="hint">
+  <text>加载失败，请检查网络</text>
+  <button size="mini" bindtap="onRetry">重试</button>
+</view>
+<view wx:else class="grid">
+  <view class="card">
+    <text class="num">{{stats.todayReviewedKnowledge}}</text>
+    <text class="label">今日复习知识点</text>
+  </view>
+  <view class="card">
+    <text class="num">{{stats.todayStudiedChapters}}</text>
+    <text class="label">今日学习章节</text>
+  </view>
+  <view class="card">
+    <text class="num">{{stats.totalKnowledge}}</text>
+    <text class="label">累计知识点</text>
+  </view>
+  <view class="card">
+    <text class="num">{{stats.streakDays}}</text>
+    <text class="label">连续学习（天）</text>
+  </view>
+</view>

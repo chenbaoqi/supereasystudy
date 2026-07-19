@@ -1,1 +1,2 @@
-/* 我的页样式。UI 规范以 Specification 第 12 章为准（待补写）。 */
+/* 我的页样式（§15 UI 从简） */
+@import '../shared/list.wxss';

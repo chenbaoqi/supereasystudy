@@ -58,6 +58,9 @@ function createFakes() {
         (item) => item.userId === userId && item.lastReviewTime && item.lastReviewTime >= since,
       ).length;
     },
+    async listByUser(userId: string) {
+      return [...reviewStore.values()].filter((item) => item.userId === userId);
+    },
     async createMany(inputs: ReviewRecordCreate[]) {
       for (const input of inputs) {
         sequence += 1;
@@ -99,6 +102,9 @@ function createFakes() {
       return [...learningStore.values()].filter(
         (item) => item.userId === userId && chapterIds.includes(item.chapterId),
       );
+    },
+    async listByUser(userId: string) {
+      return [...learningStore.values()].filter((item) => item.userId === userId);
     },
     async upsert(input: LearningRecordUpsert) {
       const record: LearningRecord = {

@@ -1,3 +1,20 @@
-<view class="page-placeholder">
-  <text>收藏 · Phase 2</text>
+<view wx:if="{{loading}}" class="hint">加载中…</view>
+<view wx:elif="{{loadFailed}}" class="hint">
+  <text>加载失败，请检查网络</text>
+  <button size="mini" bindtap="onRetry">重试</button>
 </view>
+<view wx:elif="{{items.length === 0}}" class="hint">暂无数据</view>
+<block wx:else>
+  <view
+    wx:for="{{items}}"
+    wx:key="favorite._id"
+    class="list-item"
+    data-chapter-id="{{item.knowledge.chapterId}}"
+    bindtap="onTapItem"
+  >
+    <view class="cell">
+      <text class="word">{{item.knowledge.word}}</text>
+      <text class="meaning">{{item.knowledge.meaning}}</text>
+    </view>
+  </view>
+</block>

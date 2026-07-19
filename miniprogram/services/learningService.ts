@@ -70,7 +70,13 @@ export function createLearningService(deps: LearningServiceDeps): LearningServic
       // 继续学习：无记录则视为初次（等价 startLearning）
       const list = await deps.knowledgeRepository.listByChapter(chapterId);
       const existing = await deps.learningRecordRepository.findByUserAndChapter(userId, chapterId);
-      if (existing) return buildSession(chapterId, list, existing);
+      if (existing) {
+        // 仅 LEARNING 状态续学（Chapter 04 §5 恢复位置）；
+        // 已完成/已测试/复习中的章节重新进入 = 从第一条重新浏览（Owner 2026-07-19 反馈），
+        // 记录不重置：点「下一条」时由 updateProgress 自然回到 LEARNING。
+        const session = buildSession(chapterId, list, existing);
+        return existing.state === 'LEARNING' ? session : { ...session, currentIndex: 0 };
+      }
       const record = await deps.learningRecordRepository.upsert({
         userId,
         chapterId,

@@ -14,6 +14,8 @@ export interface LearningRecordUpsert {
 export interface LearningRecordRepository {
   findByUserAndChapter(userId: string, chapterId: string): Promise<LearningRecord | null>;
   listByUserAndChapters(userId: string, chapterIds: string[]): Promise<LearningRecord[]>;
+  // 用户全部学习记录（统计/最近学习用；V1 用户章节量 ≤100）
+  listByUser(userId: string): Promise<LearningRecord[]>;
   upsert(input: LearningRecordUpsert): Promise<LearningRecord>;
   updateState(userId: string, chapterId: string, state: LearningState): Promise<void>;
 }
@@ -39,6 +41,11 @@ export const learningRecordRepository: LearningRecordRepository = {
       .where({ userId, chapterId: db.command.in(chapterIds) })
       .limit(100)
       .get();
+    return res.data as LearningRecord[];
+  },
+
+  async listByUser(userId) {
+    const res = await wx.cloud.database().collection(COLLECTION).where({ userId }).limit(100).get();
     return res.data as LearningRecord[];
   },
 

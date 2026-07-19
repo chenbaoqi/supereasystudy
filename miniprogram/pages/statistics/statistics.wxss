@@ -1,0 +1,36 @@
+/* 学习统计页样式（§15 UI 从简） */
+.hint {
+  padding: 120rpx 0;
+  text-align: center;
+  color: #999999;
+  font-size: 28rpx;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20rpx 15rpx;
+}
+
+.card {
+  width: calc(50% - 40rpx);
+  margin: 15rpx 20rpx;
+  padding: 48rpx 0;
+  background: #ffffff;
+  border-radius: 16rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12rpx;
+  box-sizing: border-box;
+}
+
+.num {
+  font-size: 48rpx;
+  font-weight: 600;
+}
+
+.label {
+  color: #999999;
+  font-size: 24rpx;
+}

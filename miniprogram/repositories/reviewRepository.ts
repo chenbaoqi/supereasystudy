@@ -28,6 +28,8 @@ export interface ReviewRepository {
   findByUserAndKnowledge(userId: string, knowledgeId: string): Promise<ReviewRecord | null>;
   // 今日已完成数：lastReviewTime≥since 的记录数
   countReviewedSince(userId: string, since: Date): Promise<number>;
+  // 用户全部复习记录（连续天数实时计算用，Specification §13.3 方案 A）
+  listByUser(userId: string): Promise<ReviewRecord[]>;
   createMany(inputs: ReviewRecordCreate[]): Promise<void>;
   update(id: string, fields: ReviewRecordUpdate): Promise<void>;
   // REVIEWING → REVIEW_DUE 归位（复习中断兜底，Q6）
@@ -79,6 +81,11 @@ export const reviewRepository: ReviewRepository = {
       .where({ userId, lastReviewTime: db.command.gte(since) })
       .count();
     return res.total;
+  },
+
+  async listByUser(userId) {
+    const res = await wx.cloud.database().collection(COLLECTION).where({ userId }).limit(100).get();
+    return res.data as ReviewRecord[];
   },
 
   async createMany(inputs) {

@@ -34,6 +34,9 @@ function createFakes() {
         (record) => record.userId === userId && chapterIds.includes(record.chapterId),
       );
     },
+    async listByUser(userId: string) {
+      return [...store.values()].filter((record) => record.userId === userId);
+    },
     async upsert(input: LearningRecordUpsert) {
       const existing = store.get(key(input.userId, input.chapterId));
       const record: LearningRecord = {
@@ -102,6 +105,17 @@ describe('LearningService', () => {
     const session = await service.continueLearning(USER, CHAPTER);
     expect(session.record.state).toBe('LEARNING');
     expect(session.currentIndex).toBe(0);
+  });
+
+  it('continueLearning：已完成章节重新进入时从第一条开始（记录不重置）', async () => {
+    const service = createLearningService(createFakes());
+    await service.startLearning(USER, CHAPTER);
+    await service.updateProgress(USER, CHAPTER, 'k3', 2);
+    await service.finishLearning(USER, CHAPTER);
+    const session = await service.continueLearning(USER, CHAPTER);
+    expect(session.currentIndex).toBe(0); // 回到第一条，而非最后一条
+    expect(session.record.state).toBe('COMPLETED'); // 记录未被重置
+    expect(session.record.progress).toBe(3);
   });
 
   it('finishLearning：状态流转为 COMPLETED，进度记满（§6）', async () => {

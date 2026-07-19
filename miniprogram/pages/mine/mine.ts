@@ -1,3 +1,6 @@
-// 我的页（TabBar）。Phase 1 仅路由占位（Baseline Spec §3：允许空页面，仅完成路由与布局）。
-// 业务逻辑待 Phase 2，产品逻辑以 Specification 为准。
-Page({});
+// 我的页（TabBar）。当前仅承载「学习统计」入口（Specification §12.5，Q6 确认）。
+Page({
+  onTapStatistics() {
+    wx.navigateTo({ url: '/pages/statistics/statistics' });
+  },
+});

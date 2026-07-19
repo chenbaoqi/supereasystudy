@@ -1,0 +1,67 @@
+// 首页聚合服务（Specification §12.5 Dashboard：Banner / 统计条 / 最近学习 / 学科入口）。
+// 页面只调本服务一次拿全数据（页面薄原则）；学科列表由页面复用列表页模式另行加载。
+import type { Banner } from '../core/banner';
+import { bannerRepository, type BannerRepository } from '../repositories/bannerRepository';
+import { chapterRepository, type ChapterRepository } from '../repositories/chapterRepository';
+import {
+  learningRecordRepository,
+  type LearningRecordRepository,
+} from '../repositories/learningRecordRepository';
+import { statisticsService } from './statisticsService';
+
+export interface RecentLearningItem {
+  readonly chapterId: string;
+  readonly semesterId: string;
+  readonly title: string;
+}
+
+export interface HomeDashboard {
+  readonly banners: Banner[];
+  readonly todayReviewedKnowledge: number; // 统计条：今日复习知识点（§12.5 口径）
+  readonly streakDays: number; // 统计条：连续学习天数
+  readonly recentLearning: RecentLearningItem[]; // 最近学习前 3（updatedAt 倒序）
+}
+
+export interface HomeServiceDeps {
+  bannerRepository: BannerRepository;
+  learningRecordRepository: LearningRecordRepository;
+  chapterRepository: ChapterRepository;
+}
+
+export function createHomeService(deps: HomeServiceDeps) {
+  return {
+    async getDashboard(userId: string): Promise<HomeDashboard> {
+      const [banners, stats, records] = await Promise.all([
+        deps.bannerRepository.listOpen(),
+        statisticsService.getStatistics(userId),
+        deps.learningRecordRepository.listByUser(userId),
+      ]);
+      const recentRecords = [...records]
+        .sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime())
+        .slice(0, 3);
+      const chapters = await deps.chapterRepository.listByIds(
+        recentRecords.map((item) => item.chapterId),
+      );
+      const map = new Map(chapters.map((item) => [item._id, item]));
+      const recentLearning = recentRecords.flatMap((record) => {
+        const chapter = map.get(record.chapterId);
+        // 章节被删的孤儿记录跳过（数据一致性兜底）
+        return chapter
+          ? [{ chapterId: chapter._id, semesterId: chapter.semesterId, title: chapter.title }]
+          : [];
+      });
+      return {
+        banners,
+        todayReviewedKnowledge: stats.todayReviewedKnowledge,
+        streakDays: stats.streakDays,
+        recentLearning,
+      };
+    },
+  };
+}
+
+export const homeService = createHomeService({
+  bannerRepository,
+  learningRecordRepository,
+  chapterRepository,
+});

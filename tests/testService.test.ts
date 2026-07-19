@@ -100,6 +100,9 @@ function createFakeRepo() {
         (record) => record.userId === userId && chapterIds.includes(record.chapterId),
       );
     },
+    async listByUser(userId: string) {
+      return [...store.values()].filter((record) => record.userId === userId);
+    },
     async upsert(input: LearningRecordUpsert) {
       const existing = store.get(key(input.userId, input.chapterId));
       const record: LearningRecord = {

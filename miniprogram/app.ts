@@ -1,7 +1,6 @@
 // 小程序入口。
-// Phase 2 切片入口策略（Chapter 04 §3：流程从 Login/Subject 开始）：
-// 启动时静默恢复登录态——成功直进学科页，失败进登录页（§8 无网络 Retry 在登录页）。
-// home tab 待首页规范（Specification 第 12 章）后启用。
+// 入口策略（Specification §12.5 起）：启动时静默恢复登录态——
+// 成功直进首页 Dashboard（home tab），失败进登录页（§12.3 无网络 Retry 在登录页）。
 import { CLOUD_ENV } from './config/cloud';
 import { userService } from './services/userService';
 
@@ -17,6 +16,6 @@ App<IAppOption>({
     }
     wx.cloud.init({ env: CLOUD_ENV, traceUser: true });
     const user = await userService.restoreSession();
-    wx.reLaunch({ url: user ? '/pages/subject/subject' : '/pages/login/login' });
+    wx.reLaunch({ url: user ? '/pages/home/home' : '/pages/login/login' });
   },
 });

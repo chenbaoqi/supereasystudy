@@ -13,7 +13,7 @@ Page({
     this.setData({ loading: true, failed: false });
     const user = await userService.login();
     if (user) {
-      wx.reLaunch({ url: '/pages/subject/subject' });
+      wx.reLaunch({ url: '/pages/home/home' });
       return;
     }
     this.setData({ loading: false, failed: true });

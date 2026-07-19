@@ -17,6 +17,7 @@
     "pages/review-detail/review-detail",
     "pages/favorite/favorite",
     "pages/settings/settings",
+    "pages/statistics/statistics",
     "pages/coming-soon/coming-soon"
   ],
   "window": {

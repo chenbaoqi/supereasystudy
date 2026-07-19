@@ -1,3 +1,61 @@
-<view class="page-placeholder">
-  <text>首页 · Phase 2</text>
+<view wx:if="{{loading}}" class="hint">加载中…</view>
+<view wx:elif="{{loadFailed}}" class="hint">
+  <text>加载失败，请检查网络</text>
+  <button size="mini" bindtap="onRetry">重试</button>
 </view>
+<block wx:else>
+  <!-- Banner 轮播（§12.5：无数据则隐藏本区块） -->
+  <swiper
+    wx:if="{{banners.length > 0}}"
+    class="banner"
+    indicator-dots
+    autoplay
+    circular
+  >
+    <swiper-item wx:for="{{banners}}" wx:key="_id">
+      <image class="banner-image" src="{{item.imageUrl}}" mode="aspectFill" />
+    </swiper-item>
+  </swiper>
+
+  <!-- 学习统计条 -->
+  <view class="stats">
+    <view class="stat">
+      <text class="num">{{todayReviewedKnowledge}}</text>
+      <text class="label">今日复习</text>
+    </view>
+    <view class="stat">
+      <text class="num">{{streakDays}}</text>
+      <text class="label">连续学习（天）</text>
+    </view>
+  </view>
+
+  <!-- 最近学习 -->
+  <block wx:if="{{recentLearning.length > 0}}">
+    <view class="section-title">最近学习</view>
+    <view
+      wx:for="{{recentLearning}}"
+      wx:key="chapterId"
+      class="list-item"
+      data-chapter-id="{{item.chapterId}}"
+      data-semester-id="{{item.semesterId}}"
+      bindtap="onTapRecent"
+    >
+      <text>{{item.title}}</text>
+      <text class="tag">继续学习</text>
+    </view>
+  </block>
+
+  <!-- 学科入口（纵向列表，§12.1 冻结） -->
+  <view class="section-title">学科</view>
+  <view
+    wx:for="{{subjects}}"
+    wx:key="_id"
+    class="list-item"
+    data-id="{{item._id}}"
+    data-open="{{item.open}}"
+    bindtap="onTapSubject"
+  >
+    <text>{{item.name}}</text>
+    <text wx:if="{{!item.open}}" class="tag">敬请期待</text>
+  </view>
+</block>
