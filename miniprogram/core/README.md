@@ -24,7 +24,11 @@
 宪章「Everything is Knowledge」与「Subject Plugin」的物理载体。
 V2 新增学科 = 在 `subjects/` 新增一个实现 `SubjectPlugin` 的目录，**本层不需要任何修改**。
 
-## 当前状态（Phase 1）
+## 当前状态（Phase 2 进行中）
 
 - `base.ts`：`BaseEntity`（`_id/createdAt/updatedAt`，Baseline Spec §4 的基础字段单点定义）
-- `user.ts`：`User` 类型（users 集合，字段待 Specification 数据模型章节扩展）
+- `user.ts`：`User`（users 集合；openid 为登录凭据，Chapter 04 §5）
+- `learningState.ts`：学习状态机（§6 显式定义）
+- `subject.ts` / `learningPath.ts` / `textbook.ts` / `semester.ts` / `chapter.ts` / `knowledge.ts`：
+  学习链路六层（§3 层级 + §5 显式字段）
+- `learningRecord.ts`：学习记录（§7，每用户×章节一条）

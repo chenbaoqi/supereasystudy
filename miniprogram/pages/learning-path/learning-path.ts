@@ -1,3 +1,13 @@
-// 学习路径页。Phase 1 仅路由占位（Baseline Spec §3：允许空页面，仅完成路由与布局）。
-// 业务逻辑待 Phase 2，产品逻辑以 Specification 为准。
-Page({});
+// 学习路径页（Chapter 04 §5：Vocabulary 开放，其余 Coming Soon）。
+import { learningPathRepository } from '../../repositories/learningPathRepository';
+import { createListPage } from '../shared/createListPage';
+
+Page(
+  createListPage({
+    async fetchItems(query) {
+      const paths = await learningPathRepository.listBySubject(query.subjectId ?? '');
+      return paths.map((item) => ({ id: item._id, title: item.name, open: item.open }));
+    },
+    buildNextUrl: (id) => `/pages/textbook/textbook?learningPathId=${id}`,
+  }),
+);

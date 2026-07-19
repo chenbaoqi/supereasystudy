@@ -30,12 +30,11 @@ npm run test         # Vitest
 
 ## 当前状态
 
-**Phase 1 基础工程**（Baseline Spec §8）：
+**Phase 1 完成 ✅ ｜ Phase 2 学习链路切片已实现（Chapter 04，待云端部署联调）**
 
 - ✅ 工程基座（TS strict / ESLint / CI / 提交规范）
-- ✅ 17 个空页面 + TabBar 路由（Baseline Spec §3）
-- ✅ 云开发初始化（真实环境 `cloud1-d8g6b7jctd1a3be1c`）与数据库集合基线（§4）
-- ✅ 登录框架 / 全局状态 / 功能开关骨架（接口，无业务逻辑）
-- ⏳ 14 个集合待在微信开发者工具云控制台创建（`cloud/database/README.md`）
+- ✅ 学习闭环「登录→学科→路径→教材→册次→章节→学习详情→测试→结果」全链路代码
+- ✅ 云环境接入 + 15 集合基线 + login / seedDatabase 云函数 + 单元测试 ×13
+- ⏳ 待云端部署 login / seedDatabase 并联调验收（Chapter 04 §14 八条）
 
-后续阶段：Phase 2 学习系统 → Phase 3 游戏玩法 → Phase 4 AI 与商业化（不得跨阶段提前开发）。
+后续：Phase 2 余量（favorite/review 真实页）→ Phase 3 游戏玩法 → Phase 4 AI 与商业化。

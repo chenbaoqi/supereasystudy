@@ -2,7 +2,8 @@
 
 ## 依据
 
-Baseline Spec §4（Mandatory）：必须创建 14 个 Collection，清单见 `collections.json`。
+Baseline Spec §4（Mandatory）：必须创建的 Collection 清单见 `collections.json`
+（14 个基线 + 2026-07-19 新增 `favorites`，ADR-005）。
 
 ## 规则（Spec §4 原文约束）
 
@@ -26,6 +27,19 @@ Baseline Spec §4（Mandatory）：必须创建 14 个 Collection，清单见 `c
 
 已提供一次性云函数 `cloud/functions/initDatabase/`（幂等，已存在则跳过），
 部署与调用步骤见该目录 README。
+
+## 权限矩阵（新环境必做，否则客户端读不到管理端写入的内容）
+
+云数据库集合默认「仅创建者可读写」。种子/CMS 录入的内容属管理端所有，
+客户端（普通用户）读不到——内容集合必须改权限：
+
+| 集合                                                                                         | 权限                           | 理由                            |
+| -------------------------------------------------------------------------------------------- | ------------------------------ | ------------------------------- |
+| subjects / learning_paths / textbooks / semesters / chapters / knowledge / banners / notices | **所有用户可读，仅创建者可写** | 内容只读，管理端维护            |
+| learning_records / favorites / practice_records / review_records                             | 仅创建者可读写（默认）         | 用户只碰自己的记录              |
+| users                                                                                        | 仅创建者可读写（默认）         | 客户端不直连，仅经 login 云函数 |
+
+设置路径：云控制台 → 数据库 → 选中集合 → 权限设置。
 
 ## 后续规划
 

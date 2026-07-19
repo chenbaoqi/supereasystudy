@@ -14,6 +14,10 @@
     "practice_records",
     "review_records",
     "banners",
-    "notices"
+    "notices",
+    "favorites"
+  ],
+  "changelog": [
+    "2026-07-19: 新增 favorites 集合（Owner 决策，ADR-005）：收藏独立于 learning_records 存储"
   ]
 }

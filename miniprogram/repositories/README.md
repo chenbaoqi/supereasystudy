@@ -12,7 +12,18 @@
 - 输入输出必须使用 `core/` 定义的 Interface，禁止返回原始数据库记录结构
 - 每个集合（表）一个 Repository，命名：`XxxRepository.ts`
 
-## 当前状态（Phase 1）
+## 当前状态（Phase 2 进行中）
 
-- `userRepository.ts`：users 集合访问**契约**（接口，Baseline Spec §1 允许骨架）。
-  集合基线见 `cloud/database/`（Spec §4）；字段级设计以 Specification 数据模型章节为准。
+| Repository                 | 集合                     | 关键方法                                      |
+| -------------------------- | ------------------------ | --------------------------------------------- |
+| `subjectRepository`        | subjects                 | listAll                                       |
+| `learningPathRepository`   | learning_paths           | listBySubject                                 |
+| `textbookRepository`       | textbooks                | listByLearningPath                            |
+| `semesterRepository`       | semesters                | listByTextbook                                |
+| `chapterRepository`        | chapters                 | listBySemester                                |
+| `knowledgeRepository`      | knowledge                | listByChapter（V1 单章 ≤100 条）              |
+| `learningRecordRepository` | learning_records         | find/upsert/updateState/listByUserAndChapters |
+| `favoriteRepository`       | favorites（ADR-005）     | listByUser / add（防重）/ remove              |
+| `userRepository`           | users（经 login 云函数） | fetchCurrent                                  |
+
+字段级设计依据：Chapter 04 §5/§7 + `miniprogram/core/`；`cloud/database/collections.json`。

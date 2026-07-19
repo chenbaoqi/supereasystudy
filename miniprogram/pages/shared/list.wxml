@@ -1,0 +1,22 @@
+<!-- 列表页共享模板（DRY：4 个列表页复用；§8：无网络 Retry / 无数据 Empty） -->
+<template name="list">
+  <view wx:if="{{loading}}" class="hint">加载中…</view>
+  <view wx:elif="{{loadFailed}}" class="hint">
+    <text>加载失败，请检查网络</text>
+    <button size="mini" bindtap="onRetry">重试</button>
+  </view>
+  <view wx:elif="{{items.length === 0}}" class="hint">暂无数据</view>
+  <block wx:else>
+    <view
+      wx:for="{{items}}"
+      wx:key="id"
+      class="list-item"
+      data-id="{{item.id}}"
+      data-open="{{item.open}}"
+      bindtap="onTapItem"
+    >
+      <text>{{item.title}}</text>
+      <text wx:if="{{!item.open}}" class="tag">敬请期待</text>
+    </view>
+  </block>
+</template>

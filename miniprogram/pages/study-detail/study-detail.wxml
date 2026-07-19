@@ -1,3 +1,27 @@
-<view class="page-placeholder">
-  <text>学习详情 · Phase 2</text>
+<view wx:if="{{loading}}" class="hint">加载中…</view>
+<view wx:elif="{{!current}}" class="hint">暂无知识点</view>
+<view wx:else class="card">
+  <view class="word-row">
+    <text class="word">{{current.word}}</text>
+    <text class="ipa" wx:if="{{current.ipa}}">/{{current.ipa}}/</text>
+    <button wx:if="{{current.pronunciation}}" size="mini" bindtap="onPlayAudio">🔊</button>
+  </view>
+  <view class="line" wx:if="{{current.partOfSpeech}}">
+    <text class="pos">{{current.partOfSpeech}}</text>
+  </view>
+  <view class="line meaning">{{current.meaning}}</view>
+  <view class="line" wx:if="{{current.example}}">{{current.example}}</view>
+  <view class="line translation" wx:if="{{current.translation}}">{{current.translation}}</view>
+
+  <view class="progress">{{index + 1}} / {{total}}</view>
+
+  <view class="actions">
+    <button size="mini" bindtap="onToggleFavorite">{{isFavorite ? '★ 已收藏' : '☆ 收藏'}}</button>
+  </view>
+
+  <view class="nav">
+    <button bindtap="onPrevious" disabled="{{isFirst}}">上一条</button>
+    <button wx:if="{{!isLast}}" type="primary" bindtap="onNext">下一条</button>
+    <button wx:else type="primary" bindtap="onFinish">完成学习</button>
+  </view>
 </view>

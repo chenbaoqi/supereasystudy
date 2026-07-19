@@ -1,1 +1,13 @@
-/* 登录页样式。UI 规范以 Specification 第 12 章为准（待补写）。 */
+/* 登录页样式（§15：UI 从简） */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 240rpx;
+  gap: 32rpx;
+}
+
+.hint {
+  color: #999999;
+  font-size: 28rpx;
+}

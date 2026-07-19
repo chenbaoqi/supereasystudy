@@ -1,1 +1,41 @@
-/* 测试页样式。UI 规范以 Specification 第 12 章为准（待补写）。 */
+/* 测试页样式（§15：UI 从简） */
+.hint {
+  padding: 120rpx 0;
+  text-align: center;
+  color: #999999;
+  font-size: 28rpx;
+}
+
+.container {
+  padding: 40rpx 30rpx;
+}
+
+.progress {
+  text-align: center;
+  color: #999999;
+  font-size: 26rpx;
+}
+
+.word {
+  margin: 48rpx 0;
+  text-align: center;
+  font-size: 48rpx;
+  font-weight: 600;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  margin-bottom: 40rpx;
+}
+
+.option.correct {
+  background: #07c160;
+  color: #ffffff;
+}
+
+.option.wrong {
+  background: #fa5151;
+  color: #ffffff;
+}

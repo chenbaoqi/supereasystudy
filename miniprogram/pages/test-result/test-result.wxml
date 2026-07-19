@@ -1,3 +1,9 @@
-<view class="page-placeholder">
-  <text>测试结果 · Phase 2</text>
+<view class="container">
+  <view class="accuracy">{{accuracy}}%</view>
+  <view class="label">正确率（{{correct}} / {{total}}）</view>
+  <view class="duration">用时 {{durationText}}</view>
+  <view class="actions">
+    <button type="primary" bindtap="onRestudy">重新学习</button>
+    <button bindtap="onBackToChapter">返回章节</button>
+  </view>
 </view>

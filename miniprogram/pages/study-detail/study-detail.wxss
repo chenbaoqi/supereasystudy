@@ -1,1 +1,68 @@
-/* 学习详情页样式。UI 规范以 Specification 第 12 章为准（待补写）。 */
+/* 学习详情页样式（§15：UI 从简） */
+.hint {
+  padding: 120rpx 0;
+  text-align: center;
+  color: #999999;
+  font-size: 28rpx;
+}
+
+.card {
+  margin: 40rpx 30rpx;
+  padding: 48rpx 32rpx;
+  background: #ffffff;
+  border-radius: 16rpx;
+}
+
+.word-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.word {
+  font-size: 48rpx;
+  font-weight: 600;
+}
+
+.ipa {
+  color: #999999;
+  font-size: 28rpx;
+}
+
+.line {
+  margin-top: 20rpx;
+  font-size: 30rpx;
+  line-height: 1.6;
+}
+
+.pos {
+  color: #999999;
+}
+
+.meaning {
+  font-size: 34rpx;
+}
+
+.translation {
+  color: #666666;
+}
+
+.progress {
+  margin-top: 40rpx;
+  text-align: center;
+  color: #999999;
+  font-size: 26rpx;
+}
+
+.actions {
+  margin-top: 20rpx;
+  display: flex;
+  justify-content: center;
+}
+
+.nav {
+  margin-top: 32rpx;
+  display: flex;
+  justify-content: space-between;
+  gap: 20rpx;
+}

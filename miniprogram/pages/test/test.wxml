@@ -1,3 +1,20 @@
-<view class="page-placeholder">
-  <text>测试 · Phase 2</text>
+<view wx:if="{{loading}}" class="hint">加载中…</view>
+<view wx:elif="{{!question}}" class="hint">暂无题目</view>
+<view wx:else class="container">
+  <view class="progress">{{currentIndex + 1}} / {{total}}</view>
+  <view class="word">{{question.word}}</view>
+  <view class="options">
+    <button
+      wx:for="{{question.options}}"
+      wx:key="*this"
+      class="option {{answered ? (index === question.correctIndex ? 'correct' : (index === selected ? 'wrong' : '')) : ''}}"
+      data-index="{{index}}"
+      bindtap="onSelect"
+    >
+      {{item}}
+    </button>
+  </view>
+  <button wx:if="{{answered}}" type="primary" bindtap="onNext">
+    {{isLastQuestion ? '查看结果' : '下一题'}}
+  </button>
 </view>

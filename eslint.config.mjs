@@ -49,8 +49,11 @@ export default tseslint.config(
     rules: {
       // 宪章红线：禁止 any（TypeScript 章节）
       '@typescript-eslint/no-explicit-any': 'error',
-      // 禁止未使用代码（质量清单）
-      '@typescript-eslint/no-unused-vars': 'error',
+      // 禁止未使用代码（质量清单）；下划线前缀为「刻意未使用」约定（如规格要求保留的入参）
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
     },
   },
 );

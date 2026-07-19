@@ -1,10 +1,13 @@
 # initDatabase — 一次性集合初始化云函数
 
-按 `cloud/database/collections.json` 基线批量创建 14 个集合（Baseline Spec §4）。
-**幂等**：已存在的集合记为 `skipped`，可安全重复执行。
+按 `cloud/database/collections.json` 基线批量创建集合（Baseline Spec §4 + ADR-005 的 favorites）。
+**幂等**：已存在的集合记为 `skipped`，可安全重复执行（新增集合后重跑即可补建）。
 
 ## 使用步骤（微信开发者工具）
 
+0. **前置（仅首次）**：左侧目录树**右键 `cloud/functions` 目录本身**（带云朵图标）
+   →「选择云环境」→ 选中 `cloud1-d8g6b7jctd1a3be1c`。
+   否则上传会报「请在编辑器云函数根目录(cloudfunctionRoot)选择一个云环境」
 1. **部署**：左侧目录树找到 `cloud/functions/initDatabase` → 右键
    →「上传并部署：云端安装依赖（不上传 node_modules）」
 2. **调用**：云开发控制台 →「云函数」→ `initDatabase` →「云端测试」→ 运行

@@ -13,15 +13,12 @@
 | 复杂逻辑（超过 50 行的函数）   | 下沉到 Service 或抽组件   |
 | 单文件超过 300 行              | 立即拆分                  |
 
-## 当前状态（Phase 1）
+## 当前状态（Phase 2 进行中）
 
-已按 Baseline Spec §3 创建 **17 个空页面**（仅路由与布局占位，无任何业务逻辑）：
+- **学习链路 9 页已实现**（Chapter 04 垂直切片，§15 UI 从简）：
+  login / subject / learning-path / textbook / semester / chapter / study-detail / test / test-result
+- `shared/`：四个列表页（subject/learning-path/textbook/semester）的共享脚手架
+  （`createListPage.ts` + `list.wxml` + `list.wxss`），同构页面禁止复制粘贴（DRY）
+- 其余 8 页仍为占位：home / study / practice / mine（TabBar）+ favorite / review / settings / coming-soon
 
-- **TabBar（4）**：`home` 首页、`study` 学习、`practice` 练习、`mine` 我的
-- **普通页（13）**：`login` 登录、`subject` 学科、`learning-path` 学习路径、
-  `textbook` 教材、`semester` 册次、`chapter` 章节、`study-detail` 学习详情、
-  `test` 测试、`test-result` 测试结果、`review` 复习、`favorite` 收藏、
-  `settings` 设置、`coming-soon` Coming Soon
-
-页面流程与 UI 规范以 Specification 第十二章（待补写）为准；占位样式统一为
-`app.wxss` 的 `.page-placeholder`（DRY，UI 规范落地后随占位页移除）。
+页面流程与 UI 规范以 Specification 第十二章（待补写）为准。

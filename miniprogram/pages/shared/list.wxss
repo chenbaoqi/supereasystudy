@@ -1,0 +1,26 @@
+/* 列表页共享样式（§15：UI 从简，正式规范以 Specification 第 12 章为准） */
+.hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20rpx;
+  padding: 120rpx 0;
+  color: #999999;
+  font-size: 28rpx;
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20rpx 30rpx;
+  padding: 32rpx;
+  background: #ffffff;
+  border-radius: 16rpx;
+  font-size: 32rpx;
+}
+
+.tag {
+  color: #999999;
+  font-size: 24rpx;
+}

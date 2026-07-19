@@ -1,3 +1,12 @@
-<view class="page-placeholder">
-  <text>章节 · Phase 2</text>
+<view wx:if="{{loading}}" class="hint">加载中…</view>
+<view wx:elif="{{loadFailed}}" class="hint">
+  <text>加载失败，请检查网络</text>
+  <button size="mini" bindtap="onRetry">重试</button>
 </view>
+<view wx:elif="{{items.length === 0}}" class="hint">暂无数据</view>
+<block wx:else>
+  <view wx:for="{{items}}" wx:key="id" class="list-item" data-id="{{item.id}}" bindtap="onTapItem">
+    <text>{{item.title}}</text>
+    <text class="status">{{item.statusText}}</text>
+  </view>
+</block>

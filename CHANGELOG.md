@@ -4,6 +4,24 @@
 
 ## [Unreleased]
 
+### Added - 2026-07-19（Phase 2：学习链路垂直切片，Chapter 04）
+
+- core 领域类型 ×10：`learningState`（§6 状态机）/ `subject` / `learningPath` / `textbook` / `semester` / `chapter` / `knowledge`（§5 显式字段）/ `learningRecord`（§7）/ `favorite`（ADR-005）/ `user`（+openid）
+- Repository ×8（接口+云实现，wx.cloud 唯一封装点）：subject / learningPath / textbook / semester / chapter / knowledge / learningRecord / favorite；`userRepository` 改为 login 云函数通道
+- Service ×3：`userService`（login / restoreSession / getCurrentUser，登录态唯一写入口）、`learningService`（§10 五方法，依赖注入可单测）、`testService`（B 方案英译中四选一 + 交卷置 TESTED；§10 未列入 LearningService，按单一职责拆分）
+- 9 个切片页面由占位变真实：login / subject / learning-path / textbook / semester / chapter / study-detail / test / test-result（§15 UI 从简）；四列表页共享脚手架 `pages/shared/`（createListPage + list.wxml/wxss，DRY）
+- 云函数 ×2：`login`（openid 建档/恢复，幂等）、`seedDatabase`（A1 示例种子：9 学科 / Vocabulary / 1 教材 / 1 册 / 2 章 / 20 词，幂等可重复）
+- 单元测试 ×13（learningService 7 + testService 6），冒烟测试按约定移除
+- `favorites` 集合（ADR-005，Owner 决策），`collections.json` 与 `initDatabase` 同步
+- `typings/app.d.ts`（IAppOption 全局类型）；入口接线：静默登录 → 学科页 / 登录页（Chapter 04 §3）
+
+### Changed - 2026-07-19（Phase 2 切片配套）
+
+- `app.ts`：入口路由策略（恢复登录态后 reLaunch 学科页 / 登录页）
+- ESLint：`no-unused-vars` 支持下划线前缀「刻意未使用」约定
+- UI 文本中文化：Coming Soon →「敬请期待」（列表标签 + 落地页，Owner 要求）
+- 学科/列表页采用纵向列表布局（非九宫格），Owner 确认保留
+
 ### Added - 2026-07-19（Phase 1：页面路由 / 云初始化 / 骨架）
 
 - 新增文档 `DEVELOPMENT_BASELINE_SPEC.md`（Owner 提供，Mandatory）并据此推进 Phase 1

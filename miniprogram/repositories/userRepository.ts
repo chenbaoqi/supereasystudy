@@ -1,8 +1,16 @@
-// users 集合的数据访问契约（Baseline Spec §1 允许 Repository 骨架；§7 允许创建接口）。
-// 实现要求：封装 wx.cloud、输入输出使用 core 类型（见本目录 README）。
+// users 集合访问（Chapter 04 §5 Login，Owner 确认 E：users 属登录基础设施）。
+// 微信云开发标准模式：客户端不直查 users，统一经 login 云函数
+// （云端 getWXContext 取 openid，身份不可伪造）。
 import type { User } from '../core/user';
 
 export interface UserRepository {
-  // 查找当前登录用户；不存在返回 null
-  findCurrent(): Promise<User | null>;
+  // 调用 login 云函数：按 openid 查用户，不存在则建档；返回完整用户记录
+  fetchCurrent(): Promise<User>;
 }
+
+export const userRepository: UserRepository = {
+  async fetchCurrent() {
+    const res = await wx.cloud.callFunction({ name: 'login' });
+    return res.result as User;
+  },
+};

@@ -1,3 +1,7 @@
-<view class="page-placeholder">
-  <text>登录 · Phase 2</text>
+<view class="container">
+  <view wx:if="{{loading}}" class="hint">正在登录…</view>
+  <block wx:else>
+    <view class="hint" wx:if="{{failed}}">登录失败，请检查网络后重试</view>
+    <button type="primary" bindtap="tryLogin">微信登录</button>
+  </block>
 </view>
