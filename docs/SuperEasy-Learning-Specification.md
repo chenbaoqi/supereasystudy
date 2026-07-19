@@ -1,4 +1,6 @@
-# SuperEasy Learning Design Bible
+# SuperEasy Learning Specification（产品规格说明书）
+
+> 原《SuperEasy Learning Design Bible》，2026-07-19 起统一更名为 SuperEasy-Learning-Specification.md，仍为项目唯一 SSOT。
 
 > Single Source of Truth (SSOT)
 

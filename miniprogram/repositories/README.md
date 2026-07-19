@@ -12,7 +12,7 @@
 - 输入输出必须使用 `core/` 定义的 Interface，禁止返回原始数据库记录结构
 - 每个集合（表）一个 Repository，命名：`XxxRepository.ts`
 
-## 当前状态
+## 当前状态（Phase 1）
 
-Phase 1：本目录仅有本规范。
-数据库集合结构以 Design Bible 第 13 章（待补写）为准，确认前不创建任何 Repository。
+- `userRepository.ts`：users 集合访问**契约**（接口，Baseline Spec §1 允许骨架）。
+  集合基线见 `cloud/database/`（Spec §4）；字段级设计以 Specification 数据模型章节为准。

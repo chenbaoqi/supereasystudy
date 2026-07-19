@@ -5,7 +5,7 @@
   "libVersion": "latest",
   "projectname": "supereasy-learning",
   "miniprogramRoot": "miniprogram/",
-  "cloudfunctionRoot": "cloudfunctions/",
+  "cloudfunctionRoot": "cloud/functions/",
   "setting": {
     "es6": true,
     "enhance": true,

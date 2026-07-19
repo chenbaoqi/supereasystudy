@@ -4,12 +4,12 @@
 
 存放 Learning OS 的核心抽象：**只放接口（Interface）与类型，禁止放业务实现**。
 
-未来包括（以 Design Bible 补齐章节为准）：
+未来包括（以 Specification 补齐章节为准）：
 
 - `Knowledge` 抽象：一切学习内容（单词/公式/古诗…）的统一类型
 - `SubjectPlugin` 契约：学科插件必须实现的接口
 - `LearningTemplate` / `LearningCapability`：学习流程与学习行为的抽象
-- `Game` 统一评分接口：Memory Challenge 各小游戏的扩展点（Bible 第五章）
+- `Game` 统一评分接口：Memory Challenge 各小游戏的扩展点（Specification 第五章）
 
 ## 规则
 
@@ -23,3 +23,8 @@
 
 宪章「Everything is Knowledge」与「Subject Plugin」的物理载体。
 V2 新增学科 = 在 `subjects/` 新增一个实现 `SubjectPlugin` 的目录，**本层不需要任何修改**。
+
+## 当前状态（Phase 1）
+
+- `base.ts`：`BaseEntity`（`_id/createdAt/updatedAt`，Baseline Spec §4 的基础字段单点定义）
+- `user.ts`：`User` 类型（users 集合，字段待 Specification 数据模型章节扩展）

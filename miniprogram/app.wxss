@@ -1,6 +1,17 @@
 /* 全局样式。
-   UI 规范以 Design Bible 第 12 章为准（该章节待补写），
+   UI 规范以 Specification 第 12 章为准（该章节待补写），
    在此之前禁止在此文件中沉淀任何业务组件样式。 */
 page {
   background-color: #f6f7f9;
+}
+
+/* 路由占位页共用样式（Baseline Spec §3 空页面）：17 个占位页复用，
+   UI 规范确认后随占位页一起移除。 */
+.page-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  color: #999999;
+  font-size: 28rpx;
 }

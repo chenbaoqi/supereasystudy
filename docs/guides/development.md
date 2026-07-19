@@ -16,8 +16,8 @@ npm install        # 安装工具链依赖，并自动安装 husky 钩子
 
 然后用微信开发者工具「导入项目」选择本目录（AppID 已写入 `project.config.json`）。
 
-> 当前为 Phase 1 骨架：`app.json` 的 `pages` 为空，开发者工具提示「未找到页面」属**预期**，
-> 页面将在 Bible 第 12 章页面清单确认后开发（见 `docs/decisions/pending-decisions.md` #4）。
+> 当前为 Phase 1 骨架：17 个页面均为 Baseline Spec §3 允许的空占位页（仅路由与布局），
+> 业务逻辑自 Phase 2 起按 Specification 逐步实现。
 
 ## 3. 常用命令
 

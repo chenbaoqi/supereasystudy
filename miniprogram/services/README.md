@@ -4,7 +4,7 @@
 
 所有业务逻辑的唯一归属地。每个 Service 单一职责（禁止 God Class）。
 
-未来 Service 划分（以 Bible 为准）：`UserService` / `LearningService` / `PracticeService` / `ReviewService` / `ProgressService` / `GameService` …
+未来 Service 划分（以 Specification 为准）：`UserService` / `LearningService` / `PracticeService` / `ReviewService` / `ProgressService` / `GameService` …
 
 ## 规则
 
@@ -13,6 +13,7 @@
 - Service 是纯 TS 模块：**禁止引入 WXML/WXSS 相关 API**，保证可被 Vitest 直接单测
 - 函数 ≤ 50 行，超过立即拆分
 
-## 当前状态
+## 当前状态（Phase 1）
 
-Phase 1：本目录仅有本规范，无任何 Service 实现。
+- `userService.ts`：登录框架**契约**（`UserService` 接口，Baseline Spec §1 允许骨架）。
+  微信登录、登录态恢复的业务实现属 Phase 2。

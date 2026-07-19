@@ -18,11 +18,11 @@ Project: SuperEasy Learning Version: 1.0.0
 
 唯一产品文档：
 
-**SuperEasy-Learning-Design-Bible.md**
+**SuperEasy-Learning-Specification.md**
 
 其它历史文档仅供参考。
 
-如有冲突，以 Design Bible 为准。
+如有冲突，以 Specification 为准。
 
 ---
 
@@ -103,7 +103,7 @@ Page → Service → Repository → Cloud
 
 # 7. Database
 
-严格按照 Design Bible。
+严格按照 Specification。
 
 新增字段必须说明原因。
 
@@ -149,7 +149,7 @@ Page → Service → Repository → Cloud
 # 11. Priority Order
 
 1.  OPENCODE_RULES.md
-2.  SuperEasy-Learning-Design-Bible.md
+2.  SuperEasy-Learning-Specification.md
 3.  当前任务(Task)
 4.  项目源码
 

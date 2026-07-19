@@ -1,0 +1,5 @@
+<view class="page-placeholder">
+  <text>我的 · Phase 2</text>
+</view>
+<!-- 管理员入口预留（Baseline Spec §5：V1 采用云开发 CMS，入口仅对管理员渲染，
+     开关集中在 miniprogram/config/features.ts 的 FEATURE_FLAGS.adminEntry） -->

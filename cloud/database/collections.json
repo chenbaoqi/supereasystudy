@@ -1,0 +1,19 @@
+{
+  "description": "数据库集合基线（Baseline Spec §4）。集合名称固定、不允许修改；字段未知时仅保留 _id/createdAt/updatedAt，后续只允许扩展字段。字段级定义以 Specification 数据模型章节（待补写）为准。",
+  "collections": [
+    "users",
+    "subjects",
+    "learning_paths",
+    "stages",
+    "grades",
+    "textbooks",
+    "semesters",
+    "chapters",
+    "knowledge",
+    "learning_records",
+    "practice_records",
+    "review_records",
+    "banners",
+    "notices"
+  ]
+}

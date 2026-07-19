@@ -45,13 +45,14 @@ Project: SuperEasy Learning Version: 1.0 Status: Mandatory
     ├── cloud/
     │   ├── functions/
     │   └── database/
-    ├── packages/
-    │   ├── ui/
-    │   ├── utils/
-    │   └── types/
     └── scripts/
 
 未经确认不得修改。
+
+> 修订记录（2026-07-19，见 ADR-004）：原 §2 中的 `packages/{ui,utils,types}`
+> 经决策不建，避免与 `miniprogram/` 内既有目录形成双份权威来源。
+> 职责映射：ui → `miniprogram/components/`；utils → `miniprogram/utils/`；
+> types → `miniprogram/core/`。决策详情：`docs/decisions/ADR-004-directory-reconciliation.md`。
 
 ---
 

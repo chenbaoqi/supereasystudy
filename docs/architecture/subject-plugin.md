@@ -1,13 +1,13 @@
 # 学科插件体系（Subject Plugin）
 
-> 依据：宪章「Everything is Knowledge」「禁止 if(subject==...)」；Bible 第二章（V2 多学科）。
+> 依据：宪章「Everything is Knowledge」「禁止 if(subject==...)」；Specification 第二章（V2 多学科）。
 
 ## 1. 设计目标
 
 - V1 只有英语，但**任何代码不得假设只有英语**
 - V2 新增数学 = 新增 `subjects/math/` 目录 + 在 `config/` 注册，**已有代码零改动**
 
-## 2. 核心概念（契约草案，最终以 Bible 第 13/14 章为准）
+## 2. 核心概念（契约草案，最终以 Specification 第 13/14 章为准）
 
 ```
 SubjectPlugin（学科插件）
@@ -19,7 +19,7 @@ SubjectPlugin（学科插件）
 
 - **Knowledge**：一切学习内容的统一抽象。学科差异是 Knowledge 的 **type 参数**，不是新系统
 - **LearningTemplate**：学习流程由模板驱动，不是代码写死（Template First）
-- **统一评分**：每个小游戏实现统一 Game 接口，学科只提供数据（Bible 第五章「统一评分体系」）
+- **统一评分**：每个小游戏实现统一 Game 接口，学科只提供数据（Specification 第五章「统一评分体系」）
 
 ## 3. 装配机制
 
@@ -46,4 +46,4 @@ pages/ 通过 PluginRegistry 按 id 取插件 → 渲染对应学习流
 
 ## 5. 当前状态
 
-Phase 1：契约代码尚未编写（等 Bible 数据模型章节）。本文仅固化设计意图与红线。
+Phase 1：契约代码尚未编写（等 Specification 数据模型章节）。本文仅固化设计意图与红线。

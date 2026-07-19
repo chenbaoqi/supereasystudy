@@ -6,7 +6,7 @@
 
 ```
 subjects/
-├── english/      # V1.0 唯一开发的学科（Bible 第二章）
+├── english/      # V1.0 唯一开发的学科（Specification 第二章）
 ├── math/         # V2（Coming Soon）
 └── ...
 ```
@@ -20,4 +20,4 @@ subjects/
 ## 当前状态
 
 Phase 1：本目录仅有本规范，不包含任何学科实现（包括 english）。
-英语插件将在 Bible 数据模型章节（第 13 章）确认后开发。
+英语插件将在 Specification 数据模型章节（第 13 章）确认后开发。

@@ -11,7 +11,7 @@ export default tseslint.config(
       'node_modules/',
       'coverage/',
       'miniprogram/miniprogram_npm/',
-      'cloudfunctions/**/node_modules/',
+      'cloud/functions/**/node_modules/',
     ],
   },
   eslint.configs.recommended,
