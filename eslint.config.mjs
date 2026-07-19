@@ -46,6 +46,16 @@ export default tseslint.config(
     },
   },
   {
+    // 工程脚本运行在本地 Node 环境
+    files: ['scripts/**/*.{js,mjs}'],
+    languageOptions: {
+      globals: {
+        process: 'readonly',
+        console: 'readonly',
+      },
+    },
+  },
+  {
     rules: {
       // 宪章红线：禁止 any（TypeScript 章节）
       '@typescript-eslint/no-explicit-any': 'error',

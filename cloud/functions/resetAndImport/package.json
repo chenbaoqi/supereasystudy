@@ -1,0 +1,10 @@
+{
+  "name": "reset-and-import",
+  "version": "1.0.0",
+  "private": true,
+  "description": "清库 + 教材数据导入（Owner 确认方案 A：内容集合与测试期用户数据全清）",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "^4.0.2"
+  }
+}
