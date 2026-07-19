@@ -3,7 +3,7 @@
 ## 依据
 
 Baseline Spec §4（Mandatory）：必须创建的 Collection 清单见 `collections.json`
-（14 个基线 + 2026-07-19 新增 `favorites`，ADR-005）。
+（14 个基线 + `favorites`（ADR-005）+ `memory_game_records`（ADR-006）= 16 个）。
 
 ## 规则（Spec §4 原文约束）
 

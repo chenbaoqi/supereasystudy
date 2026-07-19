@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "记忆挑战",
+  "usingComponents": {
+    "memory-card": "/components/memory-card/memory-card"
+  }
+}

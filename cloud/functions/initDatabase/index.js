@@ -24,6 +24,7 @@ const COLLECTIONS = [
   'banners',
   'notices',
   'favorites', // 2026-07-19 新增（ADR-005）：与 collections.json 保持同步
+  'memory_game_records', // 2026-07-19 新增（ADR-006）：与 collections.json 保持同步
 ];
 
 exports.main = async () => {

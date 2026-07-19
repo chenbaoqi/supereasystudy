@@ -18,6 +18,8 @@
     "pages/favorite/favorite",
     "pages/settings/settings",
     "pages/statistics/statistics",
+    "pages/memory-game/memory-game",
+    "pages/memory-result/memory-result",
     "pages/coming-soon/coming-soon"
   ],
   "window": {

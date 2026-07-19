@@ -229,6 +229,39 @@ describe('ReviewService.submitReview（§6 + Q3）', () => {
   });
 });
 
+describe('ReviewService.applyGameResults（Chapter 07 §12）', () => {
+  it('错误知识点：无任务则新建（明天到期）；有任务则按「不认识」处理', async () => {
+    const { service, reviewStore } = createFakes();
+    await service.createReviewTasksForChapter(USER, CHAPTER); // k1/k2 已有任务
+    await service.applyGameResults(USER, CHAPTER, ['k1', 'k3'], []); // k3 无任务
+    const k1 = [...reviewStore.values()].find((item) => item.knowledgeId === 'k1');
+    expect(k1?.reviewCount).toBe(1); // 已有任务：次数 +1
+    expect(k1?.masteryLevel).toBe(0); // 阶段不变
+    expect(k1?.nextReviewTime).toEqual(addDays(NOW, 1));
+    const k3 = [...reviewStore.values()].find((item) => item.knowledgeId === 'k3');
+    expect(k3).toBeDefined(); // 无任务：新建
+    expect(k3?.status).toBe('REVIEW_DUE');
+    expect(k3?.nextReviewTime).toEqual(addDays(NOW, 1));
+  });
+
+  it('正确知识点：masteryLevel+1（复用「认识」排期）', async () => {
+    const { service, reviewStore } = createFakes();
+    await service.createReviewTasksForChapter(USER, CHAPTER);
+    await service.applyGameResults(USER, CHAPTER, [], ['k1']);
+    const k1 = [...reviewStore.values()].find((item) => item.knowledgeId === 'k1');
+    expect(k1?.masteryLevel).toBe(1);
+    expect(k1?.nextReviewTime).toEqual(addDays(NOW, 3)); // 阶段 1 = 3 天
+  });
+
+  it('去重：同一知识点重复出现只处理一次', async () => {
+    const { service, reviewStore } = createFakes();
+    await service.createReviewTasksForChapter(USER, CHAPTER);
+    await service.applyGameResults(USER, CHAPTER, ['k1', 'k1'], []);
+    const k1 = [...reviewStore.values()].find((item) => item.knowledgeId === 'k1');
+    expect(k1?.reviewCount).toBe(1); // 只 +1 次
+  });
+});
+
 describe('ReviewService.startReview / finishReview（Q6）', () => {
   // 任务默认排期 +1 天，未到期不会出现在今日待复习：先把记录改为今日到期
   const makeDueToday = (store: Map<string, ReviewRecord>) => {

@@ -1,0 +1,6 @@
+<view
+  class="memory-card {{selected ? 'selected' : ''}} {{wrong ? 'wrong' : ''}} {{eliminated ? 'eliminated' : ''}}"
+  bindtap="onTap"
+>
+  <text class="card-text">{{text}}</text>
+</view>

@@ -69,6 +69,17 @@ Page({
     });
   },
 
+  // 最近学习项的游戏入口（挑战已与学习进度脱钩，入口沿用到首页）
+  onTapRecentGame(event: WechatMiniprogram.TouchEvent) {
+    const { chapterId, semesterId } = event.currentTarget.dataset as {
+      chapterId: string;
+      semesterId: string;
+    };
+    wx.navigateTo({
+      url: `/pages/memory-game/memory-game?chapterId=${chapterId}&semesterId=${semesterId}`,
+    });
+  },
+
   onTapSubject(event: WechatMiniprogram.TouchEvent) {
     // 学科点击统一进「学科入口页」（Owner 2026-07-19 重定位）：开放→学习路径，未开放→敬请期待
     const { id } = event.currentTarget.dataset as { id: string };

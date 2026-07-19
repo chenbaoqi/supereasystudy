@@ -1,0 +1,74 @@
+/* 游戏结果页样式（§15：先闭环） */
+.hint {
+  padding: 120rpx 0;
+  text-align: center;
+  color: #999999;
+  font-size: 28rpx;
+}
+
+.container {
+  padding: 60rpx 30rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.score {
+  font-size: 96rpx;
+  font-weight: 600;
+  color: #07c160;
+}
+
+.meta {
+  margin-top: 12rpx;
+  color: #999999;
+  font-size: 26rpx;
+}
+
+.section {
+  width: 100%;
+  margin-top: 40rpx;
+}
+
+.section-title {
+  font-size: 28rpx;
+  margin-bottom: 16rpx;
+}
+
+.mastered-title {
+  color: #07c160;
+}
+
+.weak-title {
+  color: #fa5151;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.tag {
+  padding: 8rpx 20rpx;
+  border-radius: 24rpx;
+  font-size: 26rpx;
+}
+
+.tag.mastered {
+  background: #e8f9f0;
+  color: #07c160;
+}
+
+.tag.weak {
+  background: #feecec;
+  color: #fa5151;
+}
+
+.actions {
+  margin-top: 64rpx;
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}

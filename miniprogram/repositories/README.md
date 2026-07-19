@@ -26,5 +26,7 @@
 | `favoriteRepository`       | favorites（ADR-005）            | listByUser / add（防重）/ remove                                                |
 | `userRepository`           | users（经 login 云函数）        | fetchCurrent                                                                    |
 | `reviewRepository`         | review_records（Chapter 05 §8） | listDueByUser / createMany / update / countReviewedSince / resetReviewingByUser |
+| `bannerRepository`         | banners（§13.2）                | listOpen（getTempFileURL 换临时 HTTPS）                                         |
+| `memoryGameRepository`     | memory_game_records（ADR-006）  | save / listByUser                                                               |
 
 字段级设计依据：Chapter 04 §5/§7 + `miniprogram/core/`；`cloud/database/collections.json`。

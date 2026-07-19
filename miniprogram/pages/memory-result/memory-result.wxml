@@ -1,0 +1,28 @@
+<view wx:if="{{missing}}" class="hint">没有可显示的游戏结果</view>
+
+<view wx:else class="container">
+  <view class="score">{{score}}</view>
+  <view class="meta">正确 {{correctCount}} · 错误 {{wrongCount}} · 用时 {{duration}} 秒</view>
+
+  <view wx:if="{{mastered.length > 0}}" class="section">
+    <view class="section-title mastered-title">掌握知识</view>
+    <view class="tags">
+      <text wx:for="{{mastered}}" wx:key="_id" class="tag mastered">{{item.word}}</text>
+    </view>
+  </view>
+
+  <view wx:if="{{weak.length > 0}}" class="section">
+    <view class="section-title weak-title">薄弱知识</view>
+    <view class="tags">
+      <text wx:for="{{weak}}" wx:key="_id" class="tag weak">{{item.word}}</text>
+    </view>
+  </view>
+
+  <view class="actions">
+    <button type="primary" bindtap="onReplay">再来一次</button>
+    <button bindtap="onBackToStudy">返回学习</button>
+    <button bindtap="onAddToReview" disabled="{{integrating || integrated}}">
+      {{integrated ? '已加入复习' : '加入复习'}}
+    </button>
+  </view>
+</view>

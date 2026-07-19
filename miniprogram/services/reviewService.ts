@@ -32,6 +32,14 @@ export interface ReviewService {
   finishReview(userId: string): Promise<TodayReviews>;
   // 复习任务创建（§3），幂等：已存在的知识点跳过
   createReviewTasksForChapter(userId: string, chapterId: string): Promise<number>;
+  // 游戏结果集成（Chapter 07 §12）：错误知识点生成/更新复习任务（明天到期），
+  // 正确知识点 masteryLevel+1（复用 submitReview 的排期与 MASTERED 联动，单一写入口）
+  applyGameResults(
+    userId: string,
+    chapterId: string,
+    wrongIds: string[],
+    correctIds: string[],
+  ): Promise<void>;
 }
 
 export interface ReviewServiceDeps {
@@ -144,6 +152,38 @@ export function createReviewService(deps: ReviewServiceDeps): ReviewService {
       // Q6：中断残留的 REVIEWING 归位为 REVIEW_DUE，再返回最新统计
       await deps.reviewRepository.resetReviewingByUser(userId);
       return service.getTodayReviews(userId);
+    },
+
+    async applyGameResults(userId, chapterId, wrongIds, correctIds) {
+      // 错误知识点（去重）：有任务则按「不认识」处理（阶段不变、明天再来、次数+1）；
+      // 无任务则新建（§12「生成 review_records」）
+      for (const knowledgeId of [...new Set(wrongIds)]) {
+        const record = await deps.reviewRepository.findByUserAndKnowledge(userId, knowledgeId);
+        if (record) {
+          await deps.reviewRepository.update(record._id, {
+            reviewCount: record.reviewCount + 1,
+            lastReviewTime: now(),
+            nextReviewTime: addDays(now(), stageDays(0)),
+            status: 'REVIEW_DUE',
+          });
+        } else {
+          await deps.reviewRepository.createMany([
+            {
+              userId,
+              knowledgeId,
+              chapterId,
+              reviewCount: 0,
+              masteryLevel: 0,
+              nextReviewTime: addDays(now(), stageDays(0)),
+              status: 'REVIEW_DUE',
+            },
+          ]);
+        }
+      }
+      // 正确知识点（去重）：复用 submitReview 的「认识」语义（masteryLevel+1/MASTERED 联动）
+      for (const knowledgeId of [...new Set(correctIds)]) {
+        await service.submitReview(userId, knowledgeId, true);
+      }
     },
   };
 

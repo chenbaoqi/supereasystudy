@@ -1,0 +1,31 @@
+<view wx:if="{{poolEmpty}}" class="hint">本章节知识点不足，敬请期待</view>
+
+<block wx:elif="{{status === 'READY'}}">
+  <view class="ready">
+    <view class="title">记忆挑战</view>
+    <view class="rules">点选「单词 + 释义」配对消除，{{remainingSeconds}} 秒内清空 {{totalPairs}} 对</view>
+    <view class="rules">答对 +10 · 连击加成 · 答错 -2 · 提前完成有时间奖励</view>
+    <button type="primary" class="start" bindtap="onStartGame">开始游戏</button>
+  </view>
+</block>
+
+<block wx:else>
+  <view class="hud">
+    <text>⏱ {{remainingSeconds}}s</text>
+    <text>得分 {{score}}</text>
+    <text wx:if="{{streak >= 2}}" class="combo">Combo x{{streak}}</text>
+  </view>
+  <view class="board">
+    <memory-card
+      wx:for="{{cards}}"
+      wx:key="cardId"
+      text="{{item.text}}"
+      index="{{index}}"
+      selected="{{item.selected}}"
+      wrong="{{item.wrong}}"
+      eliminated="{{item.eliminated}}"
+      bind:cardtap="onCardTap"
+    />
+  </view>
+  <button class="exit" bindtap="onExit">退出</button>
+</block>

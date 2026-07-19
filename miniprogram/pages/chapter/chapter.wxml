@@ -7,6 +7,11 @@
 <block wx:else>
   <view wx:for="{{items}}" wx:key="id" class="list-item" data-id="{{item.id}}" bindtap="onTapItem">
     <text>{{item.title}}</text>
-    <text class="status">{{item.statusText}}</text>
+    <view class="item-right">
+      <text class="status">{{item.statusText}}</text>
+      <button class="game-entry" size="mini" data-id="{{item.id}}" catchtap="onTapGame">
+        🎮 挑战
+      </button>
+    </view>
   </view>
 </block>

@@ -65,4 +65,12 @@ Page({
       url: `/pages/study-detail/study-detail?chapterId=${id}&semesterId=${this.options.semesterId}`,
     });
   },
+
+  // Memory Challenge 入口（Chapter 07 §3：章节页面 → 游戏）
+  onTapGame(event: WechatMiniprogram.TouchEvent) {
+    const { id } = event.currentTarget.dataset as { id: string };
+    wx.navigateTo({
+      url: `/pages/memory-game/memory-game?chapterId=${id}&semesterId=${this.options.semesterId}`,
+    });
+  },
 });

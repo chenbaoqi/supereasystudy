@@ -4,6 +4,20 @@
 
 ## [Unreleased]
 
+### Added - 2026-07-19（Phase 3 开门：Memory Challenge，Chapter 07）
+
+- 首款学习游戏「记忆挑战·消消乐」（Owner 定交互）：卡片明面，点选「单词+释义」配对即消除，全部清空获胜（20 卡 4×5 网格，60 秒，退出需确认，切后台自动暂停）
+- 游戏池规则（Owner 2026-07-19 修订）：不再要求「已学习」，挑战可直接进行——当前章节全部知识点（>10 随机抽 10），门槛改为章节知识点 <4
+- 首页「最近学习」列表项新增「🎮 挑战」入口（Owner 提议；游戏入口样式沉入 shared/list.wxss 共享）
+- 计分（Q2）：答对 +10、连击加成 +2×连击数、答错 -2（下限 0）、提前完成时间 Bonus +1/秒
+- 游戏页（READY/PLAYING/PAUSED/FINISHED 状态机）+ 结果页（总分/正确/错误/用时 + 掌握/薄弱分析）
+- 复习集成（§12/Q4）：「加入复习」按钮触发——错误知识点生成/更新复习任务（明天到期）、正确知识点 masteryLevel+1（复用 reviewService 排期）
+- `memory_game_records` 第 16 集合（Chapter 07 §9，ADR-006）；`core/memoryGame.ts` 类型与状态机
+- `memoryGameLogic.ts` 纯逻辑模块（组牌/配对/计分/门槛，全部可单测）+ `memoryGameService` + `memoryGameRepository`
+- `components/memory-card/` 首个通用组件（纯展示翻牌卡）
+- 章节页新增「🎮 挑战」入口（catchtap 不干扰学习跳转）
+- 单测 +11（logic ×10 + applyGameResults ×3 - 去重共享部分）
+
 ### Added - 2026-07-19（规范冻结 + Chapter 06：首页/收藏/统计）
 
 - **Specification 第 12 章（UI/UX 规范）与第 13 章（数据模型）正式冻结**（Owner 逐项确认 Q1-Q7）

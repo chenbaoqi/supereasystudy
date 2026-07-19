@@ -41,7 +41,18 @@
       bindtap="onTapRecent"
     >
       <text>{{item.title}}</text>
-      <text class="tag">继续学习</text>
+      <view class="item-right">
+        <text class="tag">继续学习</text>
+        <button
+          class="game-entry"
+          size="mini"
+          data-chapter-id="{{item.chapterId}}"
+          data-semester-id="{{item.semesterId}}"
+          catchtap="onTapRecentGame"
+        >
+          🎮 挑战
+        </button>
+      </view>
     </view>
   </block>
 

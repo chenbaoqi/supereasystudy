@@ -24,3 +24,16 @@
   color: #999999;
   font-size: 24rpx;
 }
+
+/* 列表项右侧操作区（状态标签 + 游戏入口按钮，章节页/首页共用） */
+.item-right {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.game-entry {
+  margin: 0;
+  font-size: 24rpx;
+  line-height: 2;
+}

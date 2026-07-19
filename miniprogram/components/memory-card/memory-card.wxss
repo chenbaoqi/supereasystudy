@@ -1,0 +1,37 @@
+/* 消消乐卡片样式（§15：先闭环，消除动画后续补） */
+.memory-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 3 / 4;
+  border-radius: 12rpx;
+  padding: 8rpx;
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 2rpx solid #e5e5e5;
+}
+
+.selected {
+  border-color: #07c160;
+  background: #e8f9f0;
+}
+
+.wrong {
+  background: #fa5151;
+  border-color: #fa5151;
+}
+
+.wrong .card-text {
+  color: #ffffff;
+}
+
+/* 消除：占位隐藏（保持网格位置，符合消消乐视觉习惯） */
+.eliminated {
+  visibility: hidden;
+}
+
+.card-text {
+  font-size: 24rpx;
+  text-align: center;
+  word-break: break-all;
+}
