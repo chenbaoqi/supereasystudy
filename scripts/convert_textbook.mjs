@@ -54,19 +54,27 @@ function parseCsv(text) {
 }
 
 function main() {
-  const csvPath = process.argv[2];
-  if (!csvPath) {
-    console.error('用法：node scripts/convert_textbook.mjs <csv路径>');
+  const csvPaths = process.argv.slice(2);
+  if (csvPaths.length === 0) {
+    console.error('用法：node scripts/convert_textbook.mjs <csv路径> [更多csv...]');
+    console.error('多文件按传入顺序合并（册次 order 由文件顺序决定）');
     process.exit(1);
   }
-  const rows = parseCsv(readFileSync(csvPath, 'utf8'));
-  const [header, ...records] = rows;
-  const columns = header.map((item) => item.trim());
-  for (const required of REQUIRED_COLUMNS) {
-    if (!columns.includes(required)) {
-      console.error(`缺少必需列：${required}（必需：${REQUIRED_COLUMNS.join('/')}）`);
-      process.exit(1);
+  // 多文件合并：表头以第一个文件为准，其余文件校验列一致后追加数据行
+  const records = [];
+  let columns = [];
+  for (const csvPath of csvPaths) {
+    const rows = parseCsv(readFileSync(csvPath, 'utf8'));
+    const [header, ...fileRecords] = rows;
+    const fileColumns = header.map((item) => item.trim());
+    for (const required of REQUIRED_COLUMNS) {
+      if (!fileColumns.includes(required)) {
+        console.error(`${csvPath} 缺少必需列：${required}（必需：${REQUIRED_COLUMNS.join('/')}）`);
+        process.exit(1);
+      }
     }
+    if (columns.length === 0) columns = fileColumns;
+    for (const record of fileRecords) records.push(record);
   }
 
   const subjects = new Map(); // name → { name, open, order }
@@ -78,7 +86,9 @@ function main() {
 
   let skipped = 0;
   for (const [lineIndex, record] of records.entries()) {
-    const row = Object.fromEntries(columns.map((col, i) => [col, (record[i] ?? '').trim()]));
+    const row = Object.fromEntries(
+      columns.map((col, index) => [col, (record[index] ?? '').trim()]),
+    );
     if (!row.word || !row.meaning) {
       skipped += 1;
       console.warn(`第 ${lineIndex + 2} 行缺 word/meaning，已跳过`);
