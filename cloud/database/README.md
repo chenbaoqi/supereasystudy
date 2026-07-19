@@ -22,8 +22,11 @@ Baseline Spec §4（Mandatory）：必须创建 14 个 Collection，清单见 `c
 
 ✅ 环境已就绪（2026-07-19 接入真实环境 ID），可随时执行上述步骤。
 
+## 快速创建（推荐）：initDatabase 云函数
+
+已提供一次性云函数 `cloud/functions/initDatabase/`（幂等，已存在则跳过），
+部署与调用步骤见该目录 README。
+
 ## 后续规划
 
-如需在新环境重复建集合，可在 `cloud/functions/` 增加一次性 `initDatabase`
-云函数（`wx-server-sdk` 的 `db.createCollection()` 批量创建），或在 `scripts/`
-补充校验脚本（自动比对线上集合与本清单）。按需开发，不做提前实现。
+可在 `scripts/` 补充校验脚本（自动比对线上集合与本清单）。按需开发，不做提前实现。

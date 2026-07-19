@@ -1,0 +1,10 @@
+{
+  "name": "init-database",
+  "version": "1.0.0",
+  "private": true,
+  "description": "一次性云函数：按数据库基线批量创建 14 个集合（Baseline Spec §4），幂等可重复执行",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "^4.0.2"
+  }
+}

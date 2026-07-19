@@ -29,6 +29,23 @@ export default tseslint.config(
     },
   },
   {
+    // 云函数运行在云端 Node（CJS）环境，console 输出进入云函数日志
+    files: ['cloud/functions/**/*.js'],
+    languageOptions: {
+      globals: {
+        module: 'writable',
+        exports: 'writable',
+        require: 'readonly',
+        process: 'readonly',
+        console: 'readonly',
+      },
+    },
+    rules: {
+      // 云函数为 CJS/Node 运行时，require 是官方标准用法（仅限本目录，小程序端仍禁）
+      '@typescript-eslint/no-require-imports': 'off',
+    },
+  },
+  {
     rules: {
       // 宪章红线：禁止 any（TypeScript 章节）
       '@typescript-eslint/no-explicit-any': 'error',

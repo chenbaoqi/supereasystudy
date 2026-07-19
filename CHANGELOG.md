@@ -17,6 +17,7 @@
 ### Added - 2026-07-19（云环境接入）
 
 - 真实云开发环境 ID `cloud1-d8g6b7jctd1a3be1c` 接入 `config/cloud.ts`（替换占位值 `todo-cloud-env`）；`pending-decisions` #1 转 🟢
+- 一次性云函数 `cloud/functions/initDatabase/`：批量创建 14 个基线集合（幂等可重复，`wx-server-sdk` v4）；ESLint 增加云函数 Node 环境适配
 
 ### Changed - 2026-07-19
 
