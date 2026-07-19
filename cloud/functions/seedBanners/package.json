@@ -1,0 +1,10 @@
+{
+  "name": "seed-banners",
+  "version": "1.0.0",
+  "private": true,
+  "description": "一次性 Banner 记录初始化（幂等）；图片 File ID 绑定当前环境",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "^4.0.2"
+  }
+}

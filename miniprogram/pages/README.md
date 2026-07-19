@@ -16,9 +16,11 @@
 ## 当前状态（Phase 2 进行中）
 
 - **学习链路 9 页已实现**（Chapter 04 垂直切片，§15 UI 从简）：
-  login / subject / learning-path / textbook / semester / chapter / study-detail / test / test-result
+  login / learning-path / textbook / semester / chapter / study-detail / test / test-result
 - **复习 2 页已实现**（Chapter 05）：review（统计+开始）/ review-detail（认识·不认识自评）
+- **首页/收藏/统计已实现**（Chapter 06）：home（Dashboard）/ favorite / statistics
+- **subject = 学科入口页**（Owner 2026-07-19 重定位）：开放学科→学习路径，未开放→敬请期待
 - `shared/`：列表页脚手架（createListPage + list.wxml/wxss）+ 知识卡共享样式（card.wxss）
-- 其余 7 页仍为占位：home / study / practice / mine（TabBar）+ favorite / settings / coming-soon
+- 其余占位：study / practice / settings / coming-soon
 
-页面流程与 UI 规范以 Specification 第十二章（待补写）为准。
+页面流程与 UI 规范以 Specification 第十二章（已冻结）为准。

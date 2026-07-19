@@ -70,11 +70,8 @@ Page({
   },
 
   onTapSubject(event: WechatMiniprogram.TouchEvent) {
-    const { id, open } = event.currentTarget.dataset as { id: string; open: boolean };
-    wx.navigateTo({
-      url: open
-        ? `/pages/learning-path/learning-path?subjectId=${id}`
-        : '/pages/coming-soon/coming-soon',
-    });
+    // 学科点击统一进「学科入口页」（Owner 2026-07-19 重定位）：开放→学习路径，未开放→敬请期待
+    const { id } = event.currentTarget.dataset as { id: string };
+    wx.navigateTo({ url: `/pages/subject/subject?subjectId=${id}` });
   },
 });

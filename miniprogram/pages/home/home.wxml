@@ -52,7 +52,6 @@
     wx:key="_id"
     class="list-item"
     data-id="{{item._id}}"
-    data-open="{{item.open}}"
     bindtap="onTapSubject"
   >
     <text>{{item.name}}</text>

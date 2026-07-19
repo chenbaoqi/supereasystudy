@@ -1,2 +1,8 @@
-<import src="../shared/list.wxml" />
-<template is="list" data="{{ items, loading, loadFailed }}" />
+<view wx:if="{{loading}}" class="hint">加载中…</view>
+<view wx:elif="{{loadFailed}}" class="hint">
+  <text>加载失败，请检查网络</text>
+  <button size="mini" bindtap="onRetry">重试</button>
+</view>
+<view wx:else class="page-placeholder">
+  <text>{{subjectName}} · 敬请期待</text>
+</view>

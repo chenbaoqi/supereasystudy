@@ -18,6 +18,12 @@
 
 - 应用入口与登录成功跳转：学科页 → 首页 Dashboard（home tab 正式启用）
 - 收藏列表按 createdAt 倒序（§12.5）
+- subject 页重定位为「学科入口页」（Owner 2026-07-19）：开放学科→学习路径、未开放→本页敬请期待；首页学科点击统一走该页
+
+### Added - 2026-07-19（Banner 资产）
+
+- `scripts/generate_sample_banners.py` + `scripts/assets/banners/`（2 张 SAMPLE Banner 图，正式图待替换）与上线步骤 README
+- `cloud/functions/seedBanners/`：一次性 Banner 记录初始化（幂等，图片 File ID 绑定当前环境）
 
 ### Added - 2026-07-19（Phase 2：复习系统，Chapter 05）
 
