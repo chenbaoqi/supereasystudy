@@ -1,0 +1,6 @@
+/* 全局样式。
+   UI 规范以 Design Bible 第 12 章为准（该章节待补写），
+   在此之前禁止在此文件中沉淀任何业务组件样式。 */
+page {
+  background-color: #f6f7f9;
+}

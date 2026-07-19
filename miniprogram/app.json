@@ -1,0 +1,11 @@
+{
+  "pages": [],
+  "window": {
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "SuperEasy Learning",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f6f7f9"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

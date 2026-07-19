@@ -1,0 +1,25 @@
+{
+  "description": "SuperEasy Learning（超easy学习）微信小程序",
+  "appid": "wxa72b355ef8b198eb",
+  "compileType": "miniprogram",
+  "libVersion": "latest",
+  "projectname": "supereasy-learning",
+  "miniprogramRoot": "miniprogram/",
+  "cloudfunctionRoot": "cloudfunctions/",
+  "setting": {
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true,
+    "ignoreUploadUnusedFiles": true,
+    "useCompilerPlugins": ["typescript"]
+  },
+  "packOptions": {
+    "ignore": [
+      {
+        "type": "folder",
+        "value": "node_modules"
+      }
+    ]
+  }
+}
