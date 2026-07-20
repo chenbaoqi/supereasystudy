@@ -1,3 +1,6 @@
+<view class="list-item" bindtap="onTapFavorite">
+  <text>我的收藏</text>
+</view>
 <view class="list-item" bindtap="onTapStatistics">
   <text>学习统计</text>
 </view>
