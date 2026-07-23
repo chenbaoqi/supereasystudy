@@ -20,6 +20,8 @@
     "pages/statistics/statistics",
     "pages/memory-game/memory-game",
     "pages/memory-result/memory-result",
+    "pages/game-center/game-center",
+    "pages/speed-choice/speed-choice",
     "pages/coming-soon/coming-soon"
   ],
   "window": {

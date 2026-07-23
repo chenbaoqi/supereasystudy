@@ -1,14 +1,13 @@
 // Memory Challenge 服务（Chapter 07 §10：startGame / submitMatch / finishGame / saveResult）。
 // 计分与卡组规则在 memoryGameLogic（纯模块）；§12 复习集成经 ReviewService 端口注入。
 // 结果页数据（掌握/薄弱明细）驻留本模块内存：结果页仅当局后可达（Q6 口径），不落库。
-import type { Knowledge } from '../core/knowledge';
-import type { MemoryGameRecord } from '../core/memoryGame';
 import { knowledgeRepository, type KnowledgeRepository } from '../repositories/knowledgeRepository';
 import {
   memoryGameRepository,
   type MemoryGameRepository,
 } from '../repositories/memoryGameRepository';
 import { reviewService } from './reviewService';
+import { gameResultStore, type GameResultDetail } from './gameResultStore';
 import {
   buildDeck,
   isMatch,
@@ -26,14 +25,6 @@ export interface GameStart {
   readonly poolIds: string[];
 }
 
-export interface GameResultDetail {
-  readonly record: MemoryGameRecord;
-  readonly mastered: Knowledge[]; // 掌握知识（Q6：配对成功）
-  readonly weak: Knowledge[]; // 薄弱知识（Q6：配错过 + 时间到未配完）
-  readonly correctIds: string[];
-  readonly wrongIds: string[];
-}
-
 export interface MemoryGameServiceDeps {
   knowledgeRepository: KnowledgeRepository;
   memoryGameRepository: MemoryGameRepository;
@@ -49,8 +40,6 @@ export interface MemoryGameServiceDeps {
 }
 
 export function createMemoryGameService(deps: MemoryGameServiceDeps) {
-  let lastResult: GameResultDetail | null = null; // 当局结果（结果页读取）
-
   return {
     // startGame：加载章节全部知识点构建卡组（2026-07-19 修订：与 progress 脱钩，挑战可直接进行）
     async startGame(_userId: string, chapterId: string): Promise<GameStart> {
@@ -88,6 +77,7 @@ export function createMemoryGameService(deps: MemoryGameServiceDeps) {
         correctCount: input.correctIds.length,
         wrongCount: input.wrongIds.length,
         duration,
+        gameType: 'match',
       });
       const knowledgeList = await deps.knowledgeRepository.listByIds(input.poolIds);
       const map = new Map(knowledgeList.map((item) => [item._id, item]));
@@ -100,30 +90,26 @@ export function createMemoryGameService(deps: MemoryGameServiceDeps) {
       const unfinishedIds = input.poolIds.filter(
         (id) => !input.correctIds.includes(id) && !input.wrongIds.includes(id),
       );
-      lastResult = {
+      const detail: GameResultDetail = {
+        gameType: 'match',
         record,
         mastered: pick(input.correctIds),
         weak: pick([...input.wrongIds, ...unfinishedIds]),
         correctIds: input.correctIds,
         wrongIds: input.wrongIds,
+        replayUrl: '/pages/memory-game/memory-game',
+        // 加入复习（Q4 确认：按钮触发 §12 集成）
+        integrateToReview: async () => {
+          await deps.reviewResultApplier.applyGameResults(
+            input.userId,
+            input.chapterId,
+            input.wrongIds,
+            input.correctIds,
+          );
+        },
       };
-      return lastResult;
-    },
-
-    // §10 saveResult 与 finishGame 合并语义已在上方；独立保留便于后续拆分
-    getLastResult(): GameResultDetail | null {
-      return lastResult;
-    },
-
-    // 加入复习（Q4 确认：按钮触发 §12 集成）
-    async integrateToReview(userId: string, chapterId: string): Promise<void> {
-      if (!lastResult) return;
-      await deps.reviewResultApplier.applyGameResults(
-        userId,
-        chapterId,
-        lastResult.wrongIds,
-        lastResult.correctIds,
-      );
+      gameResultStore.set(detail);
+      return detail;
     },
   };
 }

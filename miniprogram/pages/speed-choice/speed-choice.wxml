@@ -1,0 +1,34 @@
+<view wx:if="{{poolEmpty}}" class="hint">本章节知识点不足，敬请期待</view>
+
+<block wx:elif="{{status === 'READY'}}">
+  <view class="ready">
+    <view class="title">极速选择</view>
+    <view class="rules">每题 {{totalSeconds}} 秒快答，共 {{total}} 题</view>
+    <view class="rules">答对 +10 + 速度奖励 · 连击加成 · 答错/超时 -2</view>
+    <button type="primary" class="start" bindtap="onStartGame">开始游戏</button>
+  </view>
+</block>
+
+<block wx:else>
+  <view class="hud">
+    <text>第 {{currentIndex + 1}} / {{total}} 题</text>
+    <text>得分 {{score}}</text>
+    <text wx:if="{{streak >= 2}}" class="combo">Combo x{{streak}}</text>
+  </view>
+  <view class="timer-bar">
+    <view class="timer-fill {{remaining <= 1.5 ? 'urgent' : ''}}" style="width: {{remaining / totalSeconds * 100}}%"></view>
+  </view>
+  <view class="word">{{question.word}}</view>
+  <view class="options">
+    <button
+      wx:for="{{question.options}}"
+      wx:key="*this"
+      class="option {{answered ? (index === question.correctIndex ? 'correct' : (index === selected ? 'wrong' : '')) : ''}}"
+      data-index="{{index}}"
+      bindtap="onSelect"
+    >
+      {{item}}
+    </button>
+  </view>
+  <button class="exit" bindtap="onExit">退出</button>
+</block>

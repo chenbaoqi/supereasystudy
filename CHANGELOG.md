@@ -4,6 +4,15 @@
 
 ## [Unreleased]
 
+### Added - 2026-07-20（Chapter 08：极速选择 + 游戏中心）
+
+- 第二款学习游戏「极速选择」：英译中四选一快答，每题 5 秒独立倒计时（超时判错自动下一题），答对 = +10 + 速度奖励（剩余秒×2）+ 连击加成
+- 游戏中心页（Q1）：章节/首页 🎮 入口统一进游戏中心，承载系列游戏（消消乐 + 极速选择）
+- 结果统一页泛化（Q2）：`gameResultStore` 共享通道，memory-result 服务全系列（含平均反应时间展示、各游戏自带 replayUrl）
+- `memory_game_records` 新增 `gameType`/`avgResponseMs` 字段（Chapter 08 §9，历史记录默认 'match'）
+- `speedChoiceService` + `config/gameRules.ts`（Q3 参数集中）+ `quizLogic`（四选一生成器抽取，testService 与游戏共用，DRY）
+- 单测 +6（scoreForSpeedAnswer 计分 / startGame 门槛与题目 / finishGame 记录字段与集成闭包）
+
 ### Added - 2026-07-19（Phase 3 开门：Memory Challenge，Chapter 07）
 
 - 首款学习游戏「记忆挑战·消消乐」（Owner 定交互）：卡片明面，点选「单词+释义」配对即消除，全部清空获胜（20 卡 4×5 网格，60 秒，退出需确认，切后台自动暂停）

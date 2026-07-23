@@ -9,6 +9,8 @@ export interface MemoryGameRecordCreate {
   readonly correctCount: number;
   readonly wrongCount: number;
   readonly duration: number;
+  readonly gameType: 'match' | 'speed'; // Chapter 08 §9：游戏模式
+  readonly avgResponseMs?: number; // 平均反应时间（极速选择）
 }
 
 export interface MemoryGameRepository {

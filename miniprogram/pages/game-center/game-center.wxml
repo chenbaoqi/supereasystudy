@@ -1,0 +1,10 @@
+<view class="game-list">
+  <view class="game-card" data-url="/pages/memory-game/memory-game" bindtap="onTapGame">
+    <view class="game-name">消消乐</view>
+    <view class="game-desc">点选「单词 + 释义」配对消除，60 秒全部清空</view>
+  </view>
+  <view class="game-card" data-url="/pages/speed-choice/speed-choice" bindtap="onTapGame">
+    <view class="game-name">极速选择</view>
+    <view class="game-desc">每题 5 秒快答，速度就是分数</view>
+  </view>
+</view>

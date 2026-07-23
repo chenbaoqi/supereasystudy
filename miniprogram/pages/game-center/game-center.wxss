@@ -1,0 +1,24 @@
+/* 游戏中心样式（§15 UI 从简） */
+.game-list {
+  padding: 30rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+.game-card {
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 40rpx 32rpx;
+}
+
+.game-name {
+  font-size: 36rpx;
+  font-weight: 600;
+}
+
+.game-desc {
+  margin-top: 12rpx;
+  color: #999999;
+  font-size: 26rpx;
+}

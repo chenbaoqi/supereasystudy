@@ -1,0 +1,88 @@
+/* 极速选择页样式（§15：先闭环） */
+.hint {
+  padding: 120rpx 0;
+  text-align: center;
+  color: #999999;
+  font-size: 28rpx;
+}
+
+.ready {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 160rpx;
+  gap: 24rpx;
+}
+
+.title {
+  font-size: 44rpx;
+  font-weight: 600;
+}
+
+.rules {
+  color: #999999;
+  font-size: 26rpx;
+}
+
+.start {
+  margin-top: 48rpx;
+  width: 60%;
+}
+
+.hud {
+  display: flex;
+  justify-content: space-around;
+  padding: 24rpx 0;
+  font-size: 30rpx;
+}
+
+.combo {
+  color: #07c160;
+  font-weight: 600;
+}
+
+.timer-bar {
+  margin: 0 30rpx;
+  height: 12rpx;
+  background: #eeeeee;
+  border-radius: 6rpx;
+  overflow: hidden;
+}
+
+.timer-fill {
+  height: 100%;
+  background: #07c160;
+  transition: width 0.2s linear;
+}
+
+.timer-fill.urgent {
+  background: #fa5151;
+}
+
+.word {
+  margin: 48rpx 0;
+  text-align: center;
+  font-size: 48rpx;
+  font-weight: 600;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  padding: 0 30rpx;
+}
+
+.option.correct {
+  background: #07c160;
+  color: #ffffff;
+}
+
+.option.wrong {
+  background: #fa5151;
+  color: #ffffff;
+}
+
+.exit {
+  margin: 40rpx 30rpx;
+}

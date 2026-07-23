@@ -69,14 +69,14 @@ Page({
     });
   },
 
-  // 最近学习项的游戏入口（挑战已与学习进度脱钩，入口沿用到首页）
+  // 最近学习项的游戏中心入口（Chapter 08 §16 Q1）
   onTapRecentGame(event: WechatMiniprogram.TouchEvent) {
     const { chapterId, semesterId } = event.currentTarget.dataset as {
       chapterId: string;
       semesterId: string;
     };
     wx.navigateTo({
-      url: `/pages/memory-game/memory-game?chapterId=${chapterId}&semesterId=${semesterId}`,
+      url: `/pages/game-center/game-center?chapterId=${chapterId}&semesterId=${semesterId}`,
     });
   },
 

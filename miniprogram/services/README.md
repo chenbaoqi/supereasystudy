@@ -20,3 +20,4 @@
 - `reviewService.ts`：Chapter 05 §9 四方法 + §3 复习任务创建；排期算法集中（1/3/7/15/30 天，`config/reviewPlan.ts` 可替换）；Chapter 07 §12 游戏结果集成（applyGameResults）
 - `statisticsService.ts` / `favoriteService.ts` / `homeService.ts`：Chapter 06 统计/收藏/首页聚合
 - `memoryGameService.ts` + `memoryGameLogic.ts`：Chapter 07 游戏（逻辑纯模块独立可测）
+- `speedChoiceService.ts`：Chapter 08 极速选择；`quizLogic.ts`（四选一生成器，testService 与游戏共用）；`gameResultStore.ts`（全系列游戏结果共享通道）

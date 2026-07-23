@@ -1,8 +1,7 @@
-// 游戏结果页（Chapter 07 §8：总分/正确/错误/用时 + 掌握/薄弱分析 + 三按钮）。
-// 明细数据来自当局内存结果（结果页仅当局后可达，getLastResult 注释有述）。
+// 游戏结果统一页（Chapter 07 §8 / Chapter 08 §10 泛化：Memory Challenge 全系列共用）。
+// 数据源为 gameResultStore（当局登记，仅当局后可达）。
 import type { Knowledge } from '../../core/knowledge';
-import { memoryGameService } from '../../services/memoryGameService';
-import { userService } from '../../services/userService';
+import { gameResultStore } from '../../services/gameResultStore';
 
 Page({
   data: {
@@ -11,6 +10,7 @@ Page({
     correctCount: 0,
     wrongCount: 0,
     duration: 0,
+    avgResponseText: '', // 平均反应时间（秒，TS 层格式化；WXML 不支持 toFixed 等方法调用）
     mastered: [] as Knowledge[],
     weak: [] as Knowledge[],
     integrating: false,
@@ -19,20 +19,23 @@ Page({
 
   chapterId: '',
   semesterId: '',
+  replayUrl: '',
 
   onLoad(query: Record<string, string>) {
     this.chapterId = query.chapterId ?? '';
     this.semesterId = query.semesterId ?? '';
-    const detail = memoryGameService.getLastResult();
+    const detail = gameResultStore.get();
     if (!detail) {
       this.setData({ missing: true });
       return;
     }
+    this.replayUrl = detail.replayUrl;
     this.setData({
       score: detail.record.score,
       correctCount: detail.record.correctCount,
       wrongCount: detail.record.wrongCount,
       duration: detail.record.duration,
+      avgResponseText: detail.avgResponseMs != null ? (detail.avgResponseMs / 1000).toFixed(1) : '',
       mastered: detail.mastered,
       weak: detail.weak,
     });
@@ -40,7 +43,7 @@ Page({
 
   onReplay() {
     wx.redirectTo({
-      url: `/pages/memory-game/memory-game?chapterId=${this.chapterId}&semesterId=${this.semesterId}`,
+      url: `${this.replayUrl}?chapterId=${this.chapterId}&semesterId=${this.semesterId}`,
     });
   },
 
@@ -49,11 +52,11 @@ Page({
   },
 
   async onAddToReview() {
-    // §8/§12（Q4：按钮触发复习集成）：错误进复习、正确 masteryLevel+1
-    const user = userService.getCurrentUser();
-    if (!user || this.data.integrating || this.data.integrated) return;
+    // §12 集成（Q4：按钮触发）：错误进复习、正确 masteryLevel+1
+    const detail = gameResultStore.get();
+    if (!detail || this.data.integrating || this.data.integrated) return;
     this.setData({ integrating: true });
-    await memoryGameService.integrateToReview(user._id, this.chapterId);
+    await detail.integrateToReview();
     this.setData({ integrating: false, integrated: true });
     wx.showToast({ title: '已加入复习', icon: 'success' });
     setTimeout(() => {

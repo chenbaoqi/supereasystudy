@@ -3,6 +3,7 @@
 <view wx:else class="container">
   <view class="score">{{score}}</view>
   <view class="meta">正确 {{correctCount}} · 错误 {{wrongCount}} · 用时 {{duration}} 秒</view>
+  <view wx:if="{{avgResponseText}}" class="meta">平均反应 {{avgResponseText}} 秒</view>
 
   <view wx:if="{{mastered.length > 0}}" class="section">
     <view class="section-title mastered-title">掌握知识</view>

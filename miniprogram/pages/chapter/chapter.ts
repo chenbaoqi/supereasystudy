@@ -66,11 +66,11 @@ Page({
     });
   },
 
-  // Memory Challenge 入口（Chapter 07 §3：章节页面 → 游戏）
+  // 游戏中心入口（Chapter 08 §16 Q1：章节 🎮 → 游戏中心选游戏）
   onTapGame(event: WechatMiniprogram.TouchEvent) {
     const { id } = event.currentTarget.dataset as { id: string };
     wx.navigateTo({
-      url: `/pages/memory-game/memory-game?chapterId=${id}&semesterId=${this.options.semesterId}`,
+      url: `/pages/game-center/game-center?chapterId=${id}&semesterId=${this.options.semesterId}`,
     });
   },
 });
