@@ -7,4 +7,8 @@
     <view class="game-name">极速选择</view>
     <view class="game-desc">每题 5 秒快答，速度就是分数</view>
   </view>
+  <view class="game-card" data-url="/pages/listen-find/listen-find" bindtap="onTapGame">
+    <view class="game-name">听音找词</view>
+    <view class="game-desc">听发音选单词，训练听力辨识</view>
+  </view>
 </view>

@@ -4,7 +4,6 @@
   <view class="word-row">
     <text class="word">{{current.word}}</text>
     <text class="ipa" wx:if="{{current.ipa}}">/{{current.ipa}}/</text>
-    <button wx:if="{{current.pronunciation}}" size="mini" bindtap="onPlayAudio">🔊</button>
   </view>
   <view class="line" wx:if="{{current.partOfSpeech}}">
     <text class="pos">{{current.partOfSpeech}}</text>
@@ -17,6 +16,8 @@
 
   <view class="actions">
     <button size="mini" bindtap="onToggleFavorite">{{isFavorite ? '★ 已收藏' : '☆ 收藏'}}</button>
+    <!-- 发音常态化（TTS，Owner 2026-07-20 修订）；拼读因 TTS 准确率问题已移除 -->
+    <button size="mini" bindtap="onPlayWord">🔊 发音</button>
   </view>
 
   <view class="nav">

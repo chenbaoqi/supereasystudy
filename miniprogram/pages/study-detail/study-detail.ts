@@ -4,6 +4,7 @@ import type { Knowledge } from '../../core/knowledge';
 import type { LearningSession } from '../../services/learningService';
 import { favoriteRepository } from '../../repositories/favoriteRepository';
 import { learningService } from '../../services/learningService';
+import { pronunciationService } from '../../services/pronunciationService';
 import { userService } from '../../services/userService';
 
 Page({
@@ -97,12 +98,34 @@ Page({
     }
   },
 
-  onPlayAudio() {
-    // 发音（§5 Pronunciation）：数据无音频时按钮按 §8 隐藏（C 确认）
-    const url = this.data.current?.pronunciation;
-    if (!url) return;
-    const audio = wx.createInnerAudioContext();
-    audio.src = url;
-    audio.play();
+  audio: null as WechatMiniprogram.InnerAudioContext | null,
+
+  // 发音（Owner 2026-07-20 修订：TTS 常态化，不再依赖数据自带音频；重播不限）
+  async onPlayWord() {
+    const current = this.data.current;
+    if (!current) return;
+    await this.playSource(
+      () => pronunciationService.speak(current.word, current.pronunciation),
+      '音频源不可用，请检查网络或插件配置',
+    );
+  },
+
+  async playSource(loadSrc: () => Promise<string>, errorMessage: string) {
+    try {
+      const src = await loadSrc();
+      if (!this.audio) this.audio = wx.createInnerAudioContext();
+      this.audio.stop();
+      this.audio.src = src;
+      this.audio.play();
+    } catch (error) {
+      console.error(errorMessage, error);
+      wx.showToast({ title: errorMessage, icon: 'none' });
+    }
+  },
+
+  onUnload() {
+    this.audio?.stop();
+    this.audio?.destroy();
+    this.audio = null;
   },
 });

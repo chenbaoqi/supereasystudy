@@ -21,3 +21,4 @@
 - `statisticsService.ts` / `favoriteService.ts` / `homeService.ts`：Chapter 06 统计/收藏/首页聚合
 - `memoryGameService.ts` + `memoryGameLogic.ts`：Chapter 07 游戏（逻辑纯模块独立可测）
 - `speedChoiceService.ts`：Chapter 08 极速选择；`quizLogic.ts`（四选一生成器，testService 与游戏共用）；`gameResultStore.ts`（全系列游戏结果共享通道）
+- `listenFindService.ts`：Chapter 09 听音找词；`pronunciationService.ts`（发音源单点封装：插件 TTS / 未来预录制资产）

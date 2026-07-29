@@ -20,4 +20,5 @@
   margin-top: 20rpx;
   display: flex;
   justify-content: center;
+  gap: 20rpx;
 }

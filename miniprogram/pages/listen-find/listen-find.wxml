@@ -1,0 +1,46 @@
+<view wx:if="{{poolEmpty}}" class="hint">本章节知识点不足，敬请期待</view>
+
+<block wx:elif="{{status === 'READY'}}">
+  <view class="ready">
+    <view class="title">听音找词</view>
+    <view class="rules">每题 {{totalSeconds}} 秒 · 答对 +10 · 连击加成 · 答错/超时 -2</view>
+    <view class="rules">选择一种形式开始（Owner 2026-07-20 双模式）</view>
+    <button type="primary" class="start" data-mode="word" bindtap="onStartGame">
+      听音选词（选英文）
+    </button>
+    <button type="primary" class="start" data-mode="meaning" bindtap="onStartGame">
+      听音选义（选中文）
+    </button>
+  </view>
+</block>
+
+<block wx:else>
+  <view class="hud">
+    <text>第 {{currentIndex + 1}} / {{total}} 题</text>
+    <text>得分 {{score}}</text>
+    <text wx:if="{{streak >= 2}}" class="combo">Combo x{{streak}}</text>
+  </view>
+  <view class="timer-bar">
+    <view class="timer-fill {{remaining <= 2 ? 'urgent' : ''}}" style="width: {{remaining / totalSeconds * 100}}%"></view>
+  </view>
+
+  <view class="speaker-wrap">
+    <button class="speaker" bindtap="onReplay" disabled="{{speaking}}">
+      {{speaking ? '合成中…' : '🔊'}}
+    </button>
+    <view class="speaker-hint">点击可重复播放</view>
+  </view>
+
+  <view class="options">
+    <button
+      wx:for="{{question.options}}"
+      wx:key="*this"
+      class="option {{answered ? (index === question.correctIndex ? 'correct' : (index === selected ? 'wrong' : '')) : ''}}"
+      data-index="{{index}}"
+      bindtap="onSelect"
+    >
+      {{item}}
+    </button>
+  </view>
+  <button class="exit" bindtap="onExit">退出</button>
+</block>

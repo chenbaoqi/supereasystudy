@@ -20,20 +20,33 @@
   font-size: 32rpx;
 }
 
+/* 标题侧：允许收缩换行（长单元名如 Unit 5 The colourful world），
+   防止挤压右侧操作区导致按钮换行变形 */
+.list-item > text:first-child {
+  flex: 1;
+  min-width: 0;
+}
+
 .tag {
   color: #999999;
   font-size: 24rpx;
+  flex-shrink: 0;
 }
 
-/* 列表项右侧操作区（状态标签 + 游戏入口按钮，章节页/首页共用） */
+/* 列表项右侧操作区（状态标签 + 游戏入口按钮，章节页/首页共用）：
+   不可收缩、不可换行，按钮永远保持一行 */
 .item-right {
   display: flex;
   align-items: center;
   gap: 16rpx;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .game-entry {
   margin: 0;
   font-size: 24rpx;
   line-height: 2;
+  white-space: nowrap;
+  flex-shrink: 0;
 }

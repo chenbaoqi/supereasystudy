@@ -22,6 +22,7 @@
     "pages/memory-result/memory-result",
     "pages/game-center/game-center",
     "pages/speed-choice/speed-choice",
+    "pages/listen-find/listen-find",
     "pages/coming-soon/coming-soon"
   ],
   "window": {
@@ -54,5 +55,11 @@
     ]
   },
   "style": "v2",
-  "sitemapLocation": "sitemap.json"
+  "sitemapLocation": "sitemap.json",
+  "plugins": {
+    "WechatSI": {
+      "version": "0.3.5",
+      "provider": "wx069ba97219f66d99"
+    }
+  }
 }
