@@ -1,5 +1,5 @@
-// 小蜜蜂射击游戏页（Chapter 15：Canvas 引擎 + 虚拟键盘）。
-// Canvas 2D 即时渲染 + requestAnimationFrame 游戏循环。
+// 小蜜蜂射击游戏页（Chapter 15：Canvas 2D 引擎 + 26 键虚拟键盘）。
+// Canvas 初始化在开始游戏时执行（wx:if 块进入 DOM 后），非 onReady。
 import { SHOOTER_DIFFICULTY, type ShooterDifficulty } from '../../config/gameRules';
 import type { Knowledge } from '../../core/knowledge';
 import { spaceShooterService } from '../../services/spaceShooterService';
@@ -19,8 +19,8 @@ import { userService } from '../../services/userService';
 
 type GameStatus = 'READY' | 'PLAYING' | 'PAUSED' | 'FINISHED';
 const CANVAS_W = 375;
-const CANVAS_H = 600;
-const AIRPLANE_Y = CANVAS_H - 60;
+const CANVAS_H = 520;
+const AIRPLANE_Y = CANVAS_H - 50;
 
 Page({
   data: {
@@ -30,40 +30,28 @@ Page({
     inputText: '',
     score: 0,
     streak: 0,
-    hint: '',
   },
 
   chapterId: '',
   semesterId: '',
   userId: '',
   pool: [] as Knowledge[],
-  segment: null as WechatMiniprogram.Canvas | null,
+  segment: null as unknown as {
+    requestAnimationFrame: (cb: (ts: number) => void) => number;
+    cancelAnimationFrame: (id: number) => void;
+  } | null,
   ctx: null as WechatMiniprogram.CanvasRenderingContext.CanvasRenderingContext2D | null,
   engine: null as EngineState | null,
   spawnQueue: [] as Knowledge[],
   lastSpawn: 0,
   startTime: 0,
   rafId: 0,
-  frameCount: 0,
   lastTick: 0,
+  dpr: 2,
 
   onLoad(query: Record<string, string>) {
     this.chapterId = query.chapterId ?? '';
     this.semesterId = query.semesterId ?? '';
-  },
-
-  // Canvas 2D 初始化（必须在 onReady 中通过 SelectorQuery 拿 node）
-  onReady() {
-    wx.createSelectorQuery()
-      .select('#gameCanvas')
-      .fields({ node: true })
-      .exec((res) => {
-        const canvas = res[0]?.node as WechatMiniprogram.Canvas | undefined;
-        if (!canvas) return;
-        canvas.width = CANVAS_W * 2; // 物理像素（Retina）
-        canvas.height = CANVAS_H * 2;
-        this.segment = canvas;
-      });
   },
 
   async onStart() {
@@ -97,55 +85,76 @@ Page({
     this.lastTick = 0;
     this.setData({ status: 'PLAYING', score: 0, streak: 0, inputText: '' });
     shooterAudio.startBgm();
-    this.startLoop();
     wx.enableAlertBeforeUnload({ message: '本局进行中，退出将不保存' });
+    // Canvas 初始化（必须在 DOM 出现后——wx:if 条件块）
+    await new Promise<void>((resolve) => {
+      wx.createSelectorQuery()
+        .select('#gameCanvas')
+        .fields({ node: true, size: true })
+        .exec((res) => {
+          const canvas = res[0]?.node as Record<string, unknown> | undefined;
+          if (!canvas) {
+            console.error('Canvas node not found');
+            resolve();
+            return;
+          }
+          this.dpr = wx.getSystemInfoSync().pixelRatio || 2;
+          (canvas as { width: number; height: number }).width = CANVAS_W * this.dpr;
+          (canvas as { width: number; height: number }).height = CANVAS_H * this.dpr;
+          this.segment = canvas as unknown as typeof this.segment;
+          resolve();
+        });
+    });
+    if (!this.segment) {
+      console.error('Canvas init failed');
+      return;
+    }
+    const ctx = (this.segment as unknown as { getContext(type: string): unknown }).getContext(
+      '2d',
+    ) as WechatMiniprogram.CanvasRenderingContext.CanvasRenderingContext2D;
+    if (!ctx) {
+      console.error('Canvas context failed');
+      return;
+    }
+    this.ctx = ctx;
+    this.startLoop();
   },
 
   startLoop() {
-    const canvas = this.segment;
-    if (!canvas) return;
-    const ctx = canvas.getContext(
-      '2d',
-    ) as WechatMiniprogram.CanvasRenderingContext.CanvasRenderingContext2D;
-    if (!ctx) return;
-    this.ctx = ctx;
+    if (!this.segment || !this.ctx) return;
     const loop = (ts: number) => {
       if (this.data.status !== 'PLAYING') return;
       if (!this.lastTick) this.lastTick = ts;
-      const dt = Math.min((ts - this.lastTick) / 1000, 0.1); // cap dt
+      const dt = Math.min((ts - this.lastTick) / 1000, 0.1);
       this.lastTick = ts;
       this.engine = this.update(dt);
       this.render();
-      this.rafId = (
-        canvas as unknown as { requestAnimationFrame: (cb: (ts: number) => void) => number }
-      ).requestAnimationFrame(loop);
+      this.rafId = this.segment!.requestAnimationFrame(loop);
     };
-    this.rafId = (
-      this.segment as unknown as { requestAnimationFrame: (cb: (ts: number) => void) => number }
-    ).requestAnimationFrame(loop);
+    this.rafId = this.segment!.requestAnimationFrame(loop);
   },
 
   update(dt: number): EngineState {
     let state = this.engine!;
     const diff = this.data.difficulty;
     const cfg = SHOOTER_DIFFICULTY[diff];
-    // 计时刷敌（优先用 spawnQueue，空了从 pool 循环）
-    this.frameCount++;
     const now = Date.now();
-    if (
-      now - this.lastSpawn > cfg.spawnIntervalMs &&
-      state.enemies.filter((e) => e.active).length < cfg.maxEnemies
-    ) {
+    const active = state.enemies.filter((e) => e.active).length;
+    if (now - this.lastSpawn > cfg.spawnIntervalMs && active < cfg.maxEnemies) {
       if (this.spawnQueue.length === 0)
         this.spawnQueue = [...this.pool].sort(() => Math.random() - 0.5);
-      const speed = CANVAS_H / cfg.fallSeconds;
-      state = spawnEnemy(state, this.spawnQueue.splice(0, 1), CANVAS_W, Math.random, speed);
+      state = spawnEnemy(
+        state,
+        this.spawnQueue.splice(0, 1),
+        CANVAS_W,
+        Math.random,
+        CANVAS_H / cfg.fallSeconds,
+      );
       this.lastSpawn = now;
     }
     state = tickEnemies(state, CANVAS_H, dt);
     state = checkMissed(state, AIRPLANE_Y);
-    // 有方块抵达飞机层 → Game Over
-    if (state.missIds.length > 0) {
+    if (state.missIds.length > (this.engine?.missIds.length ?? 0)) {
       shooterAudio.playSfx('miss');
       shooterAudio.stopBgm();
       void this.finish();
@@ -160,21 +169,47 @@ Page({
     const ctx = this.ctx;
     const st = this.engine;
     if (!ctx || !st) return;
+    const s = this.dpr; // 缩放因子（物理/逻辑像素）
+    // 清屏：覆盖逻辑像素区域（物理画布是 logW*s × logH*s）
+    ctx.save();
+    ctx.scale(s, s);
     ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
-    // 敌机方块
+    // 天空背景
+    ctx.fillStyle = '#1a1a2e';
+    ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+    // 星星点缀
+    ctx.fillStyle = 'rgba(255,255,255,0.3)';
+    for (let i = 0; i <= 20; i++) {
+      ctx.fillRect((i * 47) % CANVAS_W, (i * 83 + st.score * 2) % CANVAS_H, 2, 2);
+    }
+    // 敌机方块（红色，白字中文）
     for (const enemy of st.enemies) {
       if (!enemy.active) continue;
-      ctx.fillStyle = '#fa5151';
+      ctx.fillStyle = '#e94560';
       ctx.fillRect(enemy.x, enemy.y, enemy.w, enemy.h);
       ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 22px sans-serif';
+      ctx.font = 'bold 20px sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText(enemy.meaning, enemy.x + enemy.w / 2, enemy.y + enemy.h / 2 + 7);
+      ctx.textBaseline = 'middle';
+      ctx.fillText(enemy.meaning, enemy.x + enemy.w / 2, enemy.y + enemy.h / 2);
     }
+    // 飞机（三角形，绿色，居中靠下）
+    ctx.fillStyle = '#0f3460';
+    ctx.strokeStyle = '#00ff88';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    const ax = CANVAS_W / 2;
+    const ay = AIRPLANE_Y;
+    ctx.moveTo(ax, ay - 24);
+    ctx.lineTo(ax - 18, ay + 8);
+    ctx.lineTo(ax + 18, ay + 8);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
     // 子弹
     for (const bullet of st.bullets) {
-      ctx.fillStyle = '#07c160';
-      ctx.fillRect(bullet.x - 3, bullet.y - 12, 6, 12);
+      ctx.fillStyle = '#00ff88';
+      ctx.fillRect(bullet.x - 2, bullet.y - 10, 4, 10);
     }
     // 粒子
     for (const p of st.particles) {
@@ -184,19 +219,17 @@ Page({
       ctx.arc(p.x, p.y, 4 * alpha, 0, Math.PI * 2);
       ctx.fill();
     }
-    // 飞机
-    ctx.fillStyle = '#07c160';
-    ctx.beginPath();
-    ctx.moveTo(CANVAS_W / 2 - 20, AIRPLANE_Y);
-    ctx.lineTo(CANVAS_W / 2 + 20, AIRPLANE_Y);
-    ctx.lineTo(CANVAS_W / 2, AIRPLANE_Y - 30);
-    ctx.closePath();
-    ctx.fill();
     // HUD
-    ctx.font = '20px sans-serif';
-    ctx.fillStyle = '#333333';
+    ctx.font = '18px sans-serif';
+    ctx.fillStyle = '#ffffff';
     ctx.textAlign = 'left';
-    ctx.fillText(`得分 ${st.score}`, 20, 40);
+    ctx.textBaseline = 'top';
+    ctx.fillText(`得分 ${st.score}`, 20, 20);
+    if (st.streak >= 2) {
+      ctx.fillStyle = '#00ff88';
+      ctx.fillText(`Combo x${st.streak}`, 120, 20);
+    }
+    ctx.restore();
   },
 
   onKeyPress(event: WechatMiniprogram.CustomEvent<{ key: string }>) {
@@ -228,12 +261,7 @@ Page({
     if (this.data.status === 'FINISHED') return;
     this.data.status = 'FINISHED';
     shooterAudio.stopBgm();
-    if (this.rafId) {
-      if (this.segment)
-        (
-          this.segment as unknown as { cancelAnimationFrame: (id: number) => void }
-        ).cancelAnimationFrame(this.rafId);
-    }
+    if (this.rafId && this.segment) this.segment.cancelAnimationFrame(this.rafId);
     wx.disableAlertBeforeUnload();
     const st = this.engine!;
     await spaceShooterService.finishGame({
@@ -266,10 +294,6 @@ Page({
   onUnload() {
     shooterAudio.stopBgm();
     wx.disableAlertBeforeUnload();
-    if (this.rafId && this.segment) {
-      (
-        this.segment as unknown as { cancelAnimationFrame: (id: number) => void }
-      ).cancelAnimationFrame(this.rafId);
-    }
+    if (this.rafId && this.segment) this.segment.cancelAnimationFrame(this.rafId);
   },
 });
