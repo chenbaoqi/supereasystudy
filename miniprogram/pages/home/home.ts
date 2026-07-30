@@ -99,8 +99,12 @@ Page({
   },
 
   onTapSubject(event: WechatMiniprogram.TouchEvent) {
-    // 学科点击统一进「学科入口页」（Owner 2026-07-19 重定位）：开放→学习路径，未开放→敬请期待
+    // 学科点击：已设偏好 → 直达学习页；未设偏好 → 学科入口页（原流）——Owner 反馈"选过教材还要再选"
     const { id } = event.currentTarget.dataset as { id: string };
+    if (userService.getPreferences()) {
+      wx.switchTab({ url: '/pages/study/study' });
+      return;
+    }
     wx.navigateTo({ url: `/pages/subject/subject?subjectId=${id}` });
   },
 });
