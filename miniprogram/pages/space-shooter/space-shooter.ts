@@ -182,13 +182,29 @@ Page({
     for (let i = 0; i <= 20; i++) {
       ctx.fillRect((i * 47) % CANVAS_W, (i * 83 + st.score * 2) % CANVAS_H, 2, 2);
     }
-    // 敌机方块（红色，白字中文）
+    // 敌机方块（渐变填充+白色描边+阴影，中文白字）
     for (const enemy of st.enemies) {
       if (!enemy.active) continue;
-      ctx.fillStyle = '#e94560';
-      ctx.fillRect(enemy.x, enemy.y, enemy.w, enemy.h);
+      // 阴影
+      ctx.fillStyle = 'rgba(0,0,0,0.3)';
+      ctx.beginPath();
+      ctx.roundRect(enemy.x + 3, enemy.y + 3, enemy.w, enemy.h, 8);
+      ctx.fill();
+      // 渐变填充（红→暗红）
+      const grad = ctx.createLinearGradient(enemy.x, enemy.y, enemy.x, enemy.y + enemy.h);
+      grad.addColorStop(0, '#ff6b6b');
+      grad.addColorStop(1, '#c0392b');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.roundRect(enemy.x, enemy.y, enemy.w, enemy.h, 8);
+      ctx.fill();
+      // 描边
+      ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      // 文字
       ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 20px sans-serif';
+      ctx.font = 'bold 22px sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(enemy.meaning, enemy.x + enemy.w / 2, enemy.y + enemy.h / 2);
