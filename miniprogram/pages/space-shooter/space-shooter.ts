@@ -3,6 +3,7 @@
 import { SHOOTER_DIFFICULTY, type ShooterDifficulty } from '../../config/gameRules';
 import type { Knowledge } from '../../core/knowledge';
 import { spaceShooterService } from '../../services/spaceShooterService';
+import { shooterAudio } from '../../services/shooterAudio';
 import {
   type EngineState,
   applyHit,
@@ -95,6 +96,7 @@ Page({
     this.lastSpawn = 0;
     this.lastTick = 0;
     this.setData({ status: 'PLAYING', score: 0, streak: 0, inputText: '' });
+    shooterAudio.startBgm();
     this.startLoop();
     wx.enableAlertBeforeUnload({ message: '本局进行中，退出将不保存' });
   },
@@ -144,6 +146,8 @@ Page({
     state = checkMissed(state, AIRPLANE_Y);
     // 有方块抵达飞机层 → Game Over
     if (state.missIds.length > 0) {
+      shooterAudio.playSfx('miss');
+      shooterAudio.stopBgm();
       void this.finish();
       return state;
     }
@@ -201,6 +205,8 @@ Page({
     const matchIndex = findMatch(state);
     if (matchIndex >= 0) {
       state = applyHit(state, matchIndex, CANVAS_W / 2);
+      shooterAudio.playSfx('shoot');
+      shooterAudio.playSfx('explode');
     }
     this.engine = state;
     this.setData({ inputText: state.currentInput, score: state.score, streak: state.streak });
@@ -220,6 +226,7 @@ Page({
   async finish() {
     if (this.data.status === 'FINISHED') return;
     this.data.status = 'FINISHED';
+    shooterAudio.stopBgm();
     if (this.rafId) {
       if (this.segment)
         (
@@ -243,15 +250,20 @@ Page({
   },
 
   onHide() {
-    if (this.data.status === 'PLAYING') this.setData({ status: 'PAUSED' });
+    if (this.data.status === 'PLAYING') {
+      this.setData({ status: 'PAUSED' });
+      shooterAudio.stopBgm();
+    }
   },
   onShow() {
     if (this.data.status === 'PAUSED') {
       this.setData({ status: 'PLAYING' });
       this.lastTick = 0;
+      shooterAudio.startBgm();
     }
   },
   onUnload() {
+    shooterAudio.stopBgm();
     wx.disableAlertBeforeUnload();
     if (this.rafId && this.segment) {
       (
