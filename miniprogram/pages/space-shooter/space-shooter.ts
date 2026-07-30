@@ -206,6 +206,7 @@ Page({
     if (matchIndex >= 0) {
       state = applyHit(state, matchIndex, CANVAS_W / 2);
       shooterAudio.playSfx('shoot');
+      shooterAudio.playSfx('hit');
       shooterAudio.playSfx('explode');
     }
     this.engine = state;

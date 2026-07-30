@@ -3,11 +3,13 @@
 // InnerAudioContext 支持 cloud:// 路径，无需 getTempFileURL（与 banner 不同）。
 
 const SFX: Record<string, string | null> = {
-  hit: null,
-  shoot: null,
-  explode: null,
-  miss: null,
-  bgm: null,
+  hit: 'cloud://cloud1-d8g6b7jctd1a3be1c.636c-cloud1-d8g6b7jctd1a3be1c-1455637430/audio/sfx_hit.wav',
+  shoot:
+    'cloud://cloud1-d8g6b7jctd1a3be1c.636c-cloud1-d8g6b7jctd1a3be1c-1455637430/audio/sfx_shoot.wav',
+  explode:
+    'cloud://cloud1-d8g6b7jctd1a3be1c.636c-cloud1-d8g6b7jctd1a3be1c-1455637430/audio/sfx_explode.wav',
+  miss: 'cloud://cloud1-d8g6b7jctd1a3be1c.636c-cloud1-d8g6b7jctd1a3be1c-1455637430/audio/sfx_miss.wav',
+  bgm: 'cloud://cloud1-d8g6b7jctd1a3be1c.636c-cloud1-d8g6b7jctd1a3be1c-1455637430/audio/bgm_loop.wav',
 };
 
 export interface ShooterAudio {
