@@ -9,7 +9,7 @@ const SFX: Record<string, string | null> = {
   explode:
     'cloud://cloud1-d8g6b7jctd1a3be1c.636c-cloud1-d8g6b7jctd1a3be1c-1455637430/audio/sfx_explode.wav',
   miss: 'cloud://cloud1-d8g6b7jctd1a3be1c.636c-cloud1-d8g6b7jctd1a3be1c-1455637430/audio/sfx_miss.wav',
-  bgm: 'cloud://cloud1-d8g6b7jctd1a3be1c.636c-cloud1-d8g6b7jctd1a3be1c-1455637430/audio/bgm_loop.wav',
+  bgm: 'cloud://cloud1-d8g6b7jctd1a3be1c.636c-cloud1-d8g6b7jctd1a3be1c-1455637430/audio/bgm_game.mp3',
 };
 
 export interface ShooterAudio {
