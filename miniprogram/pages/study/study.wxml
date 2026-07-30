@@ -12,7 +12,7 @@
 
 <block wx:else>
   <view class="current-bar" bindtap="onTapSwitch">
-    <text class="current-text">{{textbookName}}｜{{gradeLabel}}｜{{termLabel}}</text>
+    <text class="current-text">{{textbookName}} · {{semesterName}}</text>
     <text class="switch-tag">教材选择 ▾</text>
   </view>
 

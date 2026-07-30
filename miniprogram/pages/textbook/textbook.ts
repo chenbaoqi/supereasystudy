@@ -9,6 +9,6 @@ Page(
       return textbooks.map((item) => ({ id: item._id, title: item.name, open: true }));
     },
     buildNextUrl: (item) =>
-      `/pages/grade/grade?textbookId=${item.id}&textbookName=${encodeURIComponent(item.title)}`,
+      `/pages/semester/semester?textbookId=${item.id}&textbookName=${encodeURIComponent(item.title)}`,
   }),
 );

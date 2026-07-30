@@ -8,7 +8,6 @@
     "pages/subject/subject",
     "pages/learning-path/learning-path",
     "pages/textbook/textbook",
-    "pages/grade/grade",
     "pages/semester/semester",
     "pages/chapter/chapter",
     "pages/study-detail/study-detail",

@@ -7,14 +7,13 @@ import { grammarPackService } from '../../services/grammarPackService';
 import { semesterRepository } from '../../repositories/semesterRepository';
 import { subjectRepository } from '../../repositories/subjectRepository';
 import { userService } from '../../services/userService';
-import { parseSemesterName, stageOfSemester } from '../../utils/stage';
+import { stageOfSemester } from '../../utils/stage';
 
 Page({
   data: {
     hasPreference: false,
     textbookName: '',
-    gradeLabel: '', // 标注：年级（Owner 2026-07-31 教材选择模型）
-    termLabel: '', // 标注：学期
+    semesterName: '',
     items: [] as ChapterItem[], // 单词分区（当前册次章节）
     semesterId: '', // 单词册次 id
     hasGrammar: false,
@@ -68,12 +67,10 @@ Page({
         : [];
       // 异步竞态防护：tab 已切走时不再 setData
       if (this.hidden) return;
-      const parts = parseSemesterName(preferences.semesterName);
       this.setData({
         hasPreference: true,
         textbookName: preferences.textbookName,
-        gradeLabel: parts.grade,
-        termLabel: parts.term,
+        semesterName: preferences.semesterName,
         items,
         semesterId,
         hasGrammar: grammarItems.length > 0,

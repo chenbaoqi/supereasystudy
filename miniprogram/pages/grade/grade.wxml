@@ -1,2 +1,0 @@
-<import src="../shared/list.wxml" />
-<template is="list" data="{{ items, loading, loadFailed }}" />
