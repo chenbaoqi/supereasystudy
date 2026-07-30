@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "小蜜蜂",
+  "usingComponents": {
+    "app-keyboard": "/components/keyboard/keyboard"
+  }
+}

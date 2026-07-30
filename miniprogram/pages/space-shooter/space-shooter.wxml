@@ -1,0 +1,26 @@
+<view wx:if="{{poolEmpty}}" class="hint">本章节知识点不足，敬请期待</view>
+
+<block wx:elif="{{status === 'READY'}}">
+  <view class="ready">
+    <view class="title">小蜜蜂</view>
+    <view class="rules">键盘敲英文，射击飘落的中文方块</view>
+    <view class="diff">
+      <text class="diff-label">难度：</text>
+      <button wx:for="{{['easy','medium','hard']}}" wx:key="*this" size="mini" class="diff-btn {{difficulty === item ? 'active' : ''}}" data-level="{{item}}" bindtap="onSetDifficulty">{{item === 'easy' ? '初级' : item === 'medium' ? '中级' : '高级'}}</button>
+    </view>
+    <button type="primary" class="start" bindtap="onStart">开始游戏</button>
+  </view>
+</block>
+
+<block wx:else>
+  <view class="hud">
+    <text class="hud-item">得分 {{score}}</text>
+    <text class="hud-item" wx:if="{{streak >= 2}}">Combo x{{streak}}</text>
+  </view>
+  <canvas type="2d" id="gameCanvas" class="game-canvas" />
+  <view class="input-bar">{{inputText}}<text class="cursor">|</text></view>
+  <app-keyboard disabled="{{status !== 'PLAYING'}}"
+    bind:keypress="onKeyPress"
+    bind:backspace="onBackspace"
+  />
+</block>

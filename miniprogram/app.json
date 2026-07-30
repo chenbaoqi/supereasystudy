@@ -23,6 +23,7 @@
     "pages/game-center/game-center",
     "pages/speed-choice/speed-choice",
     "pages/listen-find/listen-find",
+    "pages/space-shooter/space-shooter",
     "pages/coming-soon/coming-soon"
   ],
   "window": {

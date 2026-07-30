@@ -11,4 +11,8 @@
     <view class="game-name">听音找词</view>
     <view class="game-desc">听发音选单词，训练听力辨识</view>
   </view>
+  <view class="game-card" data-url="/pages/space-shooter/space-shooter" bindtap="onTapGame">
+    <view class="game-name">小蜜蜂</view>
+    <view class="game-desc">键盘敲英文，射击中文方块</view>
+  </view>
 </view>

@@ -1,0 +1,73 @@
+.hint {
+  padding: 120rpx 0;
+  text-align: center;
+  color: #999;
+  font-size: 28rpx;
+}
+.ready {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 160rpx;
+  gap: 24rpx;
+}
+.title {
+  font-size: 44rpx;
+  font-weight: 600;
+}
+.rules {
+  color: #999;
+  font-size: 26rpx;
+}
+.diff {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-top: 12rpx;
+}
+.diff-label {
+  font-size: 26rpx;
+}
+.diff-btn {
+  margin: 0;
+}
+.diff-btn.active {
+  background: #07c160;
+  color: #fff;
+}
+.start {
+  margin-top: 48rpx;
+  width: 60%;
+}
+.hud {
+  display: flex;
+  justify-content: space-around;
+  padding: 16rpx 0;
+}
+.hud-item {
+  color: #07c160;
+  font-weight: 600;
+  font-size: 28rpx;
+}
+.game-canvas {
+  width: 750rpx;
+  height: 1200rpx;
+  background: #f0f4f8;
+  display: block;
+}
+.input-bar {
+  text-align: center;
+  font-size: 36rpx;
+  font-weight: 600;
+  padding: 16rpx 0;
+  letter-spacing: 4rpx;
+}
+.cursor {
+  color: #07c160;
+  animation: blink 0.8s infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
