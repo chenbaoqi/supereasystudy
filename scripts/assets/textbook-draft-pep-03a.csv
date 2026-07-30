@@ -1,6 +1,6 @@
 subject,path,textbook,semester,chapter,order,word,ipa,meaning,partOfSpeech,example,translation
-英语,词汇,人教版 PEP,三年级上册,Unit 1 Making friends,1,hello,həˈləʊ,你好,int.,"Hello, I am Amy.",你好，我是艾米。
-英语,词汇,人教版 PEP,三年级上册,Unit 1 Making friends,2,hi,haɪ,嗨,int.,"Hi, Tom!",嗨，汤姆！
+英语,词汇,人教版 PEP,三年级上册,Unit 1 Making friends,1,hello,həˈləʊ,你好,int.,"""Hello, I am Amy.""",你好，我是艾米。
+英语,词汇,人教版 PEP,三年级上册,Unit 1 Making friends,2,hi,haɪ,嗨,int.,"""Hi, Tom!""",嗨，汤姆！
 英语,词汇,人教版 PEP,三年级上册,Unit 1 Making friends,3,name,neɪm,名字,n.,My name is Sam.,我的名字叫萨姆。
 英语,词汇,人教版 PEP,三年级上册,Unit 1 Making friends,4,friend,frend,朋友,n.,This is my friend.,这是我的朋友。
 英语,词汇,人教版 PEP,三年级上册,Unit 1 Making friends,5,nice,naɪs,令人愉快的,adj.,Nice to meet you.,见到你很高兴。
@@ -10,7 +10,7 @@ subject,path,textbook,semester,chapter,order,word,ipa,meaning,partOfSpeech,examp
 英语,词汇,人教版 PEP,三年级上册,Unit 1 Making friends,9,I,aɪ,我,pron.,I am six.,我六岁了。
 英语,词汇,人教版 PEP,三年级上册,Unit 1 Making friends,10,you,juː,你,pron.,How are you?,你好吗？
 英语,词汇,人教版 PEP,三年级上册,Unit 1 Making friends,11,am,æm,是（用于 I）,v.,I am a boy.,我是一个男孩。
-英语,词汇,人教版 PEP,三年级上册,Unit 1 Making friends,12,goodbye,ˌɡʊdˈbaɪ,再见,int.,"Goodbye, friends!",再见，朋友们！
+英语,词汇,人教版 PEP,三年级上册,Unit 1 Making friends,12,goodbye,ˌɡʊdˈbaɪ,再见,int.,"""Goodbye, friends!""",再见，朋友们！
 英语,词汇,人教版 PEP,三年级上册,Unit 2 Different families,1,family,ˈfæməli,家庭,n.,This is my family.,这是我的家庭。
 英语,词汇,人教版 PEP,三年级上册,Unit 2 Different families,2,father,ˈfɑːðə(r),父亲,n.,My father is tall.,我爸爸很高。
 英语,词汇,人教版 PEP,三年级上册,Unit 2 Different families,3,mother,ˈmʌðə(r),母亲,n.,My mother is kind.,我妈妈很温柔。

@@ -60,9 +60,9 @@ function main() {
     console.error('多文件按传入顺序合并（册次 order 由文件顺序决定）');
     process.exit(1);
   }
-  // 多文件合并：表头以第一个文件为准，其余文件校验列一致后追加数据行
-  const records = [];
-  let columns = [];
+  // 多文件合并：每个文件按【各自表头】映射为行对象后再合并
+  // （修复：语法 CSV 比词汇 CSV 多 type/explanation 列，曾被首文件表头静默丢弃）
+  const rowObjects = [];
   for (const csvPath of csvPaths) {
     const rows = parseCsv(readFileSync(csvPath, 'utf8'));
     const [header, ...fileRecords] = rows;
@@ -73,8 +73,17 @@ function main() {
         process.exit(1);
       }
     }
-    if (columns.length === 0) columns = fileColumns;
-    for (const record of fileRecords) records.push(record);
+    for (const [recordIndex, record] of fileRecords.entries()) {
+      // 列数不一致 = 字段内出现未加引号的逗号（防静默错列，见 grammar 教训）
+      if (record.length !== fileColumns.length) {
+        console.warn(
+          `⚠️ ${csvPath} 第 ${recordIndex + 2} 行列数 ${record.length} ≠ 表头 ${fileColumns.length}（字段内可能有未加引号的逗号）`,
+        );
+      }
+      rowObjects.push(
+        Object.fromEntries(fileColumns.map((col, index) => [col, (record[index] ?? '').trim()])),
+      );
+    }
   }
 
   const subjects = new Map(); // name → { name, open, order }
@@ -85,10 +94,7 @@ function main() {
   };
 
   let skipped = 0;
-  for (const [lineIndex, record] of records.entries()) {
-    const row = Object.fromEntries(
-      columns.map((col, index) => [col, (record[index] ?? '').trim()]),
-    );
+  for (const [lineIndex, row] of rowObjects.entries()) {
     if (!row.word || !row.meaning) {
       skipped += 1;
       console.warn(`第 ${lineIndex + 2} 行缺 word/meaning，已跳过`);
@@ -124,7 +130,9 @@ function main() {
       meaning: row.meaning,
       order: Number(row.order) || chapter.knowledge.length + 1,
     };
+    if (row.type) knowledge.type = row.type; // Chapter 12：word/grammar 双形态
     if (row.ipa) knowledge.ipa = row.ipa;
+    if (row.explanation) knowledge.explanation = row.explanation; // Chapter 12：语法讲解
     if (row.partOfSpeech) knowledge.partOfSpeech = row.partOfSpeech;
     if (row.example) knowledge.example = row.example;
     if (row.translation) knowledge.translation = row.translation;
@@ -176,7 +184,7 @@ function main() {
     0,
   );
   console.log(
-    `✅ 转换完成：${output.subjects.length} 学科 / ${chapters} 章节 / ${records.length - skipped} 词条（跳过 ${skipped} 行）→ ${target}`,
+    `✅ 转换完成：${output.subjects.length} 学科 / ${chapters} 章节 / ${rowObjects.length - skipped} 词条（跳过 ${skipped} 行）→ ${target}`,
   );
 }
 

@@ -3,6 +3,7 @@
 import type { Banner } from '../core/banner';
 import { bannerRepository, type BannerRepository } from '../repositories/bannerRepository';
 import { chapterRepository, type ChapterRepository } from '../repositories/chapterRepository';
+import { knowledgeRepository, type KnowledgeRepository } from '../repositories/knowledgeRepository';
 import {
   learningRecordRepository,
   type LearningRecordRepository,
@@ -13,6 +14,7 @@ export interface RecentLearningItem {
   readonly chapterId: string;
   readonly semesterId: string;
   readonly title: string;
+  readonly showGame: boolean; // 🎮 入口（仅单词 ≥4 显示，语法章节隐藏，Owner 2026-07-30）
 }
 
 export interface HomeDashboard {
@@ -26,6 +28,7 @@ export interface HomeServiceDeps {
   bannerRepository: BannerRepository;
   learningRecordRepository: LearningRecordRepository;
   chapterRepository: ChapterRepository;
+  knowledgeRepository: KnowledgeRepository;
 }
 
 export function createHomeService(deps: HomeServiceDeps) {
@@ -43,12 +46,25 @@ export function createHomeService(deps: HomeServiceDeps) {
         recentRecords.map((item) => item.chapterId),
       );
       const map = new Map(chapters.map((item) => [item._id, item]));
-      const recentLearning = recentRecords.flatMap((record) => {
+      // 逐章取知识点判断游戏准入（🎮 仅单词 ≥4 显示，与章节页/游戏开局门槛一致）
+      const knowledgeLists = await Promise.all(
+        recentRecords.map((record) => deps.knowledgeRepository.listByChapter(record.chapterId)),
+      );
+      const recentLearning = recentRecords.flatMap((record, index) => {
         const chapter = map.get(record.chapterId);
         // 章节被删的孤儿记录跳过（数据一致性兜底）
-        return chapter
-          ? [{ chapterId: chapter._id, semesterId: chapter.semesterId, title: chapter.title }]
-          : [];
+        if (!chapter) return [];
+        const wordCount = (knowledgeLists[index] ?? []).filter(
+          (knowledge) => (knowledge.type ?? 'word') === 'word',
+        ).length;
+        return [
+          {
+            chapterId: chapter._id,
+            semesterId: chapter.semesterId,
+            title: chapter.title,
+            showGame: wordCount >= 4,
+          },
+        ];
       });
       return {
         banners,
@@ -64,4 +80,5 @@ export const homeService = createHomeService({
   bannerRepository,
   learningRecordRepository,
   chapterRepository,
+  knowledgeRepository,
 });

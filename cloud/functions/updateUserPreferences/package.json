@@ -1,0 +1,10 @@
+{
+  "name": "update-user-preferences",
+  "version": "1.0.0",
+  "private": true,
+  "description": "教材偏好写入（Chapter 14 §3，云端收口 users 写权限）",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "^4.0.2"
+  }
+}

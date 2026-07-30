@@ -47,6 +47,18 @@ describe('selectPool（2026-07-19 修订：全部章节知识，与 progress 脱
     expect(selectPool(list.slice(0, 3), seededRandom([0.5])).eligible).toBe(false);
     expect(selectPool(list.slice(0, GAME_MIN_POOL), seededRandom([0.5])).eligible).toBe(true);
   });
+
+  it('游戏只针对记单词（Owner 2026-07-30）：语法点被过滤出游戏池', () => {
+    const withGrammar = [
+      ...list.slice(0, 3),
+      { ...list[3]!, type: 'grammar' as const },
+      { ...list[4]!, type: 'grammar' as const },
+    ];
+    const { pool, eligible } = selectPool(withGrammar, seededRandom([0.5]));
+    expect(pool.every((item) => item.type !== 'grammar')).toBe(true);
+    expect(pool).toHaveLength(3); // 5 个知识点只剩 3 个单词
+    expect(eligible).toBe(false); // 单词 <4 → 不可开局
+  });
 });
 
 describe('buildDeck', () => {

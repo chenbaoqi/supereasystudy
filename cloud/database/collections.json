@@ -16,10 +16,12 @@
     "banners",
     "notices",
     "favorites",
-    "memory_game_records"
+    "memory_game_records",
+    "reading_passages"
   ],
   "changelog": [
     "2026-07-19: 新增 favorites 集合（Owner 决策，ADR-005）：收藏独立于 learning_records 存储",
-    "2026-07-19: 新增 memory_game_records 集合（Chapter 07 §9，ADR-006）：Memory Challenge 对局记录"
+    "2026-07-19: 新增 memory_game_records 集合（Chapter 07 §9，ADR-006）：Memory Challenge 对局记录",
+    "2026-07-30: 新增 reading_passages 集合（Chapter 13 Q3，ADR-007）：阅读理解测评素材"
   ]
 }

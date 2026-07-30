@@ -1,3 +1,6 @@
+<view class="list-item" bindtap="onTapTextbook">
+  <text>教材选择</text>
+</view>
 <view class="list-item" bindtap="onTapFavorite">
   <text>我的收藏</text>
 </view>

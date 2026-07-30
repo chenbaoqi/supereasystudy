@@ -9,6 +9,8 @@
     <text class="pos">{{current.partOfSpeech}}</text>
   </view>
   <view class="line meaning">{{current.meaning}}</view>
+  <!-- 语法讲解区块（Chapter 12：type=grammar 时展示 explanation） -->
+  <view class="explanation" wx:if="{{current.explanation}}">{{current.explanation}}</view>
   <view class="line" wx:if="{{current.example}}">{{current.example}}</view>
   <view class="line translation" wx:if="{{current.translation}}">{{current.translation}}</view>
 
@@ -16,8 +18,10 @@
 
   <view class="actions">
     <button size="mini" bindtap="onToggleFavorite">{{isFavorite ? '★ 已收藏' : '☆ 收藏'}}</button>
-    <!-- 发音常态化（TTS，Owner 2026-07-20 修订）；拼读因 TTS 准确率问题已移除 -->
-    <button size="mini" bindtap="onPlayWord">🔊 发音</button>
+    <!-- 发音常态化（TTS）；语法点不朗读（Owner 2026-07-30：游戏/朗读只针对记单词） -->
+    <button wx:if="{{current.type !== 'grammar'}}" size="mini" bindtap="onPlayWord">
+      🔊 发音
+    </button>
   </view>
 
   <view class="nav">

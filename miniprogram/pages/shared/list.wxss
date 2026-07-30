@@ -50,3 +50,9 @@
   white-space: nowrap;
   flex-shrink: 0;
 }
+
+/* 章节状态文本（chapter 页与学习 tab 共用，Chapter 14） */
+.status {
+  color: #999999;
+  font-size: 24rpx;
+}

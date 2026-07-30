@@ -1,0 +1,25 @@
+subject,path,textbook,semester,chapter,order,word,ipa,meaning,partOfSpeech,example,translation,type,explanation
+英语,语法,小学语法专题,全册,时态专题,1,一般现在时,,表示习惯性动作或客观事实,,He goes to school every day.,他每天去上学。,grammar,结构：主语 + 动词原形（第三人称单数加 -s/-es）。常与 always/usually/every day 连用。例：I play football on Sunday.（我星期天踢足球。）
+英语,语法,小学语法专题,全册,时态专题,2,现在进行时,,表示正在发生的动作,,She is reading a book now.,她现在正在看书。,grammar,结构：主语 + be(am/is/are) + 动词-ing。常与 now/look/listen 连用。例：They are playing basketball.（他们正在打篮球。）
+英语,语法,小学语法专题,全册,时态专题,3,一般过去时,,表示过去发生的动作,,I watched TV yesterday.,我昨天看了电视。,grammar,结构：主语 + 动词过去式（规则加 -ed，不规则需记忆）。常与 yesterday/last week/ago 连用。例：We went to the park last weekend.（我们上周末去了公园。）
+英语,语法,小学语法专题,全册,时态专题,4,一般将来时,,表示将来要发生的动作,,We will have a picnic tomorrow.,我们明天要去野餐。,grammar,结构：主语 + will + 动词原形（或 be going to + 动词原形）。常与 tomorrow/next week 连用。例：I am going to visit my grandpa.（我打算去看爷爷。）
+英语,语法,小学语法专题,全册,词法专题,1,名词复数,,名词表示多个时加 -s/-es,,There are three apples on the table.,桌子上有三个苹果。,grammar,规则：一般加 -s（book→books）；以 s/x/ch/sh 结尾加 -es（box→boxes）；辅音+y 变 y 为 i 加 -es（baby→babies）；特殊变化（child→children，foot→feet）。
+英语,语法,小学语法专题,全册,词法专题,2,be 动词,,am/is/are 的用法,,I am a student and she is a teacher.,我是学生，她是老师。,grammar,口诀：我(I)用 am，你(you)用 are，is 跟着他(he)她(she)它(it)；单数 is，复数 are。例：They are my friends.（他们是我的朋友。）
+英语,语法,小学语法专题,全册,词法专题,3,形容词性物主代词,,表示"某人的"，后面接名词,,This is my book and that is her pen.,这是我的书，那是她的钢笔。,grammar,形式：my(我的)/your(你的)/his(他的)/her(她的)/its(它的)/our(我们的)/their(他们的)。后面必须接名词。例：Our classroom is big.（我们的教室很大。）
+英语,语法,小学语法专题,全册,词法专题,4,情态动词 can,,表示能力"会、能",,I can swim and he can ride a bike.,我会游泳，他会骑自行车。,grammar,结构：主语 + can + 动词原形（不随人称变化）。否定：can not/can't。疑问：Can you...? 例：Can you play the piano?（你会弹钢琴吗？）
+英语,语法,小学语法专题,全册,句型专题,1,特殊疑问句,,用疑问词提问的句子,,What is your name?,你叫什么名字？,grammar,结构：疑问词(what/where/who/when/how) + 一般疑问句语序。疑问词不同问的内容不同：what 问事物，where 问地点，who 问人，how 问方式。例：Where do you live?（你住在哪里？）
+英语,语法,小学语法专题,全册,句型专题,2,一般疑问句,,用 yes/no 回答的问句,,Do you like bananas?,你喜欢香蕉吗？,grammar,结构：Do/Does + 主语 + 动词原形？（第三人称单数用 Does，动词还原）。回答：Yes，I do. / No，I don't. 例：Does he like English?（他喜欢英语吗？）
+英语,语法,小学语法专题,全册,句型专题,3,祈使句,,表示命令或请求的句子,,Open the door，please.,请开门。,grammar,结构：动词原形开头（肯定式）；Don't + 动词原形（否定式）。常加 please 表礼貌。例：Don't run in the classroom.（不要在教室里跑。）
+英语,语法,小学语法专题,全册,句型专题,4,there be 句型,,表示"某处有某物",,There is a cat under the chair.,椅子下面有一只猫。,grammar,结构：There is + 单数/不可数；There are + 复数。就近原则：be 与最近的名词一致。例：There are two dogs in the garden.（花园里有两只狗。）
+英语,语法,初中语法专题,全册,时态专题,1,过去进行时,,表示过去某时正在发生的动作,,I was doing my homework at eight last night.,昨晚八点我正在做作业。,grammar,结构：主语 + was/were + 动词-ing。常与 at that time/when 引导的过去时间连用。例：They were playing football at five yesterday.（昨天五点他们正在踢足球。）
+英语,语法,初中语法专题,全册,时态专题,2,现在完成时,,表示过去发生但与现在有关的动作,,I have finished my homework.,我已经完成作业了。,grammar,结构：主语 + have/has + 过去分词。常与 already/just/yet/ever/since/for 连用。例：She has lived here for ten years.（她在这里住了十年了。）
+英语,语法,初中语法专题,全册,时态专题,3,过去完成时,,表示"过去的过去"发生的动作,,The train had left when I arrived.,我到的时候火车已经开走了。,grammar,结构：主语 + had + 过去分词。表示在过去某一时间之前已完成。常与 before/when 从句连用。例：He had learned 500 words before last term.（上学期之前他已学了 500 个单词。）
+英语,语法,初中语法专题,全册,时态专题,4,被动语态,,主语是动作的承受者,,English is spoken all over the world.,全世界都说英语。,grammar,结构：主语 + be + 过去分词（+ by 施动者）。各时态被动：is done（一般现在）/ was done（一般过去）/ will be done（将来）。例：The bridge was built in 1990.（这座桥建于 1990 年。）
+英语,语法,初中语法专题,全册,词法专题,1,比较级与最高级,,表示"更……"和"最……",,Tom is taller than Jack and he is the tallest in class.,汤姆比杰克高，他是班里最高的。,grammar,规则：单音节加 -er/-est（tall→taller→tallest）；多音节用 more/most（beautiful→more beautiful→most beautiful）；特殊（good→better→best，bad→worse→worst）。比较级 + than；最高级前加 the。
+英语,语法,初中语法专题,全册,词法专题,2,动词不定式,,to + 动词原形的用法,,I want to learn English well.,我想学好英语。,grammar,形式：to + 动词原形。可作宾语（want to do）、宾补（ask sb to do）、目的状语（come here to study）。例：My mother asks me to drink milk every day.（妈妈叫我每天喝牛奶。）
+英语,语法,初中语法专题,全册,词法专题,3,动名词,,动词加 -ing 当名词用,,Reading English every morning is a good habit.,每天晨读英语是个好习惯。,grammar,形式：动词-ing。可作主语（Swimming is fun.）、宾语（enjoy/finish/practice + doing）。例：I enjoy playing basketball.（我喜欢打篮球。）
+英语,语法,初中语法专题,全册,词法专题,4,情态动词表推测,,must/might/can't 表示猜测,,The book must be hers because her name is on it.,这本书一定是她的，因为上面有她的名字。,grammar,语气强弱：must（肯定）> may/might（可能）> can't（不可能）。结构：情态动词 + be / do。例：He can't be at home; the light is off.（他不可能在家，灯关着。）
+英语,语法,初中语法专题,全册,句型专题,1,宾语从句,,用一个句子充当宾语,,I think that English is interesting.,我认为英语很有趣。,grammar,结构：主句 + (that/if/疑问词) + 陈述语序从句。注意：从句用陈述语序（不倒装）。例：Do you know where he lives?（你知道他住哪里吗？）
+英语,语法,初中语法专题,全册,句型专题,2,定语从句,,用一个句子修饰名词,,I like the book that you gave me.,我喜欢你给我的那本书。,grammar,结构：先行词 + 关系词(that/which/who) + 从句。关系词指人用 who/that，指物用 which/that。例：The girl who is singing is my sister.（正在唱歌的女孩是我妹妹。）
+英语,语法,初中语法专题,全册,句型专题,3,状语从句,,用一个句子表示时间/原因/条件等,,I will call you when I arrive.,我到了就给你打电话。,grammar,常见引导词：when（当……时）/because（因为）/if（如果）/although（虽然）。主将从现：时间/条件从句用一般现在时表将来。例：If it rains tomorrow，we will stay at home.（如果明天下雨，我们就待在家。）
+英语,语法,初中语法专题,全册,句型专题,4,if 条件句,,表示"如果……就……",,If you study hard，you will pass the exam.,如果你努力学习，就会通过考试。,grammar,结构：If + 一般现在时（从句），主句用一般将来时 will do（主将从现）。例：If he comes，I will tell him.（如果他来，我就告诉他。）

@@ -22,3 +22,4 @@
 - `memoryGameService.ts` + `memoryGameLogic.ts`：Chapter 07 游戏（逻辑纯模块独立可测）
 - `speedChoiceService.ts`：Chapter 08 极速选择；`quizLogic.ts`（四选一生成器，testService 与游戏共用）；`gameResultStore.ts`（全系列游戏结果共享通道）
 - `listenFindService.ts`：Chapter 09 听音找词；`pronunciationService.ts`（发音源单点封装：插件 TTS / 未来预录制资产）
+- `chapterService.ts`：Chapter 14 章节列表装配（章节页/学习 tab 共用；`statusTextOf` 三态映射）

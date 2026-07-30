@@ -4,14 +4,4 @@
   <button size="mini" bindtap="onRetry">重试</button>
 </view>
 <view wx:elif="{{items.length === 0}}" class="hint">暂无数据</view>
-<block wx:else>
-  <view wx:for="{{items}}" wx:key="id" class="list-item" data-id="{{item.id}}" bindtap="onTapItem">
-    <text>{{item.title}}</text>
-    <view class="item-right">
-      <text class="status">{{item.statusText}}</text>
-      <button class="game-entry" size="mini" data-id="{{item.id}}" catchtap="onTapGame">
-        🎮 挑战
-      </button>
-    </view>
-  </view>
-</block>
+<template wx:else is="chapter-items" data="{{ items, semesterId }}" />

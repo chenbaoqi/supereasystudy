@@ -44,3 +44,16 @@
   font-size: 28rpx;
   color: #666666;
 }
+
+/* 教材偏好引导卡（Chapter 14） */
+.guide-card {
+  margin: 20rpx 30rpx;
+  padding: 28rpx 32rpx;
+  background: #fff7e6;
+  border-radius: 16rpx;
+}
+
+.guide-text {
+  font-size: 28rpx;
+  color: #b26a00;
+}

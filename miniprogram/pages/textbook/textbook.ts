@@ -8,6 +8,7 @@ Page(
       const textbooks = await textbookRepository.listByLearningPath(query.learningPathId ?? '');
       return textbooks.map((item) => ({ id: item._id, title: item.name, open: true }));
     },
-    buildNextUrl: (id) => `/pages/semester/semester?textbookId=${id}`,
+    buildNextUrl: (item) =>
+      `/pages/grade/grade?textbookId=${item.id}&textbookName=${encodeURIComponent(item.title)}`,
   }),
 );

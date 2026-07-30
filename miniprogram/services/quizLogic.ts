@@ -4,7 +4,8 @@ import type { Knowledge } from '../core/knowledge';
 
 export interface ChoiceQuestion {
   readonly knowledgeId: string;
-  readonly word: string;
+  readonly word: string; // 英文单词（音频题干/答案判定等用途）
+  readonly prompt: string; // 展示题干文本（单词题=word；语法题=quiz stem，Chapter 13）
   readonly options: readonly string[]; // 选项文本（释义或单词，≤4）
   readonly correctIndex: number;
 }
@@ -26,6 +27,7 @@ export function buildChoiceQuestions(
     return {
       knowledgeId: item._id,
       word: item.word,
+      prompt: item.word, // 单词题：题干为英文单词
       options,
       correctIndex: options.indexOf(item.meaning),
     };
@@ -47,6 +49,7 @@ export function buildWordChoiceQuestions(
     return {
       knowledgeId: item._id,
       word: item.word,
+      prompt: item.word, // 听音选词：prompt 与 word 一致（题干为音频）
       options,
       correctIndex: options.indexOf(item.word),
     };

@@ -1,0 +1,37 @@
+<!-- 章节列表项共享模板（Chapter 14 §4：章节页与学习 tab 共用，事件绑定到宿主页面的同名方法；
+     semesterId 由宿主页面经 data 传入，供按钮携带章节所属册次） -->
+<template name="chapter-items">
+  <view
+    wx:for="{{items}}"
+    wx:key="id"
+    class="list-item"
+    data-id="{{item.id}}"
+    data-semester-id="{{semesterId}}"
+    bindtap="onTapItem"
+  >
+    <text>{{item.title}}</text>
+    <view class="item-right">
+      <text class="status">{{item.statusText}}</text>
+      <button
+        wx:if="{{item.showTest}}"
+        class="game-entry"
+        size="mini"
+        data-id="{{item.id}}"
+        data-semester-id="{{semesterId}}"
+        catchtap="onTapTest"
+      >
+        📝 测试
+      </button>
+      <button
+        wx:if="{{item.showGame}}"
+        class="game-entry"
+        size="mini"
+        data-id="{{item.id}}"
+        data-semester-id="{{semesterId}}"
+        catchtap="onTapGame"
+      >
+        🎮 挑战
+      </button>
+    </view>
+  </view>
+</template>

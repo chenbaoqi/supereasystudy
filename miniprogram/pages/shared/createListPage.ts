@@ -12,8 +12,10 @@ export interface ListPageItem {
 export interface ListPageConfig {
   // 拉取列表；入参为页面路由 query（如 { subjectId: '...' }）
   fetchItems: (query: Record<string, string>) => Promise<ListPageItem[]>;
-  // 点击已开放项的下一级路由
-  buildNextUrl: (id: string) => string;
+  // 点击已开放项的下一级路由（入参为完整列表项；提供 onTapItem 钩子时可省略）
+  buildNextUrl?: (item: ListPageItem) => string;
+  // 可选：自定义点击行为（替代默认跳转），如册次页的偏好保存（Chapter 14）/ 语法扁平化
+  onTapItem?: (item: ListPageItem, query: Record<string, string>) => void | Promise<void>;
 }
 
 interface ListPageData {
@@ -56,7 +58,18 @@ export function createListPage(config: ListPageConfig) {
 
     onTapItem(this: ListPageInstance, event: WechatMiniprogram.TouchEvent) {
       const { id, open } = event.currentTarget.dataset as { id: string; open: boolean };
-      wx.navigateTo({ url: open ? config.buildNextUrl(id) : '/pages/coming-soon/coming-soon' });
+      const item = this.data.items.find((entry) => entry.id === id);
+      if (!item) return;
+      if (config.onTapItem) {
+        void config.onTapItem(item, this.options as Record<string, string>);
+        return;
+      }
+      wx.navigateTo({
+        url:
+          open && config.buildNextUrl
+            ? config.buildNextUrl(item)
+            : '/pages/coming-soon/coming-soon',
+      });
     },
   };
 }

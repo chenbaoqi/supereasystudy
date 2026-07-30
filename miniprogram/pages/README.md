@@ -20,6 +20,7 @@
 - **复习 2 页已实现**（Chapter 05）：review（统计+开始）/ review-detail（认识·不认识自评）
 - **首页/收藏/统计已实现**（Chapter 06）：home（Dashboard）/ favorite / statistics
 - **游戏已实现**（Chapter 07/08/09）：memory-game（消消乐）/ speed-choice（极速选择）/ listen-find（听音找词）/ game-center（游戏中心）/ memory-result（全系列统一结果页）；章节页与首页最近学习含「🎮 挑战」入口（进游戏中心）
+- **学习 tab = 我的教材**（Chapter 14）：已设教材偏好直达当前册次章节列表（共享 `shared/chapter-items.wxml` 模板），未设偏好显示引导卡
 - **subject = 学科入口页**（Owner 2026-07-19 重定位）：开放学科→学习路径，未开放→敬请期待
 - `shared/`：列表页脚手架（createListPage + list.wxml/wxss）+ 知识卡共享样式（card.wxss）
 - 其余占位：study / practice / settings / coming-soon

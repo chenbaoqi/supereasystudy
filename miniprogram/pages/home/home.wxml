@@ -17,6 +17,11 @@
     </swiper-item>
   </swiper>
 
+  <!-- 教材偏好引导卡（Chapter 14 §4：未设置偏好时显示，设置后永久消失） -->
+  <view wx:if="{{!hasPreference}}" class="guide-card" bindtap="onTapGuide">
+    <text class="guide-text">📚 教材选择：选一次版本/年级/学期，以后直达课程</text>
+  </view>
+
   <!-- 学习统计条 -->
   <view class="stats">
     <view class="stat">
@@ -44,6 +49,7 @@
       <view class="item-right">
         <text class="tag">继续学习</text>
         <button
+          wx:if="{{item.showGame}}"
           class="game-entry"
           size="mini"
           data-chapter-id="{{item.chapterId}}"

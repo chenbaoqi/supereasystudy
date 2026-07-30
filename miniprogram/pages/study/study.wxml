@@ -1,3 +1,26 @@
-<view class="page-placeholder">
-  <text>学习 · Phase 2</text>
-</view>
+<import src="../shared/chapter-items.wxml" />
+
+<view wx:if="{{loading}}" class="hint">加载中…</view>
+
+<block wx:elif="{{!hasPreference}}">
+  <view class="guide-card">
+    <view class="guide-title">📚 先选择你的教材</view>
+    <view class="guide-desc">选一次教材和册次，以后进来直达课程</view>
+    <button type="primary" class="guide-btn" bindtap="onTapGuide">去选择</button>
+  </view>
+</block>
+
+<block wx:else>
+  <view class="current-bar" bindtap="onTapSwitch">
+    <text class="current-text">{{textbookName}}｜{{gradeLabel}}｜{{termLabel}}</text>
+    <text class="switch-tag">教材选择 ▾</text>
+  </view>
+
+  <view class="section-title">单词</view>
+  <template is="chapter-items" data="{{ items, semesterId }}" />
+
+  <block wx:if="{{hasGrammar}}">
+    <view class="section-title">语法</view>
+    <template is="chapter-items" data="{{ items: grammarItems, semesterId: grammarSemesterId }}" />
+  </block>
+</block>

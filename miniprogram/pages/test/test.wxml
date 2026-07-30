@@ -1,8 +1,23 @@
 <view wx:if="{{loading}}" class="hint">加载中…</view>
+<view wx:elif="{{!question && emptyType === 'grammar-pending'}}" class="hint">
+  <text>语法专项题目二期上线</text>
+  <text class="hint-sub">可先前往复习巩固今日语法点</text>
+  <button size="mini" type="primary" bindtap="onGoReview">去复习</button>
+</view>
 <view wx:elif="{{!question}}" class="hint">暂无题目</view>
 <view wx:else class="container">
-  <view class="progress">{{currentIndex + 1}} / {{total}}</view>
-  <view class="word">{{question.word}}</view>
+  <view class="progress">
+    <text class="kind-badge {{question.kind}}">
+      {{question.kind === 'listening' ? '听力题' : question.kind === 'grammar' ? '语法题' : '单词题'}}
+    </text>
+    {{currentIndex + 1}} / {{total}}
+  </view>
+  <!-- 听力题：发音喇叭代替文字题干（Chapter 13 §3/Q4） -->
+  <view wx:if="{{question.kind === 'listening'}}" class="speaker-wrap">
+    <button class="speaker" bindtap="onReplayAudio">🔊</button>
+    <view class="speaker-hint">点击重播</view>
+  </view>
+  <view wx:else class="word">{{question.prompt}}</view>
   <view class="options">
     <button
       wx:for="{{question.options}}"

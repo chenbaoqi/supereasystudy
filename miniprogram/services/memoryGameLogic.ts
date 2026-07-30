@@ -23,17 +23,19 @@ export const SCORE_COMBO_PER_STREAK = 2;
 export const SCORE_WRONG = -2;
 export const SCORE_TIME_BONUS_PER_SECOND = 1;
 
-// 游戏池：当前章节全部知识点（2026-07-19 Owner 修订：不再要求「已学习」，
-// 挑战可直接进行）；>10 个随机抽取（每局不同）；门槛 = 章节知识点 ≥ GAME_MIN_POOL
+// 游戏池：当前章节「单词类」知识点（2026-07-19 Owner 修订：不再要求「已学习」；
+// 2026-07-30 Owner 修订：游戏只针对记单词——type='grammar' 的语法点不进入游戏，
+// type 缺省的历史数据按 word 处理）；>10 个随机抽取；门槛 = 单词数 ≥ GAME_MIN_POOL
 export function selectPool(
   knowledgeList: readonly Knowledge[],
   random: () => number,
 ): { pool: Knowledge[]; eligible: boolean } {
-  const eligible = knowledgeList.length >= GAME_MIN_POOL;
+  const wordOnly = knowledgeList.filter((item) => (item.type ?? 'word') === 'word');
+  const eligible = wordOnly.length >= GAME_MIN_POOL;
   const pool =
-    knowledgeList.length <= GAME_POOL_SIZE
-      ? [...knowledgeList]
-      : shuffle(knowledgeList, random).slice(0, GAME_POOL_SIZE);
+    wordOnly.length <= GAME_POOL_SIZE
+      ? [...wordOnly]
+      : shuffle(wordOnly, random).slice(0, GAME_POOL_SIZE);
   return { pool, eligible };
 }
 

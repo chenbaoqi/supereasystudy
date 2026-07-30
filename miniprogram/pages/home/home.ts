@@ -16,10 +16,18 @@ Page({
     subjects: [] as Subject[],
     loading: true,
     loadFailed: false,
+    hasPreference: false, // Chapter 14：未设教材偏好时显示引导卡
   },
 
-  async onShow() {
-    await this.loadDashboard();
+  hidden: false,
+
+  onShow() {
+    this.hidden = false;
+    void this.loadDashboard();
+  },
+
+  onHide() {
+    this.hidden = true;
   },
 
   async loadDashboard() {
@@ -33,11 +41,14 @@ Page({
         homeService.getDashboard(user._id),
         subjectRepository.listAll(),
       ]);
+      // 异步竞态防护：tab 已切走时不再 setData（防渲染层 Expected updated data 报错）
+      if (this.hidden) return;
       this.setData({
         ...this.pickDashboard(dashboard),
         subjects,
         loading: false,
         loadFailed: false,
+        hasPreference: !!userService.getPreferences(), // Chapter 14 §4 引导卡显隐
       });
     } catch (error) {
       console.error('首页加载失败（§12.3 重试）', error);
@@ -57,6 +68,13 @@ Page({
   onRetry() {
     this.setData({ loading: true, loadFailed: false });
     void this.loadDashboard();
+  },
+
+  // 引导卡：进入教材选择流（Chapter 14 §4，学科分发页自动跳到学习路径）
+  async onTapGuide() {
+    const firstOpen = this.data.subjects.find((item) => item.open);
+    if (!firstOpen) return;
+    wx.navigateTo({ url: `/pages/subject/subject?subjectId=${firstOpen._id}` });
   },
 
   onTapRecent(event: WechatMiniprogram.TouchEvent) {

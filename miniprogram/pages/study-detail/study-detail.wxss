@@ -16,6 +16,17 @@
   color: #666666;
 }
 
+/* 语法讲解区块（Chapter 12）：灰底卡片与例句区分 */
+.explanation {
+  margin-top: 20rpx;
+  padding: 24rpx;
+  background: #f6f7f9;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  line-height: 1.8;
+  color: #333333;
+}
+
 .actions {
   margin-top: 20rpx;
   display: flex;
