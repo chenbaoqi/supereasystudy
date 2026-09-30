@@ -146,3 +146,65 @@ describe('LearningService', () => {
     expect(await service.getCurrentKnowledge(USER, CHAPTER)).toBeNull();
   });
 });
+
+// ADR-012：跨年级专题包（公式/语法）里混着别的年级的内容，学习页必须按当前年级过滤。
+// 关键是「列表、进度分母、复习任务」三处口径必须一致，否则会出现学了 2 条却按 3 条记满。
+describe('LearningService（年级过滤）', () => {
+  const graded: Knowledge[] = [
+    { ...makeKnowledge('k1', 1), grade: 3 },
+    { ...makeKnowledge('k2', 2), grade: 5 },
+    makeKnowledge('k3', 3), // 未标年级 → 恒显示
+  ];
+
+  function createGradedFakes() {
+    const base = createFakes();
+    const grades: (number | null | undefined)[] = [];
+    return {
+      grades,
+      ...base,
+      knowledgeRepository: {
+        async listByChapter() {
+          return graded;
+        },
+        async listByIds(ids: string[]) {
+          return graded.filter((item) => ids.includes(item._id));
+        },
+      },
+      reviewTaskCreator: {
+        async createReviewTasksForChapter(
+          _userId: string,
+          _chapterId: string,
+          grade?: number | null,
+        ) {
+          grades.push(grade);
+          return 0;
+        },
+      },
+    };
+  }
+
+  it('startLearning：只装载当前年级及以前的知识点', async () => {
+    const service = createLearningService(createGradedFakes());
+    const session = await service.startLearning(USER, CHAPTER, 3);
+    expect(session.knowledgeList.map((item) => item._id)).toEqual(['k1', 'k3']);
+  });
+
+  it('startLearning：不传 grade = 不过滤（旧行为）', async () => {
+    const service = createLearningService(createGradedFakes());
+    const session = await service.startLearning(USER, CHAPTER);
+    expect(session.knowledgeList).toHaveLength(3);
+  });
+
+  it('finishLearning：进度按过滤后的条数记满（不是全章条数）', async () => {
+    const service = createLearningService(createGradedFakes());
+    const record = await service.finishLearning(USER, CHAPTER, 3);
+    expect(record.progress).toBe(2); // 3 条里只有 2 条属于三年级
+  });
+
+  it('finishLearning：grade 透传给复习任务创建', async () => {
+    const fakes = createGradedFakes();
+    const service = createLearningService(fakes);
+    await service.finishLearning(USER, CHAPTER, 3);
+    expect(fakes.grades).toEqual([3]);
+  });
+});

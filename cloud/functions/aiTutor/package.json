@@ -1,0 +1,10 @@
+{
+  "name": "ai-tutor",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI 辅导云函数（可插拔 OpenAI 兼容接口；未配置时降级，需求第三十八章/三十九章）",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "^4.0.2"
+  }
+}

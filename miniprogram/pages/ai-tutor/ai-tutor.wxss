@@ -1,0 +1,227 @@
+/* AI 辅导页样式（UI v1.1「清爽蓝·淡色版」）
+   布局：整页 flex 纵向三段——上下文条（固定）/ 对话区（滚动）/ 快捷栏 + 输入区（固定）。
+   色值全部走 tokens，不在这里造色。 */
+.ai-page {
+  display: flex;
+  flex-direction: column;
+  /* 100vh 而不是 100%：小程序 page 的高度是自适应的，百分比拿不到可视高度 */
+  height: 100vh;
+  background: var(--bg-page);
+}
+
+.ai-tip {
+  margin: var(--sp-3) var(--gutter);
+  flex-shrink: 0;
+}
+
+/* 门禁组件在页面里是一个真实节点（自定义组件的宿主），会打散 .ai-page 的 flex 三段布局。
+   这里把「撑满剩余高度」补回来：组件内部节点页面样式管不到，但宿主节点归页面管。 */
+.ai-gate {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------------------------------------------------------------- 上下文条 */
+.ai-ctx {
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+  margin: 0 var(--gutter) var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--grad-hero);
+  border-radius: var(--r-md);
+  flex-shrink: 0;
+}
+
+.ai-ctx-label {
+  font-size: var(--fs-xs);
+  color: var(--brand-600);
+}
+
+.ai-ctx-title {
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: var(--ink-1);
+}
+
+/* 题干可能较长，超过两行截断（完整内容在对话里可以让 AI 复述） */
+.ai-ctx-stem {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+/* 选项/答案比题干长，一行放不下就换行，不做截断——这是学生要核对的信息 */
+.ai-ctx-meta {
+  font-size: var(--fs-xs);
+  color: var(--ink-2);
+  line-height: 1.6;
+}
+
+/* 学科切换（自由问答）：默认「不限」，选中才带进上下文 */
+.ai-subjects {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-top: var(--sp-1);
+}
+
+.ai-subjects-label {
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+
+.ai-subject {
+  padding: 0 var(--sp-3);
+  height: 44rpx;
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1rpx solid var(--brand-200);
+  color: var(--brand-600);
+  font-size: var(--fs-xs);
+}
+
+.ai-subject.on {
+  background: var(--brand-500);
+  border-color: var(--brand-500);
+  color: #ffffff;
+}
+
+/* ---------------------------------------------------------------- 对话区 */
+/* height:0 + flex:1 是 scroll-view 放在 flex 列里能正常滚动的关键写法，
+   只写 flex:1 时它会被内容顶开、整页跟着滚，输入框就被顶走了 */
+.ai-chat {
+  flex: 1;
+  height: 0;
+  padding: 0 var(--gutter);
+  box-sizing: border-box;
+}
+
+.ai-msg {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: var(--sp-4);
+}
+
+.ai-msg.is-ai {
+  align-items: flex-start;
+}
+
+.ai-msg.is-user {
+  align-items: flex-end;
+}
+
+.ai-bubble {
+  max-width: 78%;
+  padding: var(--sp-3) var(--sp-4);
+  font-size: var(--fs-base);
+  line-height: 1.6;
+  word-break: break-word;
+  white-space: pre-wrap; /* 保留 AI 返回里的换行与列表 */
+}
+
+.ai-bubble.is-ai {
+  background: var(--bg-card);
+  color: var(--ink-1);
+  border-radius: 6rpx var(--r-md) var(--r-md) var(--r-md);
+  box-shadow: var(--shadow-card);
+}
+
+.ai-bubble.is-user {
+  background: var(--brand-500);
+  color: #ffffff;
+  border-radius: var(--r-md) 6rpx var(--r-md) var(--r-md);
+}
+
+/* 等待回复：淡一点，避免像条真消息 */
+.ai-bubble.pending {
+  color: var(--ink-3);
+}
+
+.ai-src {
+  margin-top: 6rpx;
+  font-size: var(--fs-xs);
+  color: var(--ink-4);
+}
+
+.ai-chat-tail {
+  height: var(--sp-4);
+}
+
+/* ---------------------------------------------------------------- 快捷提问 */
+.ai-quick {
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding: var(--sp-2) 0;
+}
+
+.ai-quick-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 0 var(--gutter);
+}
+
+.ai-quick-item {
+  display: inline-flex;
+  align-items: center;
+  height: 60rpx;
+  padding: 0 var(--sp-4);
+  border-radius: var(--r-pill);
+  background: var(--bg-card);
+  border: 1rpx solid var(--brand-200);
+  color: var(--brand-600);
+  font-size: var(--fs-sm);
+  flex-shrink: 0;
+}
+
+/* ---------------------------------------------------------------- 输入区 */
+.ai-composer {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--gutter);
+  background: var(--bg-card);
+  border-top: 1rpx solid var(--line);
+  flex-shrink: 0;
+}
+
+.ai-input {
+  flex: 1;
+  min-width: 0;
+  height: 76rpx;
+  padding: 0 var(--sp-4);
+  background: var(--bg-subtle);
+  border-radius: var(--r-pill);
+  font-size: var(--fs-base);
+  color: var(--ink-1);
+}
+
+.ai-input-ph {
+  color: var(--ink-4);
+  font-size: var(--fs-sm);
+}
+
+.ai-send {
+  flex-shrink: 0;
+}
+
+.ai-disclaim {
+  /* 底部留出安全区（iPhone 的 home 横条），否则文案会被压住 */
+  padding: 0 var(--gutter) calc(var(--sp-3) + env(safe-area-inset-bottom));
+  text-align: center;
+  font-size: var(--fs-xs);
+  color: var(--ink-4);
+  line-height: 1.5;
+  flex-shrink: 0;
+  background: var(--bg-card);
+}

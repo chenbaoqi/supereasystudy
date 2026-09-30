@@ -1,1 +1,4 @@
-@import '../shared/list.wxss';
+/* 章节列表页：无私有样式。
+   列表项走共享模板 shared/chapter-items.wxml（u-* 类），状态 chip 由 chapterService.statusClassOf()
+   给出；空态 / 加载态用全局 u-empty。
+   （2026-09-14 UI v1.1 迁移：原先 @import '../shared/list.wxss' 的旧样式已废弃。） */

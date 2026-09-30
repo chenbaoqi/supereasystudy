@@ -1,0 +1,197 @@
+/* 物理光路图（WXML/CSS 版）：色值走 tokens，斜线用 rotate，箭头用 ::after 三角。 */
+.od-wrap {
+  width: 100%;
+  min-height: 280rpx;
+  padding: var(--sp-4) var(--sp-3);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.od-scene {
+  position: relative;
+  width: 100%;
+  height: 300rpx;
+}
+
+/* 光线：从法线脚点（或分界点）出发的细条，箭头在末端 */
+.od-ray {
+  position: absolute;
+  height: 4rpx;
+  background: var(--ink-2);
+  transform-origin: left center;
+}
+
+.od-ray::after {
+  content: '';
+  position: absolute;
+  right: -2rpx;
+  top: -8rpx;
+  width: 0;
+  height: 0;
+  border-left: 14rpx solid var(--ink-2);
+  border-top: 9rpx solid transparent;
+  border-bottom: 9rpx solid transparent;
+}
+
+/* 法线：竖直虚线 */
+.od-normal {
+  position: absolute;
+  left: 50%;
+  top: 20rpx;
+  bottom: 40rpx;
+  border-left: 2rpx dashed var(--ink-3);
+}
+
+.od-caption {
+  margin-top: var(--sp-3);
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  text-align: center;
+}
+
+/* ---------- 反射 ---------- */
+.od-mirror {
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  bottom: 36rpx;
+  height: 6rpx;
+  background: var(--ink-1);
+  border-radius: 3rpx;
+}
+
+.od-scene-reflect .od-normal {
+  bottom: 40rpx;
+}
+
+/* 入射/反射光线起点在法线脚点（left 50%, bottom 36rpx） */
+.od-scene-reflect .od-ray {
+  left: 50%;
+  bottom: 36rpx;
+  width: 150rpx;
+}
+
+.od-incident {
+  transform: rotate(-135deg);
+}
+
+.od-reflected {
+  transform: rotate(-45deg);
+}
+
+/* ---------- 折射 ---------- */
+.od-water {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 50%;
+  background: var(--brand-50);
+}
+
+.od-interface {
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  top: 50%;
+  height: 6rpx;
+  background: var(--ink-1);
+  border-radius: 3rpx;
+}
+
+.od-scene-refract .od-normal {
+  top: 16rpx;
+  bottom: 60rpx;
+}
+
+/* 入射/折射光线起点在分界点（left 50%, top 50%），入射较平、折射更靠法线 */
+.od-scene-refract .od-ray {
+  left: 50%;
+  top: 50%;
+  width: 150rpx;
+}
+
+.od-scene-refract .od-incident {
+  transform: rotate(-135deg);
+}
+
+.od-scene-refract .od-refracted {
+  transform: rotate(120deg);
+}
+
+/* ---------- 凸透镜 ---------- */
+.od-axis {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: 50%;
+  height: 3rpx;
+  background: var(--ink-3);
+}
+
+/* 凸透镜符号：竖线 + 上下两个朝外的小三角（用边框拼） */
+.od-lens {
+  position: absolute;
+  left: 50%;
+  top: 20%;
+  width: 5rpx;
+  height: 60%;
+  background: var(--brand-600);
+}
+
+.od-lens::before,
+.od-lens::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  width: 0;
+  height: 0;
+  transform: translateX(-50%);
+  border-left: 12rpx solid transparent;
+  border-right: 12rpx solid transparent;
+}
+
+.od-lens::before {
+  top: -2rpx;
+  border-bottom: 14rpx solid var(--brand-600);
+}
+
+.od-lens::after {
+  bottom: -2rpx;
+  border-top: 14rpx solid var(--brand-600);
+}
+
+/* 焦点：主光轴上透镜右侧的小圆点 */
+.od-focus {
+  position: absolute;
+  left: 72%;
+  top: 50%;
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  background: var(--brand-600);
+  transform: translate(-50%, -50%);
+}
+
+/* 两条示意光线：过光心的直线（斜穿），和一条折向焦点的会聚线（用两段近似） */
+.od-center {
+  left: 26%;
+  top: 72%;
+  width: 300rpx;
+  transform: rotate(-35deg);
+}
+
+.od-para {
+  left: 22%;
+  top: 34%;
+  width: 220rpx;
+  transform: rotate(4deg);
+}
+
+/* 会聚段：从透镜折向焦点 */
+.od-scene-lens .od-ray {
+  transform-origin: left center;
+}

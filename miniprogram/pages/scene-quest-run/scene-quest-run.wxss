@@ -1,0 +1,268 @@
+/* 情景应用闯关 · 答题页
+   颜色一律走 styles/tokens.wxss 的变量；这里只补布局与状态样式。 */
+.sqr-page {
+  padding: var(--sp-4) var(--gutter) 0;
+}
+
+/* 情景卡：整组题的共同前提，常驻在顶部不随题切换 */
+.sqr-story {
+  display: flex;
+  gap: var(--sp-2);
+  padding: var(--sp-3);
+  border-radius: var(--r-md);
+  background: var(--bg-subtle);
+  border: 2rpx solid var(--line);
+}
+
+.sqr-story-icon {
+  font-size: 32rpx;
+  line-height: 1.4;
+}
+
+.sqr-story-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: var(--fs-sm);
+  line-height: 1.7;
+  color: var(--ink-2);
+}
+
+.sqr-progress {
+  margin-top: var(--sp-3);
+}
+
+.sqr-progress-text {
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+  margin-bottom: var(--sp-1);
+}
+
+.sqr-bar {
+  height: 12rpx;
+  border-radius: 6rpx;
+  background: var(--bg-subtle);
+  overflow: hidden;
+}
+
+/* 进度条走 --grad-brand（实色蓝 + 白字的那套），与页头的 --grad-hero 不混用 */
+.sqr-bar-fill {
+  height: 100%;
+  border-radius: 6rpx;
+  background: var(--grad-brand);
+  transition: width 0.25s ease;
+}
+
+/* 读题条：左边「再读一遍」，右边「自动读题」开关 */
+.sqr-audio {
+  margin-top: var(--sp-3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
+
+.sqr-audio-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-pill);
+  border: 2rpx solid var(--line);
+  background: var(--bg-card);
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+.sqr-audio-icon {
+  font-size: var(--fs-base);
+}
+
+.sqr-audio-toggle {
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-pill);
+  border: 2rpx solid var(--line);
+  background: var(--bg-card);
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+}
+
+/* 开着的时候要一眼看出来，否则家长不知道声音是从哪来的 */
+.sqr-audio-toggle.is-on {
+  border-color: var(--brand-600);
+  background: var(--state-doing-bg);
+  color: var(--brand-700);
+}
+
+.sqr-card {
+  margin-top: var(--sp-4);
+  padding: var(--sp-4);
+  background: var(--bg-card);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.sqr-stem {
+  font-size: var(--fs-lg);
+  line-height: 1.7;
+  color: var(--ink-1);
+}
+
+.sqr-options {
+  margin-top: var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.sqr-opt {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  padding: var(--sp-3);
+  border: 2rpx solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--bg-card);
+}
+
+.sqr-opt-label {
+  flex: 0 0 auto;
+  width: 44rpx;
+  height: 44rpx;
+  line-height: 44rpx;
+  text-align: center;
+  border-radius: 50%;
+  background: var(--bg-subtle);
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+.sqr-opt-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: var(--fs-base);
+  line-height: 1.6;
+  color: var(--ink-1);
+}
+
+/* 选中态：给品牌蓝边。「我选了哪个」是中性事实，不打勾也不打叉——
+   学习类界面别让「还没判对错」就先变成惩罚。 */
+.sqr-opt.is-picked {
+  border-color: var(--brand-600);
+  background: var(--state-doing-bg);
+}
+
+.sqr-opt.is-picked .sqr-opt-label {
+  background: var(--brand-600);
+  color: #fff;
+}
+
+/* 公布答案时高亮正确项（绿边），与「我选的」区分开：两个状态可以同时命中 */
+.sqr-opt.is-right {
+  border-color: var(--success);
+  background: var(--success-bg);
+}
+
+.sqr-opt.is-right .sqr-opt-label {
+  background: var(--success);
+  color: #fff;
+}
+
+.sqr-feedback {
+  margin-top: var(--sp-4);
+  padding: var(--sp-3);
+  border-radius: var(--r-md);
+  border: 2rpx solid var(--line);
+  background: var(--bg-subtle);
+}
+
+.sqr-fb-title {
+  font-size: var(--fs-md);
+  font-weight: 500;
+}
+
+.sqr-fb-sub {
+  margin-top: var(--sp-1);
+  font-size: var(--fs-sm);
+  line-height: 1.7;
+  color: var(--ink-2);
+}
+
+.sqr-feedback.is-correct {
+  border-color: var(--success);
+  background: var(--success-bg);
+}
+
+.sqr-feedback.is-hint {
+  border-color: var(--warning);
+  background: var(--warning-bg);
+}
+
+.sqr-feedback.is-reveal {
+  border-color: var(--brand-600);
+  background: var(--state-doing-bg);
+}
+
+/* ---- 结算弹层 ---- */
+.sqr-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--bg-mask);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--gutter);
+  box-sizing: border-box;
+}
+
+.sqr-modal {
+  width: 100%;
+  padding: var(--sp-5) var(--sp-4);
+  border-radius: var(--r-lg);
+  background: var(--bg-card);
+  text-align: center;
+}
+
+.sqr-modal-title {
+  font-size: var(--fs-xl);
+  font-weight: 500;
+  color: var(--ink-1);
+}
+
+.sqr-modal-sub {
+  margin-top: var(--sp-1);
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+.sqr-modal-stat {
+  margin-top: var(--sp-4);
+  font-size: var(--fs-md);
+  color: var(--brand-700);
+}
+
+.sqr-wallet {
+  margin-top: var(--sp-2);
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+.sqr-wallet-badge {
+  color: var(--brand-700);
+}
+
+.sqr-actions {
+  margin-top: var(--sp-5);
+  display: flex;
+  gap: var(--sp-3);
+}
+
+/* ⚠️ 双类名提权：微信内置 button{width:184px} 是 (0,1,1)，单类名压不过。
+   这里两个按钮各占一半，必须显式给 flex:1 + 覆盖宽度。 */
+.u-btn.sqr-btn {
+  flex: 1 1 0;
+  width: auto;
+  min-width: 0;
+}

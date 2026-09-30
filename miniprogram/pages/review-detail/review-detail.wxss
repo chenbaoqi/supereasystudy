@@ -1,14 +1,71 @@
-/* 复习详情页样式（§15：UI 从简；卡片与 study-detail 共享） */
-@import '../shared/card.wxss';
-
-.hint {
-  padding: 120rpx 0;
-  text-align: center;
-  color: #999999;
-  font-size: 28rpx;
+/* 复习详情页（UI v1.1，2026-09-14 迁移）
+   —— 与 study-detail 共用 u-card 骨架与 tokens 色值，本页不新造色值。
+   原 .unknown 是实心 #fa5151（刺眼），改为 danger 描边 + danger 文字。 */
+.rd-page {
+  padding-bottom: calc(var(--sp-5) + env(safe-area-inset-bottom));
 }
 
-.unknown {
-  background: #fa5151;
-  color: #ffffff;
+.rd-card {
+  padding: var(--sp-5) var(--sp-4);
+}
+
+.rd-word-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.rd-word {
+  font-size: var(--fs-2xl);
+  font-weight: 600;
+  color: var(--ink-1);
+  line-height: 1.25;
+}
+
+.rd-ipa {
+  font-size: var(--fs-md);
+  color: var(--ink-3);
+}
+
+.rd-speak {
+  margin-left: auto;
+  padding: 0 var(--sp-3);
+}
+
+.rd-meaning {
+  margin-top: var(--sp-3);
+  font-size: var(--fs-lg);
+  color: var(--ink-1);
+  line-height: 1.6;
+}
+
+.rd-example {
+  margin-top: var(--sp-3);
+  font-size: var(--fs-md);
+  color: var(--ink-2);
+  line-height: 1.7;
+}
+
+.rd-progress {
+  margin-top: var(--sp-4);
+  text-align: center;
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+}
+
+.rd-nav {
+  display: flex;
+  gap: var(--sp-3);
+  margin: var(--sp-4) var(--gutter) 0;
+}
+
+.rd-nav-btn {
+  flex: 1;
+}
+
+/* 「不认识」：danger 描边而非实心红（v1.1 淡色调，实心红块太抢眼） */
+.u-btn-ghost.rd-unknown {
+  border-color: var(--danger);
+  color: var(--danger);
 }

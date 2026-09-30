@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "AI 辅导",
+  "usingComponents": {
+    "entitlement-gate": "/components/entitlement-gate/entitlement-gate"
+  }
+}

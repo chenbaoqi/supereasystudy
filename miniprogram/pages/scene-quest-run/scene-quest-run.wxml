@@ -1,0 +1,71 @@
+<!-- 情景应用闯关 · 答题页
+     一屏一问：情景卡常驻（故事是这组题的共同前提）→ 题干 → 四个选项 → 即时反馈。
+     ⚠️ 选项用 view 不用 button：微信给 button 内置 width:184px（特异性 0,1,1），
+     放进自适应容器会被撑破（详见 styles/README 的「微信内置地雷」一节）。
+     ⚠️ 结算弹层的两个按钮是 button —— 必须双类名提权到 (0,2,0)，否则 184px 压过 .u-btn-block。 -->
+<view class="sqr-page">
+  <view class="sqr-story">
+    <text class="sqr-story-icon">📖</text>
+    <text class="sqr-story-text">{{story}}</text>
+  </view>
+
+  <view class="sqr-progress">
+    <view class="sqr-progress-text">{{progressText}}</view>
+    <view class="sqr-bar">
+      <view class="sqr-bar-fill" style="width: {{progressPercent}}%"></view>
+    </view>
+  </view>
+
+  <!-- 低年级识字率不高：题目自动念一遍，这里给「再读一遍」和开关。
+       ⚠️ 两个都是 view 不是 button：微信内置 button{width:184px} 是 (0,1,1)，
+       放进这种自适应横条会被撑破。 -->
+  <view class="sqr-audio">
+    <view class="sqr-audio-btn" bindtap="onTapReadQuestion" hover-class="u-tap" hover-stay-time="60">
+      <text class="sqr-audio-icon">🔊</text>
+      <text>再读一遍</text>
+    </view>
+    <view
+      class="sqr-audio-toggle {{readAloudOn ? 'is-on' : ''}}"
+      bindtap="onToggleReadAloud" hover-class="u-tap" hover-stay-time="60"
+    >
+      <text>{{readAloudOn ? '自动读题：开' : '自动读题：关'}}</text>
+    </view>
+  </view>
+
+  <view wx:if="{{view}}" class="sqr-card">
+    <view class="sqr-stem">{{view.stem}}</view>
+    <view class="sqr-options">
+      <view
+        class="sqr-opt {{item.picked ? 'is-picked' : ''}} {{item.right ? 'is-right' : ''}}"
+        wx:for="{{view.options}}"
+        wx:key="key"
+        data-index="{{index}}"
+        bindtap="onPick" hover-class="u-tap-flat" hover-stay-time="60"
+      >
+        <text class="sqr-opt-label">{{item.label}}</text>
+        <text class="sqr-opt-text">{{item.text}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{feedback}}" class="sqr-feedback is-{{feedback}}">
+    <view class="sqr-fb-title">{{feedbackTitle}}</view>
+    <view class="sqr-fb-sub">{{feedbackSub}}</view>
+  </view>
+
+  <view class="u-safe-bottom"></view>
+</view>
+
+<view wx:if="{{showResult}}" class="sqr-mask">
+  <view class="sqr-modal">
+    <view class="sqr-modal-title">{{resultTitle}}</view>
+    <view class="sqr-modal-sub">{{resultSub}}</view>
+    <view class="sqr-modal-stat">{{resultStat}}</view>
+    <view wx:if="{{walletGain}}" class="sqr-wallet">{{walletGain}}</view>
+    <view wx:if="{{walletBadgeText}}" class="sqr-wallet sqr-wallet-badge">{{walletBadgeText}}</view>
+    <view class="sqr-actions">
+      <button class="u-btn u-btn-primary sqr-btn" bindtap="onReplay" hover-class="u-tap" hover-stay-time="60">再来一次</button>
+      <button class="u-btn sqr-btn" bindtap="onBack" hover-class="u-tap" hover-stay-time="60">换一组</button>
+    </view>
+  </view>
+</view>

@@ -1,3 +1,11 @@
 {
-  "navigationBarTitleText": "测试"
+  "navigationBarTitleText": "测试",
+  "usingComponents": {
+    "math-number-line": "/components/math-number-line/math-number-line",
+    "math-fraction": "/components/math-fraction/math-fraction",
+    "math-coordinate-plane": "/components/math-coordinate-plane/math-coordinate-plane",
+    "math-geometry": "/components/math-geometry/math-geometry",
+    "english-diagram": "/components/english-diagram/english-diagram",
+    "optics-diagram": "/components/optics-diagram/optics-diagram"
+  }
 }

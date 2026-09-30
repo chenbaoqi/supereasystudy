@@ -1,0 +1,86 @@
+<!-- 我的战绩页（游戏打通 L2）
+     数据源：memory_game_records（各游戏 finishGame 每局写一条）。
+     UI：概览走 u-grid（与学习统计页同一套），分组与最近战绩走 u-row。
+     ⚠️ 「重试」是 button → 必须带第二个类名提到 (0,2,0)，否则微信内置 width:184px 会压过 .u-btn-block。 -->
+<view wx:if="{{loading}}" class="u-empty">
+  <view class="u-empty-icon">⏳</view>
+  <view class="u-empty-text">加载中…</view>
+</view>
+
+<view wx:elif="{{loadFailed}}" class="u-empty">
+  <view class="u-empty-icon">📡</view>
+  <view class="u-empty-text">战绩暂时读不到</view>
+  <view class="u-empty-sub">不影响继续玩，玩过的局都记着</view>
+  <button class="u-btn u-btn-primary gr-retry" bindtap="onRetry" hover-class="u-tap" hover-stay-time="60">重试</button>
+</view>
+
+<view wx:elif="{{empty}}" class="u-empty">
+  <view class="u-empty-icon">🏆</view>
+  <view class="u-empty-text">还没有战绩</view>
+  <view class="u-empty-sub">去游戏中心玩一局，这里就会有记录</view>
+  <button class="u-btn u-btn-primary gr-retry" bindtap="onBackToGameCenter" hover-class="u-tap" hover-stay-time="60">去玩游戏</button>
+</view>
+
+<view wx:else class="gr-page">
+  <view class="u-grid gr-grid">
+    <view class="gr-card">
+      <text class="gr-icon">🎮</text>
+      <text class="gr-num">{{totalGames}}</text>
+      <text class="gr-label">总局数</text>
+    </view>
+    <view class="gr-card">
+      <text class="gr-icon">✅</text>
+      <text class="gr-num">{{totalCorrect}}</text>
+      <text class="gr-label">累计答对</text>
+    </view>
+    <view class="gr-card">
+      <text class="gr-icon">🎯</text>
+      <text class="gr-num">{{accuracy}}%</text>
+      <text class="gr-label">总正确率</text>
+    </view>
+    <view class="gr-card">
+      <text class="gr-icon">⏱</text>
+      <text class="gr-num gr-num-sm">{{totalTimeText}}</text>
+      <text class="gr-label">累计用时</text>
+    </view>
+  </view>
+
+  <view wx:if="{{source === 'error'}}" class="gr-hint">云端战绩暂时读不到，下面只显示了本机部分</view>
+
+  <view wx:if="{{groups.length > 0}}" class="u-section">
+    <view class="u-section-title">各游戏战绩</view>
+    <view class="u-section-more">共 {{groups.length}} 项</view>
+  </view>
+  <view wx:if="{{groups.length > 0}}" class="u-list">
+    <view class="u-row" wx:for="{{groups}}" wx:key="gameType">
+      <view class="u-row-icon">{{item.icon}}</view>
+      <view class="u-row-body">
+        <view class="u-row-title">{{item.name}}</view>
+        <view class="u-row-sub">最高 {{item.bestScore}} 分 · 正确率 {{item.accuracy}}%</view>
+      </view>
+      <view class="u-row-extra">
+        <text class="u-chip u-chip-brand">{{item.plays}} 局</text>
+        <text wx:if="{{item.lastPlayedText}}" class="gr-when">{{item.lastPlayedText}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{rows.length > 0}}" class="u-section">
+    <view class="u-section-title">最近战绩</view>
+    <view class="u-section-more">最多 20 条</view>
+  </view>
+  <view wx:if="{{rows.length > 0}}" class="u-list">
+    <view class="u-row gr-row" wx:for="{{rows}}" wx:key="id">
+      <view class="u-row-icon">{{item.icon}}</view>
+      <view class="u-row-body">
+        <view class="u-row-title">{{item.name}} · {{item.score}} 分</view>
+        <view class="u-row-sub">对 {{item.correctCount}} · 错 {{item.wrongCount}} · {{item.durationText}}</view>
+      </view>
+      <view class="u-row-extra">
+        <text wx:if="{{item.whenText}}" class="gr-when">{{item.whenText}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="u-safe-bottom"></view>
+</view>

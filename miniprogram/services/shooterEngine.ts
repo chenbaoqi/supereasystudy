@@ -6,6 +6,7 @@ export interface Enemy {
   readonly knowledgeId: string;
   readonly meaning: string; // 显示中文
   readonly word: string; // 匹配用的英文答案
+  readonly pronunciation?: string; // 预录制发音 URL（cloud:// 路径）
   x: number;
   y: number;
   w: number;
@@ -18,7 +19,8 @@ export interface Bullet {
   x: number;
   y: number;
   targetX: number;
-  speed: number; // px/s
+  targetY: number; // 瞄准的敌人 y 坐标
+  speed: number;
 }
 
 export interface Particle {
@@ -60,6 +62,7 @@ export function spawnEnemy(
     knowledgeId: knowledge._id,
     meaning: knowledge.meaning,
     word: knowledge.word,
+    pronunciation: knowledge.pronunciation,
     x: Math.max(30, random() * (canvasWidth - 120)),
     y: 0,
     w: 120,
@@ -122,11 +125,22 @@ export function findMatch(state: EngineState): number {
 }
 
 // 命中：生成子弹 + 加分
-export function applyHit(state: EngineState, enemyIndex: number, airplaneX: number): EngineState {
+export function applyHit(
+  state: EngineState,
+  enemyIndex: number,
+  airplaneX: number,
+  airplaneY: number,
+): EngineState {
   const enemy = state.enemies[enemyIndex];
   if (!enemy) return state;
   const { delta, newStreak } = scoreForCorrect(state.streak);
-  const bullet: Bullet = { x: airplaneX, y: 0, targetX: enemy.x + enemy.w / 2, speed: 600 };
+  const bullet: Bullet = {
+    x: airplaneX,
+    y: airplaneY - 10,
+    targetX: enemy.x + enemy.w / 2,
+    targetY: enemy.y,
+    speed: 900,
+  };
   return {
     ...state,
     currentInput: '',
@@ -145,19 +159,20 @@ export function tickBullets(state: EngineState, dt: number): EngineState {
   const particles = [...state.particles];
   for (const bullet of state.bullets) {
     const distX = bullet.targetX - bullet.x;
-    const distY = -bullet.y; // 向上飞
+    const distY = bullet.targetY - bullet.y;
     const totalDist = Math.sqrt(distX ** 2 + distY ** 2);
     if (totalDist < 10) {
-      // 命中目标位置生成粒子
-      for (let i = 0; i <= 12; i++) {
-        const angle = (Math.PI * 2 * i) / 12;
+      // 命中目标位置生成爆炸粒子（多色 + 环形冲击波）
+      for (let i = 0; i <= 28; i++) {
+        const angle = (Math.PI * 2 * i) / 28;
+        const speed = 80 + Math.random() * 200;
         particles.push({
           x: bullet.targetX,
           y: 0,
-          vx: Math.cos(angle) * 160,
-          vy: Math.sin(angle) * 160 - 80,
-          life: 0.4,
-          maxLife: 0.4,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 60,
+          life: 0.5 + Math.random() * 0.3,
+          maxLife: 0.7,
         });
       }
       continue;

@@ -1,0 +1,106 @@
+<!-- AI 辅导页（需求第三十八章）：对话式界面，页内不留滚动死区——
+     顶部上下文条与底部输入区固定，只有中间对话区滚动。 -->
+<view class="ai-page">
+  <!-- AI 未配置 / 连不上时的提示条（不阻挡操作） -->
+  <view wx:if="{{statusText}}" class="u-tip ai-tip">
+    <text class="u-tip-text">{{statusText}}</text>
+  </view>
+
+  <!-- 上下文条：让用户知道 AI 现在"看"到了什么 -->
+  <view wx:if="{{contextTitle || contextDesc}}" class="ai-ctx">
+    <text class="ai-ctx-label">AI 正在辅导</text>
+    <text wx:if="{{contextTitle}}" class="ai-ctx-title">{{contextTitle}}</text>
+    <text wx:if="{{contextDesc}}" class="ai-ctx-stem">{{contextDesc}}</text>
+    <!-- 选项 / 你选了 / 正确答案：答错进来时必现，证明 AI 确实看到了这道题 -->
+    <text wx:for="{{contextMeta}}" wx:key="*this" class="ai-ctx-meta">{{item}}</text>
+
+    <!-- 学科切换（仅自由问答）：默认「不限」，不预设成当前教材的学科 -->
+    <view wx:if="{{showSubjectPicker}}" class="ai-subjects">
+      <text class="ai-subjects-label">学科</text>
+      <view
+        class="ai-subject {{activeSubject === '' ? 'on' : ''}}"
+        data-subject=""
+        bindtap="onPickSubject" hover-class="u-tap" hover-stay-time="60"
+      >
+        不限
+      </view>
+      <view
+        wx:for="{{subjectChips}}"
+        wx:key="*this"
+        class="ai-subject {{activeSubject === item ? 'on' : ''}}"
+        data-subject="{{item}}"
+        bindtap="onPickSubject" hover-class="u-tap-flat" hover-stay-time="60"
+      >
+        {{item}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 变现门禁（ADR-015）：AI 讲解属增值内容，需观看视频解锁（会员免）。
+       上下文条刻意留在外面 —— 用户该知道自己问的是哪道题，门禁不挡题干。
+       scope 用固定值 chat：解锁一次当天可无限次提问（key 里已带日期）。 -->
+  <entitlement-gate class="ai-gate" feature="ai-tutor" scope="chat">
+    <!-- 对话区 -->
+    <scroll-view
+      class="ai-chat"
+      scroll-y
+      scroll-into-view="{{scrollTo}}"
+      scroll-with-animation
+      enhanced
+      show-scrollbar="{{false}}"
+    >
+      <view wx:for="{{messages}}" wx:key="id" id="{{item.id}}" class="ai-msg is-{{item.role}}">
+        <view class="ai-bubble is-{{item.role}} {{item.pending ? 'pending' : ''}}">
+          <text>{{item.text}}</text>
+        </view>
+        <text wx:if="{{item.role === 'ai' && item.source === 'fallback'}}" class="ai-src">
+          程序化提示（AI 暂不可用）
+        </text>
+      </view>
+      <view class="ai-chat-tail"></view>
+    </scroll-view>
+
+    <!-- 快捷提问（横向滚动，不换行挤压） -->
+    <scroll-view
+      wx:if="{{quickActions.length > 0}}"
+      class="ai-quick"
+      scroll-x
+      show-scrollbar="{{false}}"
+    >
+      <view class="ai-quick-inner">
+        <view
+          wx:for="{{quickActions}}"
+          wx:key="action"
+          class="ai-quick-item"
+          data-action="{{item.action}}"
+          data-label="{{item.label}}"
+          bindtap="onQuick" hover-class="u-tap-flat" hover-stay-time="60"
+        >
+          {{item.label}}
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- 输入区 -->
+    <view class="ai-composer">
+      <input
+        class="ai-input"
+        value="{{inputText}}"
+        placeholder="直接问我，比如：为什么这里要用这个公式？"
+        placeholder-class="ai-input-ph"
+        confirm-type="send"
+        disabled="{{sending}}"
+        bindinput="onInput"
+        bindconfirm="onSend"
+      />
+      <button
+        class="u-btn u-btn-primary u-btn-sm ai-send"
+        disabled="{{sending || !inputText}}"
+        bindtap="onSend" hover-class="u-tap" hover-stay-time="60"
+      >
+        发送
+      </button>
+    </view>
+    <view class="ai-disclaim">内容由 AI 生成，仅供参考；标准答案以题库与老师讲解为准</view>
+  </entitlement-gate>
+</view>

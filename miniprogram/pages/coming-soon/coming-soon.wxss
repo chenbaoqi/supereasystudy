@@ -1,1 +1,3 @@
-/* Coming Soon 页样式。UI 规范以 Specification 第 12 章为准（待补写）。 */
+/* 敬请期待页 UI v1.1（2026-09-14）：样式全部来自 styles/components.wxss 的 .u-empty，
+   无需本地类。原注释「UI 规范以 Specification 第 12 章为准（待补写）」已过期——
+   第 12 章 2026-07-19 就冻结了，规范现在是 styles/tokens.wxss + styles/components.wxss。 */

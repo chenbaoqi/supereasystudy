@@ -1,10 +1,24 @@
-<view class="container">
-  <view class="accuracy">{{accuracy}}%</view>
-  <view class="label">正确率（{{correct}} / {{total}}）</view>
-  <view class="duration">用时 {{durationText}}</view>
-  <view class="actions">
-    <button type="primary" bindtap="onRestudy">重新学习</button>
-    <button bindtap="onGoReview">去复习</button>
-    <button bindtap="onBackToChapter">返回章节</button>
+<!-- 测试结果页（Chapter 04 §5）：正确率 + 耗时 + 三个出口。
+     UI v1.1（2026-09-14）：数字走 u-card 与 tokens，正确率按分数段着色
+     （原来固定绿色，90% 和 40% 看起来一样）。
+
+     成绩卡走变现门禁（ADR-015）：本次分析需要观看视频解锁。
+     scope 带「本次尝试」时间戳 —— Owner 要求按次解锁，同章节考第二次要重新解锁。 -->
+<view class="tr-page">
+  <entitlement-gate feature="test-result" scope="{{scope}}">
+    <view class="u-card tr-card">
+      <view class="tr-accuracy {{accuracy >= 80 ? 'is-good' : accuracy >= 60 ? 'is-mid' : 'is-low'}}">
+        {{accuracy}}%
+      </view>
+      <view class="tr-label">正确率（{{correct}} / {{total}}）</view>
+      <view class="tr-duration">用时 {{durationText}}</view>
+      <view wx:if="{{stars > 0}}" class="tr-stars">+{{stars}}⭐</view>
+    </view>
+  </entitlement-gate>
+
+  <view class="tr-actions">
+    <button class="u-btn u-btn-primary tr-btn" bindtap="onRestudy" hover-class="u-tap" hover-stay-time="60">重新学习</button>
+    <button class="u-btn tr-btn" bindtap="onGoReview" hover-class="u-tap" hover-stay-time="60">去复习</button>
+    <button class="u-btn u-btn-ghost tr-btn" bindtap="onBackToChapter" hover-class="u-tap" hover-stay-time="60">返回章节</button>
   </view>
 </view>

@@ -1,3 +1,7 @@
-<view class="page-placeholder">
-  <text>敬请期待</text>
+<!-- 敬请期待：未开放学科 / 未上线功能的统一落地页。
+     UI v1.1（2026-09-14）：原来只有三个居中灰字，看不出「是我点错了还是没加载出来」。 -->
+<view class="u-empty">
+  <view class="u-empty-icon">🚧</view>
+  <view class="u-empty-text">敬请期待</view>
+  <view class="u-empty-sub">这个功能还在路上，先去别处逛逛吧</view>
 </view>

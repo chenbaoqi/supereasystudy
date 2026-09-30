@@ -101,3 +101,32 @@ describe('isMatch / 计分（Q2）', () => {
     expect(timeBonus(-3)).toBe(0);
   });
 });
+
+// L4：错过的知识点要在下一局游戏里优先再出现一次（同章优先，不跨章）
+describe('selectPool 错题优先', () => {
+  // 12 个 > GAME_POOL_SIZE(10)，会走「挑选」分支
+  it('错题排在最前面', () => {
+    const { pool } = selectPool(list, () => 0, ['k7', 'k12']);
+    expect(pool.length).toBe(GAME_POOL_SIZE);
+    const ids = pool.map((item) => item._id);
+    expect(ids.slice(0, 2).sort()).toEqual(['k12', 'k7']);
+  });
+
+  it('不传错题 → 与老行为一致（仍然抽满且不重复）', () => {
+    const { pool } = selectPool(list, () => 0.5);
+    expect(pool.length).toBe(GAME_POOL_SIZE);
+    expect(new Set(pool.map((item) => item._id)).size).toBe(GAME_POOL_SIZE);
+  });
+
+  it('跨章的错题不会被硬塞进来（池子里没有就当没有）', () => {
+    const { pool } = selectPool(list, () => 0, ['别章的错题']);
+    expect(pool.map((item) => item._id)).not.toContain('别章的错题');
+    expect(pool.length).toBe(GAME_POOL_SIZE);
+  });
+
+  it('池子装得下时全上（错题自然都在里面，不需要挑）', () => {
+    const small = list.slice(0, GAME_POOL_SIZE - 2);
+    const { pool } = selectPool(small, () => 0.9, ['k1']);
+    expect(pool.length).toBe(small.length);
+  });
+});

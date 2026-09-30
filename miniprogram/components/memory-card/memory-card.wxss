@@ -1,37 +1,39 @@
-/* 消消乐卡片样式（§15：先闭环，消除动画后续补） */
+/* 消消乐卡片 UI v1.1（2026-09-14）
+   色值全部取自 styles/tokens.wxss 的 var()：CSS 自定义属性定义在 page 上，
+   会沿元素树继承进自定义组件内部，所以组件里也能直接用令牌，不需要重复定义。
+   选中 / 答错改为「淡底 + 描边 + 深色字」，不再整块实色（一屏 16 张卡，实色太吵）。 */
 .memory-card {
   display: flex;
   align-items: center;
   justify-content: center;
   aspect-ratio: 3 / 4;
-  border-radius: 12rpx;
-  padding: 8rpx;
+  border-radius: var(--r-md);
+  padding: var(--sp-1);
   box-sizing: border-box;
-  background: #ffffff;
-  border: 2rpx solid #e5e5e5;
+  background: var(--bg-card);
+  border: 2rpx solid var(--line);
 }
 
-.selected {
-  border-color: #07c160;
-  background: #e8f9f0;
+.memory-card.selected {
+  border-color: var(--brand-400);
+  background: var(--brand-50);
+  color: var(--brand-700);
 }
 
-.wrong {
-  background: #fa5151;
-  border-color: #fa5151;
-}
-
-.wrong .card-text {
-  color: #ffffff;
+.memory-card.wrong {
+  background: var(--danger-bg);
+  border-color: var(--danger);
+  color: var(--danger);
 }
 
 /* 消除：占位隐藏（保持网格位置，符合消消乐视觉习惯） */
-.eliminated {
+.memory-card.eliminated {
   visibility: hidden;
 }
 
 .card-text {
-  font-size: 24rpx;
+  font-size: var(--fs-sm);
   text-align: center;
   word-break: break-all;
+  color: inherit;
 }

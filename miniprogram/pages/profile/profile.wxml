@@ -1,0 +1,38 @@
+<!-- 个人形象：选一个专属头像，给自己起个名字。 -->
+<view class="u-section">
+  <text class="u-section-title">选一个专属头像</text>
+</view>
+
+<view class="pf-preview">当前：{{avatar}}</view>
+
+<view class="pf-grid">
+  <view
+    wx:for="{{choices}}"
+    wx:key="*this"
+    class="pf-item {{item === avatar ? 'pf-item-on' : ''}}"
+    data-avatar="{{item}}"
+    bindtap="onTapAvatar"
+    hover-class="u-tap-flat"
+    hover-stay-time="60"
+  >{{item}}</view>
+</view>
+
+<view class="u-section">
+  <text class="u-section-title">给自己起个名字</text>
+</view>
+
+<view class="u-list">
+  <view class="u-row">
+    <input
+      class="pf-input"
+      value="{{nickname}}"
+      placeholder="最多 {{maxLen}} 个字"
+      maxlength="{{maxLen}}"
+      bindinput="onNicknameInput"
+    />
+  </view>
+</view>
+
+<button class="u-btn u-btn-primary u-btn-block pf-save" bindtap="onSave" hover-class="u-tap" hover-stay-time="60">保存</button>
+
+<view class="u-safe-bottom"></view>

@@ -1,23 +1,42 @@
-<view wx:if="{{loading}}" class="hint">加载中…</view>
-<view wx:elif="{{loadFailed}}" class="hint">
-  <text>加载失败，请检查网络</text>
-  <button size="mini" bindtap="onRetry">重试</button>
+<!-- 复习首页（艾宾浩斯遗忘曲线）
+     UI v1.1（2026-09-14）：统计块走 u-stats，按钮走 u-btn（原来 type="primary" 是微信自带的绿，
+     跟全站清爽蓝不一致），空态补一句「为什么会空」，别只说「没有内容」。 -->
+<view wx:if="{{loading}}" class="u-empty">
+  <view class="u-empty-icon">⏳</view>
+  <view class="u-empty-text">加载中…</view>
 </view>
+
+<view wx:elif="{{loadFailed}}" class="u-empty">
+  <view class="u-empty-icon">📡</view>
+  <view class="u-empty-text">加载失败，请检查网络</view>
+  <button class="u-btn u-btn-primary" bindtap="onRetry" hover-class="u-tap" hover-stay-time="60">重试</button>
+</view>
+
 <block wx:else>
-  <view class="stats">
-    <view class="stat">
-      <text class="num">{{dueCount}}</text>
-      <text class="label">今日待复习</text>
-    </view>
-    <view class="stat">
-      <text class="num">{{doneCount}}</text>
-      <text class="label">已完成</text>
-    </view>
-    <view class="stat">
-      <text class="num">{{completionRate}}%</text>
-      <text class="label">完成率</text>
+  <view class="u-card rv-card">
+    <view class="u-stats">
+      <view class="u-stat">
+        <text class="u-stat-num">{{dueCount}}</text>
+        <text class="u-stat-label">今日待复习</text>
+      </view>
+      <view class="u-stat">
+        <text class="u-stat-num">{{doneCount}}</text>
+        <text class="u-stat-label">已完成</text>
+      </view>
+      <view class="u-stat">
+        <text class="u-stat-num">{{completionRate}}%</text>
+        <text class="u-stat-label">完成率</text>
+      </view>
     </view>
   </view>
-  <view wx:if="{{dueCount === 0}}" class="hint">今天没有待复习内容</view>
-  <button wx:else type="primary" class="start" bindtap="onStart">开始复习</button>
+
+  <view wx:if="{{dueCount === 0}}" class="u-empty">
+    <view class="u-empty-icon">✅</view>
+    <view class="u-empty-text">今天没有待复习内容</view>
+    <view class="u-empty-sub">明天再来，遗忘曲线会自动挑出该巩固的知识点</view>
+  </view>
+
+  <view wx:else class="rv-actions">
+    <button class="u-btn u-btn-primary u-btn-block" bindtap="onStart" hover-class="u-tap" hover-stay-time="60">开始复习</button>
+  </view>
 </block>

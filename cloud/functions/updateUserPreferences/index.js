@@ -8,16 +8,24 @@ cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 
 exports.main = async (event) => {
   const { OPENID } = cloud.getWXContext();
-  const { preferences } = event;
+  const { preferences, subjectId } = event;
   const db = cloud.database();
 
   const existing = await db.collection('users').where({ openid: OPENID }).limit(1).get();
   if (existing.data.length === 0) return null;
+  const user = existing.data[0];
 
-  await db
-    .collection('users')
-    .doc(existing.data[0]._id)
-    .update({ data: { preferences, updatedAt: db.serverDate() } });
+  // 分科偏好（多科修复 2026-09-08）：subjectId 有值时并入 preferencesBySubject，
+  // 旧字段 preferences 始终写入（向后兼容 + 未传 subjectId 的老客户端）。
+  const data = { preferences, updatedAt: db.serverDate() };
+  if (subjectId && typeof subjectId === 'string') {
+    data.preferencesBySubject = {
+      ...(user.preferencesBySubject || {}),
+      [subjectId]: preferences,
+    };
+  }
+
+  await db.collection('users').doc(user._id).update({ data });
 
   const doc = await db.collection('users').doc(existing.data[0]._id).get();
   return doc.data;

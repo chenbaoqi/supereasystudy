@@ -1,18 +1,38 @@
-<view wx:if="{{loading}}" class="hint">加载中…</view>
-<view wx:elif="{{!current}}" class="hint">今天没有待复习内容</view>
-<view wx:else class="card">
-  <view class="word-row">
-    <text class="word">{{current.knowledge.word}}</text>
-    <text class="ipa" wx:if="{{current.knowledge.ipa}}">/{{current.knowledge.ipa}}/</text>
-    <button wx:if="{{current.knowledge.pronunciation}}" size="mini" bindtap="onPlayAudio">🔊</button>
+<!-- 复习详情页（Chapter 05 遗忘曲线）：知识卡 + 「认识 / 不认识」自评。
+     UI v1.1（2026-09-14）：与 study-detail 用同一套卡片骨架（u-card）与色值，
+     shared/card.wxss 那套私有类不再使用。 -->
+<view wx:if="{{loading}}" class="u-empty">
+  <text class="u-empty-text">加载中…</text>
+</view>
+<view wx:elif="{{!current}}" class="u-empty">
+  <text class="u-empty-icon">✅</text>
+  <text class="u-empty-text">今天没有待复习内容</text>
+  <text class="u-empty-sub">明天再来，复习安排按遗忘曲线自动排</text>
+</view>
+<view wx:else class="rd-page">
+  <view class="u-card rd-card">
+    <view class="rd-word-row">
+      <text class="rd-word">{{current.knowledge.word}}</text>
+      <text wx:if="{{current.knowledge.ipa}}" class="rd-ipa">/{{current.knowledge.ipa}}/</text>
+      <button
+        wx:if="{{current.knowledge.pronunciation}}"
+        class="u-btn u-btn-sm rd-speak"
+        bindtap="onPlayAudio" hover-class="u-tap" hover-stay-time="60"
+      >
+        🔊
+      </button>
+    </view>
+    <view class="rd-meaning">{{current.knowledge.meaning}}</view>
+    <view wx:if="{{current.knowledge.example}}" class="rd-example">
+      {{current.knowledge.example}}
+    </view>
   </view>
-  <view class="line meaning">{{current.knowledge.meaning}}</view>
-  <view class="line" wx:if="{{current.knowledge.example}}">{{current.knowledge.example}}</view>
 
-  <view class="progress">{{index + 1}} / {{total}}</view>
+  <view class="rd-progress">{{index + 1}} / {{total}}</view>
 
-  <view class="nav">
-    <button class="unknown" bindtap="onUnknown">不认识</button>
-    <button type="primary" bindtap="onKnown">认识</button>
+  <view class="rd-nav">
+    <!-- 「不认识」不用实心红：v1.1 讲究淡而不刺眼，语义靠描边色区分就够了 -->
+    <button class="u-btn u-btn-ghost rd-unknown rd-nav-btn" bindtap="onUnknown" hover-class="u-tap" hover-stay-time="60">不认识</button>
+    <button class="u-btn u-btn-primary rd-nav-btn" bindtap="onKnown" hover-class="u-tap" hover-stay-time="60">认识</button>
   </view>
 </view>

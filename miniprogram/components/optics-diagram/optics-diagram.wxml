@@ -1,0 +1,37 @@
+<!-- 物理光路图（2026-09-30）：反射 / 折射 / 凸透镜成像。
+     与 english-diagram 同思路：WXML/CSS 画固定几何，斜线用 rotate，箭头用 ::after 三角。 -->
+
+<!-- ============ 反射：镜面 + 法线 + 入射/反射光线 ============ -->
+<view wx:if="{{view.kind === 'reflection'}}" class="od-wrap">
+  <view class="od-scene od-scene-reflect">
+    <view class="od-mirror"></view>
+    <view class="od-normal"></view>
+    <view class="od-ray od-incident"></view>
+    <view class="od-ray od-reflected"></view>
+  </view>
+  <text class="od-caption">{{view.caption}}</text>
+</view>
+
+<!-- ============ 折射：分界面 + 法线 + 入射/折射光线（水底浅蓝） ============ -->
+<view wx:elif="{{view.kind === 'refraction'}}" class="od-wrap">
+  <view class="od-scene od-scene-refract">
+    <view class="od-water"></view>
+    <view class="od-interface"></view>
+    <view class="od-normal"></view>
+    <view class="od-ray od-incident"></view>
+    <view class="od-ray od-refracted"></view>
+  </view>
+  <text class="od-caption">{{view.caption}}</text>
+</view>
+
+<!-- ============ 凸透镜：透镜 + 主光轴 + 两条关键光线 ============ -->
+<view wx:elif="{{view.kind === 'lens'}}" class="od-wrap">
+  <view class="od-scene od-scene-lens">
+    <view class="od-axis"></view>
+    <view class="od-lens"></view>
+    <view class="od-ray od-para"></view>
+    <view class="od-ray od-center"></view>
+    <view class="od-focus"></view>
+  </view>
+  <text class="od-caption">{{view.caption}}</text>
+</view>

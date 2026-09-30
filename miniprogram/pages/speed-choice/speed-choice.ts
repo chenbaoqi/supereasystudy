@@ -5,6 +5,7 @@ import type { ChoiceQuestion } from '../../services/quizLogic';
 import { scoreForSpeedAnswer } from '../../services/speedChoiceService';
 import { scoreForWrong } from '../../services/memoryGameLogic';
 import { speedChoiceService } from '../../services/speedChoiceService';
+import { gradeScope } from '../../services/gradeScope';
 import { userService } from '../../services/userService';
 
 type GameStatus = 'READY' | 'PLAYING' | 'PAUSED' | 'FINISHED';
@@ -49,7 +50,12 @@ Page({
     this.userId = user._id;
     this.chapterId = query.chapterId;
     this.semesterId = query.semesterId ?? '';
-    const start = await speedChoiceService.startGame(user._id, this.chapterId);
+    // ADR-012：题源按当前年级过滤，别考还没学到的内容
+    const start = await speedChoiceService.startGame(
+      user._id,
+      this.chapterId,
+      gradeScope.currentGrade(),
+    );
     if (!start.eligible) {
       this.setData({ poolEmpty: true }); // §13：提示知识点不足
       return;

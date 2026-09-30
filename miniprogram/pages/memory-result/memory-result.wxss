@@ -1,74 +1,85 @@
-/* 游戏结果页样式（§15：先闭环） */
-.hint {
-  padding: 120rpx 0;
-  text-align: center;
-  color: #999999;
-  font-size: 28rpx;
+/* 游戏结果页 UI v1.1（2026-09-14） */
+.mr-page {
+  padding-bottom: calc(var(--sp-6) + env(safe-area-inset-bottom));
 }
 
-.container {
-  padding: 60rpx 30rpx;
+/* ----------------------------------------------------------------- 得分卡 */
+.mr-score-card {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: var(--sp-4);
+  padding: var(--sp-6) var(--sp-4);
 }
 
-.score {
+/* 得分是要被读取的信息，用深一档品牌色，不跟着底色一起变淡 */
+.mr-score {
   font-size: 96rpx;
-  font-weight: 600;
-  color: #07c160;
+  font-weight: 700;
+  color: var(--brand-700);
+  line-height: 1.1;
 }
 
-.meta {
-  margin-top: 12rpx;
-  color: #999999;
-  font-size: 26rpx;
+.mr-meta {
+  margin-top: var(--sp-2);
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
 }
 
-.section {
-  width: 100%;
-  margin-top: 40rpx;
-}
-
-.section-title {
-  font-size: 28rpx;
-  margin-bottom: 16rpx;
-}
-
-.mastered-title {
-  color: #07c160;
-}
-
-.weak-title {
-  color: #fa5151;
-}
-
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12rpx;
-}
-
-.tag {
-  padding: 8rpx 20rpx;
-  border-radius: 24rpx;
-  font-size: 26rpx;
-}
-
-.tag.mastered {
-  background: #e8f9f0;
-  color: #07c160;
-}
-
-.tag.weak {
-  background: #feecec;
-  color: #fa5151;
-}
-
-.actions {
-  margin-top: 64rpx;
-  width: 70%;
+/* --------------------------------------------------------- 全站钱包入账块 */
+/* 与冒险岛结算位同一口径：星星/金币是可读信息，用 --ink-1 而不是淡灰 */
+.mr-wallet {
   display: flex;
   flex-direction: column;
-  gap: 20rpx;
+  align-items: center;
+  margin-top: var(--sp-3);
+  padding-top: var(--sp-3);
+  border-top: 2rpx solid var(--line);
+  width: 100%;
+}
+
+.mr-wallet-gain {
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: var(--ink-1);
+}
+
+.mr-wallet-badges {
+  margin-top: var(--sp-1);
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+/* ------------------------------------------------------- 掌握 / 薄弱 分组 */
+.mr-title {
+  margin-bottom: var(--sp-3);
+  font-size: var(--fs-md);
+  font-weight: 600;
+}
+
+.mr-title.is-mastered {
+  color: var(--success);
+}
+
+.mr-title.is-weak {
+  color: var(--danger);
+}
+
+.mr-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+/* ----------------------------------------------------------------- 操作区 */
+.mr-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  margin: var(--sp-5) var(--gutter) 0;
+}
+
+/* 已加入复习 / 提交中：描边按钮没有 u-btn-primary 的禁用态，这里补一个 */
+.mr-add[disabled] {
+  opacity: 0.45;
 }

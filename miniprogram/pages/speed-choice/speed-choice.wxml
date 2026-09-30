@@ -1,34 +1,52 @@
-<view wx:if="{{poolEmpty}}" class="hint">本章节知识点不足，敬请期待</view>
+<!-- 极速选择（Chapter 08 §16）
+     UI v1.1（2026-09-14）：与消消乐/听音找词/语法闯关共用 g- 游戏样式与 u-option 选项样式；
+     计时条最后 1.5 秒转红提示。 -->
+<view wx:if="{{poolEmpty}}" class="u-empty">
+  <view class="u-empty-icon">⚡</view>
+  <view class="u-empty-text">本章节知识点不足</view>
+  <view class="u-empty-sub">换一个章节或学段再来看看</view>
+</view>
 
 <block wx:elif="{{status === 'READY'}}">
-  <view class="ready">
-    <view class="title">极速选择</view>
-    <view class="rules">每题 {{totalSeconds}} 秒快答，共 {{total}} 题</view>
-    <view class="rules">答对 +10 + 速度奖励 · 连击加成 · 答错/超时 -2</view>
-    <button type="primary" class="start" bindtap="onStartGame">开始游戏</button>
+  <view class="g-ready">
+    <view class="g-title">极速选择</view>
+    <view class="g-rules">每题 {{totalSeconds}} 秒快答，共 {{total}} 题</view>
+    <view class="g-rules">答对 +10 + 速度奖励 · 连击加成 · 答错/超时 -2</view>
+    <view class="g-actions">
+      <button class="u-btn u-btn-primary u-btn-block" bindtap="onStartGame" hover-class="u-tap" hover-stay-time="60">开始游戏</button>
+    </view>
   </view>
 </block>
 
 <block wx:else>
-  <view class="hud">
-    <text>第 {{currentIndex + 1}} / {{total}} 题</text>
-    <text>得分 {{score}}</text>
-    <text wx:if="{{streak >= 2}}" class="combo">Combo x{{streak}}</text>
+  <view class="g-page">
+    <view class="g-hud">
+      <text>第 {{currentIndex + 1}} / {{total}} 题</text>
+      <text class="g-hud-score">得分 {{score}}</text>
+      <text wx:if="{{streak >= 2}}" class="g-combo">Combo x{{streak}}</text>
+    </view>
+
+    <view class="g-timer">
+      <view
+        class="g-timer-fill {{remaining <= 1.5 ? 'is-urgent' : ''}}"
+        style="width: {{remaining / totalSeconds * 100}}%"
+      ></view>
+    </view>
+
+    <view class="g-stem">{{question.word}}</view>
+
+    <view class="u-options">
+      <button
+        wx:for="{{question.options}}"
+        wx:key="*this"
+        class="u-option {{answered ? (index === question.correctIndex ? 'is-correct' : (index === selected ? 'is-wrong' : '')) : ''}}"
+        data-index="{{index}}"
+        bindtap="onSelect" hover-class="u-tap-flat" hover-stay-time="60"
+      >
+        <text class="u-option-text">{{item}}</text>
+      </button>
+    </view>
+
+    <button class="u-btn u-btn-ghost u-btn-block g-exit" bindtap="onExit" hover-class="u-tap" hover-stay-time="60">退出</button>
   </view>
-  <view class="timer-bar">
-    <view class="timer-fill {{remaining <= 1.5 ? 'urgent' : ''}}" style="width: {{remaining / totalSeconds * 100}}%"></view>
-  </view>
-  <view class="word">{{question.word}}</view>
-  <view class="options">
-    <button
-      wx:for="{{question.options}}"
-      wx:key="*this"
-      class="option {{answered ? (index === question.correctIndex ? 'correct' : (index === selected ? 'wrong' : '')) : ''}}"
-      data-index="{{index}}"
-      bindtap="onSelect"
-    >
-      {{item}}
-    </button>
-  </view>
-  <button class="exit" bindtap="onExit">退出</button>
 </block>

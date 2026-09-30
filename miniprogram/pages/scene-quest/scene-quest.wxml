@@ -1,0 +1,44 @@
+<!-- 情景应用闯关 · 场景列表（数学 + 英语共用）
+     按当前学科过滤场景包，再按当前年级过滤组（ADR-012：低年级不超纲）。
+     冻结规格 §12.1：学科入口一律纵向列表，不做宫格。
+     ⚠️ 两层 wx:for 必须各自改名（wx:for-item="pack" / "quest"）：默认都叫 item，
+        内层会把外层的 item 盖掉，{{item.desc}} 会取到 undefined 而不报错。 -->
+<view wx:if="{{empty}}" class="u-empty">
+  <view class="u-empty-icon">🎬</view>
+  <view class="u-empty-text">这个年级还没有情景题</view>
+  <view class="u-empty-sub">去「我的 → 年级」确认一下，或先玩别的游戏</view>
+</view>
+
+<view wx:else class="sq-page">
+  <view wx:if="{{subjectName}}" class="sq-subject">当前学科 · {{subjectName}}</view>
+
+  <view class="sq-pack" wx:for="{{packs}}" wx:for-item="pack" wx:key="key">
+    <view class="u-section">
+      <view class="u-section-title">{{pack.icon}} {{pack.name}}</view>
+      <view class="u-section-more">{{pack.quests.length}} 组</view>
+    </view>
+
+    <view class="u-list">
+      <view
+        class="u-row sq-row"
+        wx:for="{{pack.quests}}"
+        wx:for-item="quest"
+        wx:key="key"
+        data-id="{{quest.id}}"
+        bindtap="onTapQuest" hover-class="u-tap-flat" hover-stay-time="60"
+      >
+        <view class="u-row-body">
+          <view class="u-row-title">{{quest.name}}</view>
+          <view class="u-row-sub">{{pack.desc}}</view>
+        </view>
+        <view class="u-row-extra">
+          <text class="u-chip u-chip-brand">{{quest.gradeText}}</text>
+          <text class="sq-count">{{quest.countText}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{gradeText}}" class="sq-hint">按{{gradeText}}筛的题，高年级也能回头做前面几组</view>
+  <view class="u-safe-bottom"></view>
+</view>

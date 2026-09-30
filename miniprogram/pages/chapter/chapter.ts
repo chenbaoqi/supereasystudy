@@ -2,6 +2,7 @@
 // 数据装配已抽取至 chapterService.buildChapterItems（Chapter 14 §4，与学习 tab 共用）。
 import type { ChapterItem } from '../../services/chapterService';
 import { chapterService } from '../../services/chapterService';
+import { gradeScope } from '../../services/gradeScope';
 import { userService } from '../../services/userService';
 
 Page({
@@ -21,7 +22,12 @@ Page({
       return;
     }
     try {
-      const items = await chapterService.buildChapterItems(user._id, semesterId);
+      // ADR-012：按当前年级过滤（本页也可能承载公式/语法这类整学段专题册次）
+      const items = await chapterService.buildChapterItems(
+        user._id,
+        semesterId,
+        gradeScope.currentGrade(),
+      );
       // 异步竞态防护：页面已被切走/销毁时不再 setData
       if (this.destroyed) return;
       this.setData({ items, loading: false, loadFailed: false, semesterId });

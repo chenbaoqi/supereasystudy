@@ -1,32 +1,115 @@
-<view wx:if="{{loading}}" class="hint">加载中…</view>
-<view wx:elif="{{!current}}" class="hint">暂无知识点</view>
-<view wx:else class="card">
-  <view class="word-row">
-    <text class="word">{{current.word}}</text>
-    <text class="ipa" wx:if="{{current.ipa}}">/{{current.ipa}}/</text>
+<!-- 学习详情页：知识卡 + 操作（收藏 / 发音 / 问 AI）+ 上一条 / 下一条导航。
+     UI v1.1（2026-09-14）：卡片骨架走 u-card，色值全部走 tokens；
+     shared/card.wxss 那套 .card / .word / .line 私有类不再用于本页。 -->
+<view wx:if="{{loading}}" class="u-empty">
+  <text class="u-empty-text">加载中…</text>
+</view>
+<view wx:elif="{{!current}}" class="u-empty">
+  <text class="u-empty-icon">📭</text>
+  <text class="u-empty-text">暂无知识点</text>
+</view>
+<view wx:else class="sd-page">
+  <view class="u-card sd-card">
+    <view class="sd-word-row">
+      <text class="sd-word">{{current.word}}</text>
+      <text wx:if="{{current.ipa}}" class="sd-ipa">/{{current.ipa}}/</text>
+    </view>
+    <!-- 词性用 chip 而不是灰字：一行里既要读词又要读词性，靠字号拉不开层级 -->
+    <view wx:if="{{current.partOfSpeech}}" class="sd-tags">
+      <text class="u-chip u-chip-muted">{{current.partOfSpeech}}</text>
+    </view>
+    <view class="sd-meaning">{{current.meaning}}</view>
+    <!-- 语法讲解（Chapter 12：type=grammar 时展示 explanation） -->
+    <view wx:if="{{current.explanation}}" class="sd-explanation">{{current.explanation}}</view>
+    <!-- 听讲解（2026-09-30 全语音讲解）：中文讲解朗读 + 自动读开关，与「🔊 发音」解耦 -->
+    <view wx:if="{{showExplain}}" class="sd-explain-bar">
+      <button class="u-btn u-btn-ghost u-btn-sm" bindtap="onPlayExplanation" hover-class="u-tap" hover-stay-time="60">🔊 听讲解</button>
+      <text class="sd-auto-toggle {{autoRead ? 'is-on' : ''}}" bindtap="onToggleAutoRead">{{autoRead ? '自动读：开' : '自动读：关'}}</text>
+    </view>
+    <view wx:if="{{current.example}}" class="sd-example-row">
+      <text class="sd-example">{{current.example}}</text>
+      <text
+        wx:if="{{showSpeech}}"
+        class="sd-example-speak"
+        bindtap="onPlayExample"
+        hover-class="u-tap"
+        hover-stay-time="60"
+      >🔊</text>
+    </view>
+    <view wx:if="{{current.translation}}" class="sd-translation">{{current.translation}}</view>
   </view>
-  <view class="line" wx:if="{{current.partOfSpeech}}">
-    <text class="pos">{{current.partOfSpeech}}</text>
+
+  <!-- 知识配图（B-7 闭环）：画什么由知识点第一道题声明（visual），认不出来就不画 -->
+  <view wx:if="{{visualType}}" class="sd-visual">
+    <math-number-line
+      wx:if="{{visualType === 'number-line'}}"
+      min="{{visualProps.min}}"
+      max="{{visualProps.max}}"
+      step="{{visualProps.step}}"
+      value="{{visualProps.value}}"
+      range-from="{{visualProps.rangeFrom}}"
+      range-to="{{visualProps.rangeTo}}"
+    />
+    <math-fraction
+      wx:elif="{{visualType === 'fraction'}}"
+      numerator="{{visualProps.numerator}}"
+      denominator="{{visualProps.denominator}}"
+      whole="{{visualProps.whole}}"
+      compare="{{visualProps.compare}}"
+    />
+    <math-coordinate-plane
+      wx:elif="{{visualType === 'coordinate-plane'}}"
+      x-min="{{visualProps.xMin}}"
+      x-max="{{visualProps.xMax}}"
+      y-min="{{visualProps.yMin}}"
+      y-max="{{visualProps.yMax}}"
+      step="{{visualProps.step}}"
+      height="{{visualProps.height}}"
+      points="{{visualProps.points}}"
+      line-k="{{visualProps.lineK}}"
+      line-b="{{visualProps.lineB}}"
+    />
+    <math-geometry
+      wx:elif="{{visualType === 'geometry'}}"
+      base="{{visualProps.base}}"
+      height="{{visualProps.height}}"
+      offset="{{visualProps.offset}}"
+    />
+    <english-diagram
+      wx:elif="{{visualType === 'tense' || visualType === 'preposition' || visualType === 'word-family'}}"
+      kind="{{visualType}}"
+      tense="{{visualProps.tense}}"
+      aspect="{{visualProps.aspect}}"
+      position="{{visualProps.position}}"
+      root="{{visualProps.root}}"
+      members="{{visualProps.members}}"
+    />
+    <optics-diagram
+      wx:elif="{{visualType === 'optics'}}"
+      kind="{{visualProps.kind}}"
+    />
   </view>
-  <view class="line meaning">{{current.meaning}}</view>
-  <!-- 语法讲解区块（Chapter 12：type=grammar 时展示 explanation） -->
-  <view class="explanation" wx:if="{{current.explanation}}">{{current.explanation}}</view>
-  <view class="line" wx:if="{{current.example}}">{{current.example}}</view>
-  <view class="line translation" wx:if="{{current.translation}}">{{current.translation}}</view>
 
-  <view class="progress">{{index + 1}} / {{total}}</view>
+  <view class="sd-progress">{{index + 1}} / {{total}}</view>
 
-  <view class="actions">
-    <button size="mini" bindtap="onToggleFavorite">{{isFavorite ? '★ 已收藏' : '☆ 收藏'}}</button>
-    <!-- 发音常态化（TTS）；语法点不朗读（Owner 2026-07-30：游戏/朗读只针对记单词） -->
-    <button wx:if="{{current.type !== 'grammar'}}" size="mini" bindtap="onPlayWord">
-      🔊 发音
+  <view class="sd-actions">
+    <button class="u-btn u-btn-sm" bindtap="onToggleFavorite" hover-class="u-tap" hover-stay-time="60">
+      {{isFavorite ? '★ 已收藏' : '☆ 收藏'}}
     </button>
+    <!-- 发音（TTS）；语法点与不支持语音的学科不朗读
+         （Owner 2026-07-30：游戏/朗读只针对记单词；2026-09-13：数学等非语言学科关闭语音） -->
+    <button wx:if="{{showSpeech}}" class="u-btn u-btn-sm" bindtap="onPlayWord" hover-class="u-tap" hover-stay-time="60">🔊 发音</button>
+    <!-- 问 AI（第三十八章）：AI 只解释不判分，标准答案仍以题库为准 -->
+    <button wx:if="{{showAiTutor}}" class="u-btn u-btn-sm" bindtap="onAskAi" hover-class="u-tap" hover-stay-time="60">✨ 问 AI</button>
   </view>
 
-  <view class="nav">
-    <button bindtap="onPrevious" disabled="{{isFirst}}">上一条</button>
-    <button wx:if="{{!isLast}}" type="primary" bindtap="onNext">下一条</button>
-    <button wx:else type="primary" bindtap="onFinish">完成学习</button>
+  <view class="sd-nav">
+    <button class="u-btn u-btn-ghost sd-nav-btn" disabled="{{isFirst}}" bindtap="onPrevious" hover-class="u-tap" hover-stay-time="60">
+      上一条
+    </button>
+    <button wx:if="{{!isLast}}" class="u-btn u-btn-primary sd-nav-btn" bindtap="onNext" hover-class="u-tap" hover-stay-time="60">
+      下一条
+    </button>
+    <button wx:else class="u-btn u-btn-primary sd-nav-btn" bindtap="onFinish" hover-class="u-tap" hover-stay-time="60">完成学习</button>
   </view>
 </view>

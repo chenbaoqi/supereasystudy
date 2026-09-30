@@ -1,0 +1,8 @@
+/* 平面直角坐标系（B-7 之三）。
+   canvas 节点必须有确定尺寸：高由 height 属性（px）给，宽撑满容器。 */
+.cp-canvas {
+  display: block;
+  width: 100%;
+  background: var(--bg-card);
+  border-radius: var(--r-md);
+}

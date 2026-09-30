@@ -1,0 +1,16 @@
+<!-- 割补法可视化（B-7 之四）：平行四边形 → 长方形。
+     高度由 canvasHeight 给（px）——canvas 必须有确定高度，百分比拿不到。
+     绘制全在 ts 里用 canvas 2d 完成，这里只有画布 + 一行提示。 -->
+<view class="geo-wrap">
+  <canvas
+    type="2d"
+    id="geo"
+    class="geo-canvas"
+    style="height: {{canvasHeight}}px"
+    bindtouchstart="onTouchStart"
+    bindtouchmove="onTouchMove"
+    bindtouchend="onTouchEnd"
+    bindtouchcancel="onTouchEnd"
+  ></canvas>
+  <view class="geo-hint">{{hint}}</view>
+</view>

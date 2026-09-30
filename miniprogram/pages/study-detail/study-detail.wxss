@@ -1,35 +1,143 @@
-/* 学习详情页样式（§15：UI 从简；卡片样式与 review-detail 共享，见 shared/card.wxss） */
-@import '../shared/card.wxss';
-
-.hint {
-  padding: 120rpx 0;
-  text-align: center;
-  color: #999999;
-  font-size: 28rpx;
+/* 学习详情页（UI v1.1，2026-09-14 迁移）
+   —— 骨架用 u-card，色值全部 var() 取自 tokens.wxss，本页不新造色值。
+   与 review-detail 保持同一套卡片层级；旧的 shared/card.wxss 已随本次迁移删除。 */
+.sd-page {
+  padding-bottom: calc(var(--sp-5) + env(safe-area-inset-bottom));
 }
 
-.pos {
-  color: #999999;
+.sd-card {
+  padding: var(--sp-5) var(--sp-4);
 }
 
-.translation {
-  color: #666666;
+/* 词 + 音标同一行，超长词允许换行（baseline 对齐让音标跟着词走） */
+.sd-word-row {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
 }
 
-/* 语法讲解区块（Chapter 12）：灰底卡片与例句区分 */
-.explanation {
-  margin-top: 20rpx;
-  padding: 24rpx;
-  background: #f6f7f9;
-  border-radius: 12rpx;
-  font-size: 28rpx;
+.sd-word {
+  font-size: var(--fs-2xl);
+  font-weight: 600;
+  color: var(--ink-1);
+  line-height: 1.25;
+}
+
+.sd-ipa {
+  font-size: var(--fs-md);
+  color: var(--ink-3);
+}
+
+.sd-tags {
+  margin-top: var(--sp-3);
+}
+
+.sd-meaning {
+  margin-top: var(--sp-3);
+  font-size: var(--fs-lg);
+  color: var(--ink-1);
+  line-height: 1.6;
+}
+
+/* 语法讲解：浅底块与例句区分（原 #f6f7f9 → --bg-subtle） */
+.sd-explanation {
+  margin-top: var(--sp-3);
+  padding: var(--sp-3);
+  background: var(--bg-subtle);
+  border-radius: var(--r-sm);
+  font-size: var(--fs-base);
   line-height: 1.8;
-  color: #333333;
+  color: var(--ink-2);
 }
 
-.actions {
-  margin-top: 20rpx;
+/* 听讲解操作行（2026-09-30）：讲解中文朗读按钮 + 自动读开关 */
+.sd-explain-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-top: var(--sp-2);
+}
+
+.sd-auto-toggle {
+  margin-left: auto;
+  padding: var(--sp-1) var(--sp-3);
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+  border-radius: var(--r-pill);
+  background: var(--bg-subtle);
+}
+
+.sd-auto-toggle.is-on {
+  color: var(--brand-600);
+  background: var(--brand-50);
+}
+
+.sd-example-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  margin-top: var(--sp-3);
+}
+
+.sd-example {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: var(--fs-md);
+  color: var(--ink-1);
+  line-height: 1.7;
+}
+
+/* 例句的 🔊 小喇叭：与卡片内文字的节奏一致，别用 184px 的裸 button 顶开整行 */
+.sd-example-speak {
+  flex: 0 0 auto;
+  padding: 0 var(--sp-1);
+  font-size: var(--fs-md);
+  line-height: 1.7;
+}
+
+.sd-translation {
+  margin-top: var(--sp-1);
+  font-size: var(--fs-base);
+  color: var(--ink-3);
+  line-height: 1.6;
+}
+
+/* 知识配图（B-7 闭环）：与测试页 .ts-visual 同款卡片，只是外边距对齐本页节奏 */
+.sd-visual {
+  margin: var(--sp-4) var(--gutter) 0;
+  padding: var(--sp-3) var(--sp-2);
+  background: var(--bg-card);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.sd-progress {
+  margin-top: var(--sp-4);
+  text-align: center;
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+}
+
+.sd-actions {
   display: flex;
   justify-content: center;
-  gap: 20rpx;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin: var(--sp-4) var(--gutter) 0;
+}
+
+.sd-nav {
+  display: flex;
+  gap: var(--sp-3);
+  margin: var(--sp-4) var(--gutter) 0;
+}
+
+.sd-nav-btn {
+  flex: 1;
+}
+
+/* 「上一条」在首条时置灰：小程序 button[disabled] 自带的灰不够明显，补一档透明度 */
+.sd-nav-btn[disabled] {
+  opacity: 0.45;
 }

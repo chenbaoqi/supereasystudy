@@ -1,0 +1,362 @@
+/* 口算冒险岛 · 冒险地图
+   浅色儿童风：大 emoji + 圆角卡片 + 柔和阴影，色值全部走 token，不硬编码。
+   ⚠️ 放中文的 flex 列必须给保底宽度（min-width），否则中文会一个字一行。 */
+.mi-page {
+  padding-bottom: calc(var(--sp-6) + env(safe-area-inset-bottom));
+}
+
+/* ------------------------------------------------------------- 顶部钱包 */
+.mi-top {
+  padding: var(--sp-4) var(--gutter);
+  background: var(--grad-hero);
+}
+
+.mi-top-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+
+.mi-top-title {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  color: var(--ink-1);
+}
+
+.mi-wallet {
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: var(--brand-700);
+  flex: 0 0 auto;
+}
+
+.mi-top-sub {
+  display: block;
+  margin-top: var(--sp-1);
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+/* 离线提示：云读不到时明确告知，不假装已同步 */
+.mi-top-offline {
+  display: block;
+  margin-top: var(--sp-1);
+  font-size: var(--fs-xs);
+  color: var(--warning);
+}
+
+/* ------------------------------------------------------------- 卡片 */
+.mi-card {
+  margin: var(--sp-4) var(--gutter) 0;
+  padding: var(--sp-4);
+  background: var(--bg-card);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
+}
+
+/* 当前关卡：大 emoji + 一行进度 + 主按钮 */
+.mi-hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.mi-hero-env {
+  font-size: 96rpx;
+  line-height: 1;
+  flex: 0 0 auto;
+}
+
+.mi-hero-body {
+  flex: 1 1 auto;
+  min-width: 280rpx;
+}
+
+.mi-hero-name {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  color: var(--ink-1);
+}
+
+.mi-hero-progress {
+  margin-top: var(--sp-1);
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  color: var(--brand-700);
+}
+
+.mi-hero-hint {
+  margin-top: var(--sp-1);
+  font-size: var(--fs-base);
+  color: var(--ink-2);
+}
+
+.mi-hero-btn {
+  flex: 1 1 100%;
+  margin-top: var(--sp-2);
+}
+
+/* ------------------------------------------------------------- 自由练习 chips */
+.mi-chip-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-3);
+}
+
+.mi-chip-label {
+  flex: 0 0 auto;
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+.mi-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.mi-chip {
+  padding: var(--sp-1) var(--sp-3);
+  border: 2rpx solid var(--line);
+  border-radius: var(--r-pill);
+  background: var(--bg-subtle);
+  color: var(--ink-2);
+  font-size: var(--fs-base);
+  line-height: 1.6;
+}
+
+/* 选中态：淡蓝底 + 品牌色描边与文字（不用实色，四五个 chip 全实色太吵） */
+.mi-chip.is-on {
+  background: var(--brand-50);
+  border-color: var(--brand-300);
+  color: var(--brand-700);
+  font-weight: 600;
+}
+
+.mi-free-btn {
+  margin-top: var(--sp-2);
+}
+
+/* ------------------------------------------------------------- 冒险地图 */
+.mi-map {
+  margin: 0 var(--gutter);
+}
+
+.mi-node {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--bg-card);
+  border: 2rpx solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.mi-node-icon {
+  flex: 0 0 auto;
+  font-size: 56rpx;
+  line-height: 1;
+}
+
+.mi-node-body {
+  flex: 1 1 auto;
+  min-width: 240rpx;
+}
+
+.mi-node-name {
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: var(--ink-1);
+}
+
+.mi-node-tag {
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+}
+
+.mi-node-progress {
+  margin-top: var(--sp-1);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--brand-600);
+}
+
+.mi-node-reward {
+  flex: 0 0 auto;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--warning);
+}
+
+/* 已通关：淡绿底 */
+.mi-node.is-done {
+  background: var(--state-done-bg);
+  border-color: var(--state-done);
+}
+
+.mi-node.is-done .mi-node-progress {
+  color: var(--state-done);
+}
+
+/* 当前关：品牌色描边，一眼看到「今天做什么」 */
+.mi-node.is-current {
+  border-color: var(--brand-500);
+  box-shadow: var(--shadow-brand);
+}
+
+/* 未解锁：整体压暗 */
+.mi-node.is-lock {
+  opacity: 0.55;
+}
+
+.mi-node.is-lock .mi-node-progress {
+  color: var(--ink-3);
+}
+
+/* ------------------------------------------------- 成长：等级 / 打卡 / 宝箱 */
+.mi-grow {
+  padding: var(--sp-4);
+}
+
+.mi-rank {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.mi-rank-icon {
+  flex: 0 0 auto;
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 50%;
+  background: var(--brand-50);
+  font-size: 44rpx;
+  line-height: 88rpx;
+  text-align: center;
+}
+
+.mi-rank-body {
+  flex: 1 1 auto;
+  min-width: 0; /* 中文在零宽容器里会一个字一行 */
+}
+
+.mi-rank-title {
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: var(--ink-1);
+}
+
+.mi-rank-bar {
+  margin-top: var(--sp-2);
+  height: 14rpx;
+  border-radius: var(--r-pill);
+  background: var(--brand-100);
+  overflow: hidden;
+}
+
+.mi-rank-fill {
+  height: 100%;
+  border-radius: var(--r-pill);
+  background: var(--grad-brand);
+  transition: width 0.25s;
+}
+
+.mi-rank-hint {
+  margin-top: var(--sp-1);
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+
+.mi-grow-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-top: var(--sp-4);
+  padding-top: var(--sp-3);
+  border-top: 2rpx solid var(--line);
+}
+
+.mi-grow-cell {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.mi-grow-label {
+  display: block;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+.mi-grow-value {
+  display: block;
+  margin-top: 2rpx;
+  font-size: var(--fs-base);
+  font-weight: 700;
+  color: var(--ink-1);
+}
+
+.mi-grow-note {
+  display: block;
+  margin-top: 2rpx;
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+
+/* ⚠️ 微信给 button 内置 width:184px（特异性 0,1,1），单类名 (0,1,0) 压不过；
+   双类名 (0,2,0) 才能真正定住宽度（详见 CHANGELOG 2026-09-16）。 */
+.u-btn.mi-chest-btn {
+  flex: 0 0 auto;
+  width: 220rpx;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+}
+
+/* ------------------------------------------------------------- 徽章墙 */
+.mi-badges {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--sp-3);
+  margin: 0 var(--gutter);
+}
+
+.mi-badge {
+  padding: var(--sp-3) var(--sp-2);
+  border-radius: var(--r-md);
+  background: var(--bg-card);
+  border: 2rpx solid var(--line);
+  text-align: center;
+  opacity: 0.5; /* 未解锁：压暗但看得清是什么 */
+}
+
+.mi-badge.is-on {
+  opacity: 1;
+  border-color: var(--warning);
+  background: var(--warning-bg);
+}
+
+.mi-badge-icon {
+  font-size: 40rpx;
+  line-height: 1.2;
+}
+
+.mi-badge-name {
+  margin-top: var(--sp-1);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--ink-1);
+}
+
+.mi-badge-desc {
+  margin-top: 2rpx;
+  font-size: 20rpx;
+  color: var(--ink-3);
+  line-height: 1.3;
+}

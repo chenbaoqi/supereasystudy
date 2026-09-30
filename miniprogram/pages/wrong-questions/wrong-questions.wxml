@@ -1,0 +1,53 @@
+<!-- 错题本（L3）：显示每条错题走到补弱流程的哪一步。
+     ⚠️ 三态必须分开：加载失败 / 一条都没有 / 有数据 —— 都写成「加载失败」是骗人。 -->
+<view wx:if="{{loading}}" class="u-empty">
+  <text class="u-empty-text">加载中…</text>
+</view>
+
+<view wx:elif="{{source === 'error'}}" class="u-empty">
+  <text class="u-empty-icon">📶</text>
+  <text class="u-empty-text">读不到错题本</text>
+  <button class="u-btn u-btn-primary u-btn-sm wq-retry" bindtap="onRetry" hover-class="u-tap" hover-stay-time="60">重试</button>
+</view>
+
+<view wx:elif="{{source === 'empty'}}" class="u-empty">
+  <text class="u-empty-icon">🎉</text>
+  <text class="u-empty-text">还没有错题</text>
+  <text class="u-empty-sub">游戏和测试里答错的知识点会记到这里</text>
+</view>
+
+<block wx:else>
+  <view class="u-section">
+    <text class="u-section-title">错题本</text>
+  </view>
+
+  <view class="u-list">
+    <view
+      wx:for="{{rows}}"
+      wx:key="key"
+      class="u-row"
+      data-chapter="{{item.chapterId}}"
+      bindtap="onTapRow"
+      hover-class="u-tap-flat"
+      hover-stay-time="60"
+    >
+      <view class="u-row-icon {{item.fixed ? 'wq-icon-fixed' : ''}}">{{item.fixed ? '✅' : '❗'}}</view>
+      <view class="u-row-body">
+        <view class="u-row-title">{{item.title}}</view>
+        <view class="u-row-tags">
+          <text class="u-chip {{item.stageClass}}">{{item.stageText}}</text>
+          <text class="u-chip u-chip-muted">错 {{item.wrongCount}} 次</text>
+        </view>
+      </view>
+      <view class="u-row-extra">
+        <view class="u-arrow"></view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{unfixedCount > 0}}" class="wq-summary">
+    还有 {{unfixedCount}} 条没补完{{fixedCount > 0 ? '，已修复 ' + fixedCount + ' 条' : ''}}
+  </view>
+
+  <view class="u-safe-bottom"></view>
+</block>

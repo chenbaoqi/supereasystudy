@@ -36,6 +36,21 @@ const seededRandom = (values: number[]) => {
 function createFakes() {
   const saved: MemoryGameRecordCreate[] = [];
   const applied: Array<{ wrongIds: string[]; correctIds: string[] }> = [];
+  // 全站钱包替身：只记下被喂进来的数，不做真实入账（避免测试依赖 wx / 云）
+  const rewarded: Array<{ gameId: string; correct: number; total: number }> = [];
+  const rewarder = {
+    async reward(input: { gameId: string; correct: number; total: number }) {
+      rewarded.push({ gameId: input.gameId, correct: input.correct, total: input.total });
+      return {
+        stars: input.correct,
+        coins: input.correct,
+        newBadges: [],
+        // 与真实服务同口径：一题没对 → 文案为空（结果页据此隐藏整块）
+        gainText: input.correct > 0 ? `⭐+${input.correct} 🪙+${input.correct}` : '',
+        badgeText: '',
+      };
+    },
+  };
   const knowledgeRepository = {
     async listByChapter() {
       return knowledgeList;
@@ -66,10 +81,12 @@ function createFakes() {
   return {
     saved,
     applied,
+    rewarded,
     service: createSpeedChoiceService({
       knowledgeRepository,
       memoryGameRepository,
       reviewResultApplier,
+      rewarder,
       random: seededRandom([0.1, 0.9]),
     }),
   };
@@ -145,6 +162,38 @@ describe('SpeedChoiceService.finishGame（§9：gameType/avgResponseMs）', () =
     expect(detail.weak).toHaveLength(1);
     expect(gameResultStore.get()?.gameType).toBe('speed');
     expect(gameResultStore.get()?.avgResponseMs).toBe(2000);
+  });
+
+  it('结算把「答对数/总题数」喂给全站钱包，并带进结果页（L1）', async () => {
+    const { service, rewarded } = createFakes();
+    const start = await service.startGame('user-1', CHAPTER);
+    const questions = start.questions;
+    const detail = await service.finishGame({
+      userId: 'user-1',
+      chapterId: CHAPTER,
+      questions,
+      correctIds: questions.slice(0, 2).map((q) => q.knowledgeId),
+      wrongIds: [],
+      score: 20,
+      responseTimes: [1000, 1000],
+    });
+    expect(rewarded[0]).toEqual({ gameId: 'speed', correct: 2, total: questions.length });
+    expect(detail.wallet?.gain).toContain('⭐+2');
+  });
+
+  it('一题没答对 → 钱包块为 undefined（结果页整块隐藏，不显示 ⭐+0）', async () => {
+    const { service } = createFakes();
+    const start = await service.startGame('user-1', CHAPTER);
+    const detail = await service.finishGame({
+      userId: 'user-1',
+      chapterId: CHAPTER,
+      questions: start.questions,
+      correctIds: [],
+      wrongIds: [],
+      score: 0,
+      responseTimes: [],
+    });
+    expect(detail.wallet).toBeUndefined();
   });
 
   it('「加入复习」闭包触发 §12 集成', async () => {

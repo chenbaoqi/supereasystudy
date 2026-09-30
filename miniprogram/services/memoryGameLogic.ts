@@ -2,6 +2,7 @@
 // 玩法（Owner 2026-07-19 定）：消消乐——卡片全部明面，点选「单词+释义」配对消除，全部消除获胜。
 // 纯函数、零 wx 依赖：全部规则集中在可单测的纯模块，页面只负责渲染与计时。
 import type { Knowledge } from '../core/knowledge';
+import { pickQuizPool, shuffle as shuffleOf } from '../core/quizPool';
 
 export interface MemoryCard {
   readonly cardId: string; // `${knowledgeId}-word|meaning`
@@ -29,18 +30,31 @@ export const SCORE_TIME_BONUS_PER_SECOND = 1;
 export function selectPool(
   knowledgeList: readonly Knowledge[],
   random: () => number,
+  /**
+   * L4：未修复错题的知识点 id。传了就让错题**优先**进本局池子（同章优先，见 core/quizPool）。
+   * 不传 = 纯随机（老行为）。
+   */
+  wrongIds: readonly string[] = [],
 ): { pool: Knowledge[]; eligible: boolean } {
   const wordOnly = knowledgeList.filter((item) => (item.type ?? 'word') === 'word');
   const eligible = wordOnly.length >= GAME_MIN_POOL;
   const pool =
     wordOnly.length <= GAME_POOL_SIZE
-      ? [...wordOnly]
-      : shuffle(wordOnly, random).slice(0, GAME_POOL_SIZE);
+      ? // 池子装得下就全上——错题自然都在里面，没必要再挑
+        [...wordOnly]
+      : pickQuizPool({
+          pool: wordOnly,
+          wrongIds,
+          size: GAME_POOL_SIZE,
+          idOf: (item) => item._id,
+          random,
+        });
   return { pool, eligible };
 }
 
-const shuffle = <T>(list: readonly T[], random: () => number): T[] =>
-  [...list].sort(() => random() - 0.5);
+// ⚠️ 原来的 `sort(() => random() - 0.5)` 是**有偏洗牌**（比较函数不满足传递性，
+// 结果分布不均匀，某些排列概率明显偏高）。改用 core/quizPool 的 Fisher-Yates。
+const shuffle = <T>(list: readonly T[], random: () => number): T[] => shuffleOf(list, random);
 
 // 组牌：每个知识点一对（单词卡 + 释义卡），洗牌
 export function buildDeck(pool: readonly Knowledge[], random: () => number): MemoryCard[] {

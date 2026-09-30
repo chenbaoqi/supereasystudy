@@ -1,8 +1,14 @@
-<view wx:if="{{loading}}" class="hint">加载中…</view>
-<view wx:elif="{{loadFailed}}" class="hint">
-  <text>加载失败，请检查网络</text>
-  <button size="mini" bindtap="onRetry">重试</button>
+<!-- 学科入口页：已开放学科会 redirectTo 教材页（ADR-011），本页只在未开放 / 加载失败时停留，
+     所以三个状态都是空态。UI v1.1：改用 u-empty，不再有居中的裸灰字。 -->
+<view wx:if="{{loading}}" class="u-empty">
+  <text class="u-empty-text">加载中…</text>
 </view>
-<view wx:else class="page-placeholder">
-  <text>{{subjectName}} · 敬请期待</text>
+<view wx:elif="{{loadFailed}}" class="u-empty">
+  <text class="u-empty-icon">📡</text>
+  <text class="u-empty-text">加载失败，请检查网络</text>
+  <button class="u-btn u-btn-primary u-btn-sm" bindtap="onRetry" hover-class="u-tap" hover-stay-time="60">重试</button>
+</view>
+<view wx:else class="u-empty">
+  <text class="u-empty-icon">🚧</text>
+  <text class="u-empty-text">{{subjectName ? subjectName + ' · 敬请期待' : '该学科暂未开放'}}</text>
 </view>

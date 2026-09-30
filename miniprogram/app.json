@@ -21,37 +21,58 @@
     "pages/memory-game/memory-game",
     "pages/memory-result/memory-result",
     "pages/game-center/game-center",
+    "pages/game-records/game-records",
     "pages/speed-choice/speed-choice",
     "pages/listen-find/listen-find",
     "pages/space-shooter/space-shooter",
+    "pages/grammar-game/grammar-game",
+    "pages/math-island/math-island",
+    "pages/math-island-run/math-island-run",
+    "pages/scene-quest/scene-quest",
+    "pages/scene-quest-run/scene-quest-run",
+    "pages/ai-tutor/ai-tutor",
+    "pages/spelling/spelling",
+    "pages/follow-read/follow-read",
+    "pages/profile/profile",
+    "pages/badges/badges",
+    "pages/wrong-questions/wrong-questions",
     "pages/coming-soon/coming-soon"
   ],
   "window": {
     "navigationBarBackgroundColor": "#ffffff",
     "navigationBarTitleText": "SuperEasy Learning",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#f6f7f9"
+    "backgroundColor": "#f5f7fa"
   },
   "tabBar": {
-    "color": "#999999",
-    "selectedColor": "#07c160",
+    "color": "#9aa3b4",
+    "selectedColor": "#3f6bc4",
     "backgroundColor": "#ffffff",
+    "borderStyle": "white",
     "list": [
       {
         "pagePath": "pages/home/home",
-        "text": "首页"
+        "text": "首页",
+        "iconPath": "assets/tabbar/home.png",
+        "selectedIconPath": "assets/tabbar/home_on.png"
       },
       {
         "pagePath": "pages/study/study",
-        "text": "学习"
+        "text": "学习",
+        "iconPath": "assets/tabbar/study.png",
+        "selectedIconPath": "assets/tabbar/study_on.png"
       },
       {
         "pagePath": "pages/practice/practice",
-        "text": "练习"
+        "text": "练习",
+        "iconPath": "assets/tabbar/practice.png",
+        "selectedIconPath": "assets/tabbar/practice_on.png"
       },
       {
         "pagePath": "pages/mine/mine",
-        "text": "我的"
+        "text": "我的",
+        "iconPath": "assets/tabbar/mine.png",
+        "selectedIconPath": "assets/tabbar/mine_on.png"
       }
     ]
   },
@@ -59,7 +80,7 @@
   "sitemapLocation": "sitemap.json",
   "plugins": {
     "WechatSI": {
-      "version": "0.3.5",
+      "version": "0.3.10",
       "provider": "wx069ba97219f66d99"
     }
   }

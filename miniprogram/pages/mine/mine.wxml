@@ -1,11 +1,111 @@
-<view class="list-item" bindtap="onTapTextbook">
-  <text>教材选择</text>
+<!-- 我的页（TabBar）：用户功能入口集合——当前教材、教材与册次（Chapter 14）、
+     我的收藏、学习统计、设置；管理员入口按 FEATURE_FLAGS.adminEntry 预留（Baseline Spec §5）。
+     UI v1（2026-09-13）：渐变头部 + 带图标的功能行，取代原来的纯文字行。 -->
+<!-- 2026-09-20：这里原来是写死的「你好，同学」+ 🙂。
+     改成孩子自己选的头像与名字——「我的地盘」比「一个学习软件」更能留住他。
+     整块可点，直接去改形象。 -->
+<view class="u-hero mine-hero" bindtap="onTapProfile" hover-class="u-tap-flat" hover-stay-time="60">
+  <view class="mine-avatar">{{avatar}}</view>
+  <view class="mine-user">
+    <view class="u-hero-title">你好，{{nickname}}</view>
+    <view class="u-hero-sub">
+      {{semesterName ? (subjectName ? subjectName + ' · ' : '') + textbookName + ' · ' + semesterName : '还没有选择教材'}}
+    </view>
+  </view>
 </view>
-<view class="list-item" bindtap="onTapFavorite">
-  <text>我的收藏</text>
+
+<view class="u-list">
+  <view class="u-row" bindtap="onTapTextbook" hover-class="u-tap-flat" hover-stay-time="60">
+    <view class="u-row-icon">📚</view>
+    <view class="u-row-body">
+      <view class="u-row-title">教材选择</view>
+      <view class="u-row-sub">切换版本 / 年级 / 册次</view>
+    </view>
+    <view class="u-row-extra">
+      <text wx:if="{{semesterName}}" class="u-chip u-chip-brand">{{semesterName}}</text>
+      <view class="u-arrow"></view>
+    </view>
+  </view>
+
+  <!-- AI 辅导（需求第三十八章）：开关关掉时整行不渲染 -->
+  <view wx:if="{{showAiTutor}}" class="u-row" bindtap="onTapAiTutor" hover-class="u-tap-flat" hover-stay-time="60">
+    <view class="u-row-icon">✨</view>
+    <view class="u-row-body">
+      <view class="u-row-title">AI 辅导</view>
+      <view class="u-row-sub">看不懂就直接问，换个说法讲到懂</view>
+    </view>
+    <view class="u-row-extra">
+      <view class="u-arrow"></view>
+    </view>
+  </view>
+
+  <!-- 勋章墙（2026-09-20）：把攒下的徽章摆出来，孩子看得见才攒得动 -->
+  <view class="u-row" bindtap="onTapBadges" hover-class="u-tap-flat" hover-stay-time="60">
+    <view class="u-row-icon">🏅</view>
+    <view class="u-row-body">
+      <view class="u-row-title">我的勋章</view>
+      <view class="u-row-sub">看看已经拿到哪些了</view>
+    </view>
+    <view class="u-row-extra">
+      <view class="u-arrow"></view>
+    </view>
+  </view>
+
+  <!-- 错题本（L3）：游戏与测试里答错的知识点记在这里，点进去回该章节重学 -->
+  <view class="u-row" bindtap="onTapWrongQuestions" hover-class="u-tap-flat" hover-stay-time="60">
+    <view class="u-row-icon">❗</view>
+    <view class="u-row-body">
+      <view class="u-row-title">错题本</view>
+      <view class="u-row-sub">答错的知识点，按补弱进度排列</view>
+    </view>
+    <view class="u-row-extra">
+      <view class="u-arrow"></view>
+    </view>
+  </view>
+
+  <view class="u-row" bindtap="onTapFavorite" hover-class="u-tap-flat" hover-stay-time="60">
+    <view class="u-row-icon">⭐</view>
+    <view class="u-row-body">
+      <view class="u-row-title">我的收藏</view>
+      <view class="u-row-sub">收藏的知识点</view>
+    </view>
+    <view class="u-row-extra">
+      <view class="u-arrow"></view>
+    </view>
+  </view>
+
+  <view class="u-row" bindtap="onTapStatistics" hover-class="u-tap-flat" hover-stay-time="60">
+    <view class="u-row-icon">📊</view>
+    <view class="u-row-body">
+      <view class="u-row-title">学习统计</view>
+      <view class="u-row-sub">复习量与连续天数</view>
+    </view>
+    <view class="u-row-extra">
+      <view class="u-arrow"></view>
+    </view>
+  </view>
+
+  <view class="u-row" bindtap="onTapSettings" hover-class="u-tap-flat" hover-stay-time="60">
+    <view class="u-row-icon">⚙️</view>
+    <view class="u-row-body">
+      <view class="u-row-title">设置</view>
+      <view class="u-row-sub">偏好与通知</view>
+    </view>
+    <view class="u-row-extra">
+      <view class="u-arrow"></view>
+    </view>
+  </view>
+
+  <view wx:if="{{showAdmin}}" class="u-row" bindtap="onTapAdmin" hover-class="u-tap-flat" hover-stay-time="60">
+    <view class="u-row-icon">🛠</view>
+    <view class="u-row-body">
+      <view class="u-row-title">管理员</view>
+      <view class="u-row-sub">内容维护入口</view>
+    </view>
+    <view class="u-row-extra">
+      <view class="u-arrow"></view>
+    </view>
+  </view>
 </view>
-<view class="list-item" bindtap="onTapStatistics">
-  <text>学习统计</text>
-</view>
-<!-- 管理员入口预留（Baseline Spec §5：V1 采用云开发 CMS，入口仅对管理员渲染，
-     开关集中在 miniprogram/config/features.ts 的 FEATURE_FLAGS.adminEntry） -->
+
+<view class="u-safe-bottom"></view>

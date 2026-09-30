@@ -1,31 +1,46 @@
-<view wx:if="{{poolEmpty}}" class="hint">本章节知识点不足，敬请期待</view>
+<!-- 消消乐（Chapter 08 §16）
+     UI v1.1（2026-09-14）：准备页规则卡 / HUD / 棋盘 / 退出键全部走 styles/game.wxss 的 g- 类，
+     按钮走 u-btn（原来 type="primary" 是微信绿，与全站清爽蓝不一致）。 -->
+<view wx:if="{{poolEmpty}}" class="u-empty">
+  <view class="u-empty-icon">🧩</view>
+  <view class="u-empty-text">本章节知识点不足</view>
+  <view class="u-empty-sub">换一个章节或学段再来看看</view>
+</view>
 
 <block wx:elif="{{status === 'READY'}}">
-  <view class="ready">
-    <view class="title">记忆挑战</view>
-    <view class="rules">点选「单词 + 释义」配对消除，{{remainingSeconds}} 秒内清空 {{totalPairs}} 对</view>
-    <view class="rules">答对 +10 · 连击加成 · 答错 -2 · 提前完成有时间奖励</view>
-    <button type="primary" class="start" bindtap="onStartGame">开始游戏</button>
+  <view class="g-ready">
+    <view class="g-title">记忆挑战</view>
+    <view class="g-rules">
+      点选「单词 + 释义」配对消除，{{remainingSeconds}} 秒内清空 {{totalPairs}} 对
+    </view>
+    <view class="g-rules">答对 +10 · 连击加成 · 答错 -2 · 提前完成有时间奖励</view>
+    <view class="g-actions">
+      <button class="u-btn u-btn-primary u-btn-block" bindtap="onStartGame" hover-class="u-tap" hover-stay-time="60">开始游戏</button>
+    </view>
   </view>
 </block>
 
 <block wx:else>
-  <view class="hud">
-    <text>⏱ {{remainingSeconds}}s</text>
-    <text>得分 {{score}}</text>
-    <text wx:if="{{streak >= 2}}" class="combo">Combo x{{streak}}</text>
+  <view class="g-page">
+    <view class="g-hud">
+      <text>⏱ 剩余 {{remainingSeconds}}s</text>
+      <text class="g-hud-score">得分 {{score}}</text>
+      <text wx:if="{{streak >= 2}}" class="g-combo">Combo x{{streak}}</text>
+    </view>
+
+    <view class="g-board">
+      <memory-card
+        wx:for="{{cards}}"
+        wx:key="cardId"
+        text="{{item.text}}"
+        index="{{index}}"
+        selected="{{item.selected}}"
+        wrong="{{item.wrong}}"
+        eliminated="{{item.eliminated}}"
+        bind:cardtap="onCardTap"
+      />
+    </view>
+
+    <button class="u-btn u-btn-ghost u-btn-block g-exit" bindtap="onExit" hover-class="u-tap" hover-stay-time="60">退出</button>
   </view>
-  <view class="board">
-    <memory-card
-      wx:for="{{cards}}"
-      wx:key="cardId"
-      text="{{item.text}}"
-      index="{{index}}"
-      selected="{{item.selected}}"
-      wrong="{{item.wrong}}"
-      eliminated="{{item.eliminated}}"
-      bind:cardtap="onCardTap"
-    />
-  </view>
-  <button class="exit" bindtap="onExit">退出</button>
 </block>

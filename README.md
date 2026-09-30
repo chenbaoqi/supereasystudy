@@ -30,11 +30,14 @@ npm run test         # Vitest
 
 ## 当前状态
 
-**Phase 1 完成 ✅ ｜ Phase 2 学习链路切片已实现（Chapter 04，待云端部署联调）**
+**Phase 1 完成 ✅ ｜ Phase 2/3 多章已实现（至 Chapter 15），云链路已联调通过（2026-08-27 用户验证）**
 
-- ✅ 工程基座（TS strict / ESLint / CI / 提交规范）
+- ✅ 工程基座（TS strict / ESLint 禁 any / CI / 提交规范）
 - ✅ 学习闭环「登录→学科→路径→教材→册次→章节→学习详情→测试→结果」全链路代码
-- ✅ 云环境接入 + 15 集合基线 + login / seedDatabase 云函数 + 单元测试 ×13
-- ⏳ 待云端部署 login / seedDatabase 并联调验收（Chapter 04 §14 八条）
+- ✅ 首页 Dashboard + 学习 tab「我的课程」+ 练习/我的 Tab 页（2026-08-27 补完 `practice`/`mine`）
+- ✅ 5 款游戏（消消乐/极速选择/听音找词/小蜜蜂/语法闯关）+ 配置驱动的游戏中心（`config/games.ts`）+ 复习/收藏/统计
+- ✅ 云环境接入（AppID `wxa72b355ef8b198eb`）+ 17 集合基线 + 7 个云函数（login / seedDatabase / initDatabase / seedBanners / resetAndImport / unzipPronunciations / updateUserPreferences）+ 单元测试
+- ✅ 云链路联调通过：AppID / 函数部署 / 数据集 / 功能点击均验证 OK
+- ✅ 真实教材数据已导入（方向 B 完成，2026-08-27）：CSV→`resetAndImport`→数据库，音频上云
 
-后续：Phase 2 余量（favorite/review 真实页）→ Phase 3 游戏玩法 → Phase 4 AI 与商业化。
+后续：阅读题二期（方向 C 扩展）→ Phase 4 AI 与商业化。

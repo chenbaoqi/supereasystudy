@@ -1,0 +1,67 @@
+<!-- 拼写练习：看中文（或听发音）→ 把单词打出来。
+     ⚠️ 这是「产出型」练习——与那 2348 道四选一不同，它逼孩子想出整个单词。 -->
+<view wx:if="{{loading}}" class="u-empty">
+  <text class="u-empty-text">准备单词中…</text>
+</view>
+
+<view wx:elif="{{loadFailed}}" class="u-empty">
+  <text class="u-empty-icon">📶</text>
+  <text class="u-empty-text">读不到单词</text>
+  <button class="u-btn u-btn-primary u-btn-sm sp-retry" bindtap="onRetry" hover-class="u-tap" hover-stay-time="60">重试</button>
+</view>
+
+<view wx:elif="{{items.length === 0}}" class="u-empty">
+  <text class="u-empty-icon">🔤</text>
+  <text class="u-empty-text">这一册没有可以拼写的单词</text>
+</view>
+
+<!-- 结算 -->
+<view wx:elif="{{showResult}}" class="sp-result">
+  <view class="sp-result-title">练完啦</view>
+  <view class="sp-result-score">拼对 {{correctCount}} / {{total}} 个</view>
+  <view wx:if="{{gainedStars > 0}}" class="sp-result-stars">+{{gainedStars}}⭐</view>
+  <view class="sp-result-tip">拼错的已经记进错题本，回头再练一次就记牢了</view>
+  <button class="u-btn u-btn-primary u-btn-block sp-back" bindtap="onBack" hover-class="u-tap" hover-stay-time="60">完成</button>
+</view>
+
+<block wx:else>
+  <view class="sp-progress">{{index + 1}} / {{total}}</view>
+
+  <view class="u-card sp-card">
+    <view class="sp-meaning">{{current.meaning}}</view>
+    <view class="sp-hint">提示：{{hint}}（{{current.word.length}} 个字母）</view>
+    <button class="u-btn u-btn-ghost u-btn-sm sp-audio" bindtap="onPlayAudio" hover-class="u-tap-flat" hover-stay-time="60">🔊 听发音</button>
+  </view>
+
+  <input
+    class="sp-input"
+    value="{{input}}"
+    placeholder="在这里写单词"
+    placeholder-class="sp-placeholder"
+    confirm-type="done"
+    bindinput="onInput"
+    bindconfirm="onSubmit"
+  />
+
+  <view wx:if="{{feedback === 'correct'}}" class="sp-feedback sp-ok">✓ 拼对了</view>
+  <view wx:elif="{{feedback === 'wrong'}}" class="sp-feedback sp-bad">
+    正确答案是 {{current.word}}
+  </view>
+
+  <button
+    wx:if="{{feedback === ''}}"
+    class="u-btn u-btn-primary u-btn-block sp-next"
+    bindtap="onSubmit"
+    hover-class="u-tap"
+    hover-stay-time="60"
+  >确定</button>
+  <button
+    wx:else
+    class="u-btn u-btn-primary u-btn-block sp-next"
+    bindtap="onNext"
+    hover-class="u-tap"
+    hover-stay-time="60"
+  >{{index + 1 >= total ? '看结果' : '下一个'}}</button>
+
+  <view class="u-safe-bottom"></view>
+</block>

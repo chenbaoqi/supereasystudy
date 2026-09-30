@@ -1,2 +1,29 @@
-/* 我的页样式（§15 UI 从简） */
-@import '../shared/list.wxss';
+/* 我的页样式（UI v1.1「清爽蓝·淡色版」）
+   头部：淡蓝底 + 白底头像 + 当前教材；功能行走全局 .u-row 组件类。 */
+
+/* 选择器带上 .u-hero 以稳定压过全局的 .u-hero（不依赖文件加载顺序） */
+.u-hero.mine-hero {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+}
+
+/* 白底头像压在淡蓝底上，比 v1 的半透明白圈更清楚 */
+.mine-avatar {
+  width: 104rpx;
+  height: 104rpx;
+  border-radius: 50%;
+  background: var(--bg-card);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 52rpx;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.mine-user {
+  flex: 1;
+  min-width: 0;
+}

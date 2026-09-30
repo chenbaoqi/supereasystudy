@@ -1,0 +1,64 @@
+/* 分数模型（B-7 之二）。
+   ⚠️ 微信的 app.wxss 全局样式对自定义组件无效，所以这里自写 fr- 前缀的类；
+   色值仍走 tokens 的 var()（CSS 自定义属性会沿元素树继承进自定义组件）。 */
+.fr {
+  display: flex;
+  flex-direction: column;
+}
+
+.fr-bar {
+  display: flex;
+  gap: 3rpx;
+  height: 48rpx;
+  border-radius: var(--r-sm);
+  background: var(--bg-subtle);
+  overflow: hidden;
+}
+
+.fr-bar-next {
+  margin-top: var(--sp-3);
+}
+
+/* 每一份等宽：条被分母等分，涂色份数 = 分子 */
+.fr-seg {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  background: var(--brand-100);
+}
+
+/* 涂色份用深一档的品牌色 —— 浅底上也能一眼数清有几份 */
+.fr-seg.on {
+  background: var(--brand-500);
+}
+
+/* 带分数/假分数的「整体」分界：两份之间多留一点，学生才看得出这是第二个整体 */
+.fr-seg.is-start {
+  margin-left: 6rpx;
+}
+
+.fr-seg:first-child {
+  margin-left: 0;
+}
+
+/* 分母过大时改画连续条（等分线细到看不见，不如直接给占比） */
+.fr-fill {
+  flex: none;
+  height: 100%;
+  background: var(--brand-500);
+  border-radius: var(--r-sm);
+}
+
+.fr-label {
+  margin-top: var(--sp-1);
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  text-align: center;
+}
+
+.fr-rel {
+  margin-top: var(--sp-2);
+  font-size: var(--fs-sm);
+  color: var(--brand-600);
+  text-align: center;
+}

@@ -1,0 +1,128 @@
+/* ==========================================================================
+   设计令牌 Design Tokens —— SuperEasy Learning UI v1.1「清爽蓝·淡色版」
+   --------------------------------------------------------------------------
+   为什么有这个文件：
+     app.wxss 原先只有 17 行，且写着「UI 规范以 Specification 第 12 章为准（该章节待补写）」
+     ——那句注释是过期的（第 12 章 2026-07-19 已冻结）。真实情况是令牌从未落成代码，
+     全项目实际的设计词汇只有 pages/shared/list.wxss 那 59 行（白卡 + 灰字）。
+     自 v1 起，本文件 + components.wxss 即视觉规范本身。
+     （那 59 行的 pages/shared/list.wxss 已于 2026-09-14 迁移完毕并删除，不再有新旧并存。）
+
+   v1.1（2026-09-13 Owner 反馈「配色再淡一点，不伤眼睛最好」）调色原则：
+     1. 大面积色块一律**降饱和、提高明度**——深蓝渐变头部改为极淡蓝渐变，
+        白卡片压在淡蓝底上靠阴影分层，不再靠色差硬撞。
+     2. 导航栏回到白底黑字：它是常驻元素，深色底长时间看最累。
+     3. 只有在**需要对比的地方**（实心按钮白字、强调数字）才用较深的品牌色
+        --brand-600 #3f6bc4（白字对比度约 4.8:1，达 WCAG AA）。
+     4. 阴影全部削弱一档（0.06 → 0.05），去掉"浮起来"的塑料感。
+
+   使用约定：
+     1. 令牌只在这里定义；页面/组件一律用 var() 读取，不得就地硬编码色值。
+     2. WXSS 无预处理器，令牌靠 page{} 上的 CSS 自定义属性向下继承。
+        自定义组件（components/）若开启样式隔离，需自行 @import 本文件。
+     3. 新增颜色/间距/圆角必须先补进这里，不允许在页面里临时造一个。
+   ========================================================================== */
+page {
+  /* —— 品牌色 Brand（清爽蓝·淡） ——
+     500 = 视觉主色（图标、chip 文字、进度）；600 = 需要对比处（实心按钮白字）；
+     700 = 淡底上的强调数字/标题。 */
+  --brand-50: #f0f5fe;
+  --brand-100: #e4edfd;
+  --brand-200: #cbdcf9;
+  --brand-300: #abc5f3;
+  --brand-400: #87aaeb;
+  --brand-500: #5a85e0;
+  --brand-600: #3f6bc4;
+  --brand-700: #2f5296;
+
+  /* —— 中性色 Neutral —— */
+  --ink-1: #2a3444; /* 标题 / 正文（比纯黑柔和，长时间阅读不刺眼） */
+  --ink-2: #5d6779; /* 副文本 */
+  --ink-3: #9aa3b4; /* 辅助 / 占位 */
+  --ink-4: #c8ceda; /* 禁用 / 分隔 */
+  --line: #eaeff6; /* 描边 */
+
+  --bg-page: #f5f7fa; /* 页面底色 */
+  --bg-card: #ffffff; /* 卡片 */
+  --bg-subtle: #f8fafd; /* 卡片内浅底 */
+  --bg-mask: rgba(42, 52, 68, 0.4);
+
+  /* —— 交互手感 —— */
+  /* 按下态过渡：所有可点组件共用（.u-btn / .u-row / .u-card / .u-option / .u-chip）。
+     改这一处就能调全站手感快慢；120ms 是「看得见但不拖沓」的量级。 */
+  --tap-transition: transform 120ms ease, opacity 120ms ease;
+
+  /* —— 语义色 Semantic（降饱和版） —— */
+  --success: #2fa06b;
+  --success-bg: #e8f5ee;
+  --warning: #d99a3c;
+  --warning-bg: #fdf5e8;
+  --danger: #dd655d;
+  --danger-bg: #fceeed;
+
+  /* —— 学习状态三态 ——
+     旧版未开始/学习中/已完成全是 #999，看不出进度；改按状态着色。 */
+  --state-todo: #9aa3b4;
+  --state-todo-bg: #f2f5f9;
+  --state-doing: #3f6bc4;
+  --state-doing-bg: #eaf1fd;
+  --state-done: #2fa06b;
+  --state-done-bg: #e8f5ee;
+
+  /* —— 学科色（学科名 → 色板的映射见 config/subjects.ts getSubjectTheme） —— */
+  --subject-en: #5a85e0;
+  --subject-en-bg: #eef4fe;
+  --subject-math: #dd9d63;
+  --subject-math-bg: #fcf2e7;
+  --subject-cn: #3fb294;
+  --subject-cn-bg: #e8f6f2;
+  --subject-default: #8b7cd8;
+  --subject-default-bg: #f3f0fd;
+
+  /* —— 深色街机主题（仅小蜜蜂 space-shooter 与键盘组件使用） ——
+     这是「有意保留的例外」而不是漏改：中文方块在深色太空背景上才看得清，
+     把游戏画面刷成浅底会让游戏没法玩。色值仍然只在令牌里定义一份，页面不硬编码。 */
+  --game-bg: #1a1a2e; /* 画面底 */
+  --game-bg-bar: #0f3460; /* 顶部控制条 / 输入条 */
+  --game-surface: #16213e; /* 按键底色 */
+  --game-text: #e0e0e0;
+  --game-text-dim: #aaaaaa;
+  --game-accent: #00ff88; /* 街机绿：得分/激活态 */
+
+  /* —— 字号 Font scale —— */
+  --fs-xs: 22rpx;
+  --fs-sm: 24rpx;
+  --fs-base: 28rpx;
+  --fs-md: 30rpx;
+  --fs-lg: 34rpx;
+  --fs-xl: 40rpx;
+  --fs-2xl: 52rpx;
+
+  /* —— 间距 Spacing（8 的阶梯） —— */
+  --sp-1: 8rpx;
+  --sp-2: 12rpx;
+  --sp-3: 16rpx;
+  --sp-4: 24rpx;
+  --sp-5: 32rpx;
+  --sp-6: 48rpx;
+
+  /* 页面统一左右边距 */
+  --gutter: 24rpx;
+
+  /* —— 圆角 Radius —— */
+  --r-sm: 12rpx;
+  --r-md: 20rpx;
+  --r-lg: 28rpx;
+  --r-pill: 999rpx;
+
+  /* —— 阴影 Shadow（v1.1 全面削弱一档，去掉塑料感） —— */
+  --shadow-card: 0 2rpx 12rpx rgba(42, 52, 68, 0.05);
+  --shadow-float: 0 6rpx 24rpx rgba(42, 52, 68, 0.09);
+  --shadow-brand: 0 6rpx 18rpx rgba(90, 133, 224, 0.24);
+
+  /* —— 渐变 ——
+     --grad-hero：页面头部（极淡蓝，与白卡片靠阴影分层，久看不累）。
+     --grad-brand：主按钮实色（这里才需要足够对比度承载白字）。 */
+  --grad-hero: linear-gradient(180deg, #eaf2fe 0%, #dde9fb 100%);
+  --grad-brand: linear-gradient(180deg, #5a85e0 0%, #3f6bc4 100%);
+}

@@ -12,6 +12,7 @@ import {
 } from '../repositories/learningRecordRepository';
 import { reviewRepository, type ReviewRepository } from '../repositories/reviewRepository';
 import { addDays, endOfToday, startOfToday } from '../utils/date';
+import { withinGrade } from './gradeScope';
 
 export interface ReviewItem {
   readonly record: ReviewRecord;
@@ -31,7 +32,12 @@ export interface ReviewService {
   submitReview(userId: string, knowledgeId: string, known: boolean): Promise<void>;
   finishReview(userId: string): Promise<TodayReviews>;
   // 复习任务创建（§3），幂等：已存在的知识点跳过
-  createReviewTasksForChapter(userId: string, chapterId: string): Promise<number>;
+  // ADR-012：末尾 grade 可选，按当前年级过滤（低年级不该收到超纲公式的复习任务）
+  createReviewTasksForChapter(
+    userId: string,
+    chapterId: string,
+    grade?: number | null,
+  ): Promise<number>;
   // 游戏结果集成（Chapter 07 §12）：错误知识点生成/更新复习任务（明天到期），
   // 正确知识点 masteryLevel+1（复用 submitReview 的排期与 MASTERED 联动，单一写入口）
   applyGameResults(
@@ -62,8 +68,11 @@ export function createReviewService(deps: ReviewServiceDeps): ReviewService {
   };
 
   const service: ReviewService = {
-    async createReviewTasksForChapter(userId, chapterId) {
-      const knowledgeList = await deps.knowledgeRepository.listByChapter(chapterId);
+    async createReviewTasksForChapter(userId, chapterId, grade) {
+      const knowledgeList = withinGrade(
+        await deps.knowledgeRepository.listByChapter(chapterId),
+        grade ?? null,
+      );
       const existing = await deps.reviewRepository.listByUserAndChapter(userId, chapterId);
       const existingIds = new Set(existing.map((item) => item.knowledgeId));
       const firstDue = addDays(now(), REVIEW_STAGES_DAYS[0]);

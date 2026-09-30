@@ -1,0 +1,4 @@
+<!-- 平面直角坐标系（B-7 之三）。
+     宽撑满容器，高由 height 属性给（px）——canvas 必须有确定尺寸，百分比拿不到。
+     真正的绘制在 ts 里用 canvas 2d 完成，这里只有一个画布节点。 -->
+<canvas type="2d" id="plane" class="cp-canvas" style="height: {{height}}px"></canvas>

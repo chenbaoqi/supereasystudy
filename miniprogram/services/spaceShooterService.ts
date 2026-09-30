@@ -7,8 +7,10 @@ import {
   type MemoryGameRepository,
 } from '../repositories/memoryGameRepository';
 import { reviewService } from './reviewService';
+import { withinGrade } from './gradeScope';
 import { gameResultStore, type GameResultDetail } from './gameResultStore';
 import { selectPool } from './memoryGameLogic';
+import { gameRewardService, walletViewOf, type RunRewarder } from './gameRewardService';
 
 export interface ShooterGameStart {
   readonly eligible: boolean;
@@ -29,11 +31,22 @@ export function createSpaceShooterService(deps: {
   knowledgeRepository: KnowledgeRepository;
   memoryGameRepository: MemoryGameRepository;
   reviewResultApplier: { applyGameResults(...args: unknown[]): Promise<void> };
+  // 全站钱包入账（缺省 = 真实服务；单测可注入替身）
+  rewarder?: RunRewarder;
   random?: () => number;
 }) {
+  const rewarder = deps.rewarder ?? gameRewardService;
   return {
-    async startGame(_userId: string, chapterId: string): Promise<ShooterGameStart> {
-      const knowledgeList = await deps.knowledgeRepository.listByChapter(chapterId);
+    // ADR-012：末尾 grade 用于按当前年级过滤跨年级专题包，不传 = 不限年级
+    async startGame(
+      _userId: string,
+      chapterId: string,
+      grade: number | null = null,
+    ): Promise<ShooterGameStart> {
+      const knowledgeList = withinGrade(
+        await deps.knowledgeRepository.listByChapter(chapterId),
+        grade,
+      );
       const { pool, eligible } = selectPool(knowledgeList, deps.random ?? Math.random);
       if (!eligible) return { eligible: false, pool: [] };
       return { eligible: true, pool };
@@ -64,6 +77,15 @@ export function createSpaceShooterService(deps: {
         correctIds: input.hitIds,
         wrongIds: input.missIds,
         replayUrl: '/pages/space-shooter/space-shooter',
+        wallet: walletViewOf(
+          await rewarder.reward({
+            userId: input.userId,
+            gameId: 'shooter',
+            correct: input.hitIds.length,
+            total: input.pool.length,
+            attempts: { correctIds: input.hitIds, wrongIds: input.missIds },
+          }),
+        ),
         integrateToReview: async () => {
           await deps.reviewResultApplier.applyGameResults(
             input.userId,

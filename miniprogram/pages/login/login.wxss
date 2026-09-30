@@ -1,13 +1,71 @@
-/* 登录页样式（§15：UI 从简） */
-.container {
+/* 登录页 UI v1.1（2026-09-14） */
+.lg-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 200rpx var(--gutter) calc(var(--sp-6) + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+
+/* ------------------------------------------------------------------- 品牌区 */
+.lg-brand {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 240rpx;
-  gap: 32rpx;
 }
 
-.hint {
-  color: #999999;
-  font-size: 28rpx;
+.lg-logo {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: var(--r-lg);
+  background: var(--brand-50);
+  border: 2rpx solid var(--brand-200);
+  color: var(--brand-500);
+  font-size: 68rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lg-name {
+  margin-top: var(--sp-4);
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  color: var(--ink-1);
+}
+
+.lg-slogan {
+  margin-top: var(--sp-1);
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+}
+
+/* ------------------------------------------------------------- 登录 / 状态区 */
+.lg-panel {
+  margin-top: 120rpx;
+}
+
+.lg-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-4) 0;
+}
+
+.lg-status-text {
+  font-size: var(--fs-base);
+  color: var(--ink-3);
+}
+
+/* u-tip 自带左右 margin，这里只补上下间距 */
+.lg-tip {
+  margin-top: 0;
+  margin-bottom: var(--sp-4);
+}
+
+.lg-note {
+  margin-top: var(--sp-3);
+  text-align: center;
+  font-size: var(--fs-xs);
+  color: var(--ink-4);
 }

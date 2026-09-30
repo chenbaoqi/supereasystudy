@@ -1,0 +1,57 @@
+/* 数轴组件（B-7 之一）。
+   色值全部取自 tokens.wxss：CSS 自定义属性定义在 page 上，会沿元素树继承进自定义组件。 */
+.nl {
+  padding: 32rpx 40rpx 8rpx;
+}
+
+.nl-track {
+  position: relative;
+  height: 4rpx;
+  border-radius: 2rpx;
+  background: var(--brand-200);
+}
+
+/* 区间高亮：不等式 / 取值范围。用半透明品牌色，不盖住刻度 */
+.nl-range {
+  position: absolute;
+  top: 0;
+  height: 4rpx;
+  border-radius: 2rpx;
+  background: var(--brand-500);
+}
+
+.nl-tick {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nl-tick-line {
+  width: 2rpx;
+  height: 16rpx;
+  background: var(--brand-300);
+}
+
+.nl-tick-label {
+  margin-top: 6rpx;
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+  line-height: 1.4;
+}
+
+/* 标记点：比刻度粗一档、用深一档品牌色，一眼能定位 */
+.nl-dot {
+  position: absolute;
+  top: 50%;
+  width: 24rpx;
+  height: 24rpx;
+  margin-top: -12rpx;
+  margin-left: -12rpx;
+  border-radius: 50%;
+  background: var(--brand-600);
+  border: 4rpx solid #ffffff;
+  box-shadow: var(--shadow-card);
+}

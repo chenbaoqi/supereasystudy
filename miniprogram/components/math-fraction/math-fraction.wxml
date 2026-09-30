@@ -1,0 +1,32 @@
+<!-- 分数模型（B-7 之二）。
+     一根条代表一个「整体」，按分母等分，分子覆盖到的份涂色。
+     比大小时两根条等宽、各按自己的分母等分 —— 看长度，不看份数。 -->
+<view wx:if="{{a.valid}}" class="fr">
+  <view class="fr-bar">
+    <block wx:if="{{a.segmented}}">
+      <view
+        wx:for="{{a.segments}}"
+        wx:key="index"
+        class="fr-seg {{item.filled ? 'on' : ''}} {{item.groupStart ? 'is-start' : ''}}"
+      ></view>
+    </block>
+    <!-- 分母太大（> 24）等分线会细到看不见，改画连续条 -->
+    <view wx:else class="fr-fill" style="width: {{a.fillPercent}}%;"></view>
+  </view>
+  <text wx:if="{{showLabel}}" class="fr-label">{{a.label}}</text>
+
+  <block wx:if="{{b}}">
+    <view class="fr-bar fr-bar-next">
+      <block wx:if="{{b.segmented}}">
+        <view
+          wx:for="{{b.segments}}"
+          wx:key="index"
+          class="fr-seg {{item.filled ? 'on' : ''}} {{item.groupStart ? 'is-start' : ''}}"
+        ></view>
+      </block>
+      <view wx:else class="fr-fill" style="width: {{b.fillPercent}}%;"></view>
+    </view>
+    <text wx:if="{{showLabel}}" class="fr-label">{{b.label}}</text>
+    <view wx:if="{{relation}}" class="fr-rel">{{a.label}} {{relation}} {{b.label}}</view>
+  </block>
+</view>

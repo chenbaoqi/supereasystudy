@@ -1,0 +1,74 @@
+/* 我的战绩页（游戏打通 L2）
+   概览卡片走 components.wxss 的 .u-grid（与学习统计页同一套 2 列）；
+   ⚠️ 「重试 / 去玩游戏」是 button —— 微信内置 width:184px 特异性 (0,1,1)，
+   单类名压不过，必须 .gr-retry 与 .u-btn 组合提到 (0,2,0)。 */
+.gr-page {
+  padding-bottom: var(--sp-4);
+}
+
+.gr-grid {
+  margin-top: var(--sp-4);
+}
+
+.gr-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: var(--sp-5) var(--sp-3);
+  background: var(--bg-card);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
+  box-sizing: border-box;
+}
+
+.gr-icon {
+  font-size: 40rpx;
+  line-height: 1;
+  margin-bottom: 4rpx;
+}
+
+/* 数字是要被读取的信息：用深一档品牌色，不跟着底色一起变淡 */
+.gr-num {
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  color: var(--brand-700);
+  line-height: 1.2;
+}
+
+/* 「累计用时」是「3 分 20 秒」这种长文本，按 XL 会撑破卡片 */
+.gr-num-sm {
+  font-size: var(--fs-md);
+}
+
+.gr-label {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+.gr-when {
+  margin-left: var(--sp-2);
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+
+/* 云读不到时的说明条：描述事实，不假装一切正常 */
+.gr-hint {
+  margin: var(--sp-3) var(--gutter) 0;
+  padding: var(--sp-3);
+  border: 2rpx solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--bg-subtle);
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+/* 「重试」不该是满宽按钮，给固定宽度；双类名提权见文件头说明 */
+.u-btn.gr-retry {
+  width: 240rpx;
+  margin-top: var(--sp-4);
+}
+
+.gr-row {
+  align-items: center;
+}

@@ -1,1 +1,3 @@
-@import '../shared/list.wxss';
+/* 学习路径页：无私有样式。
+   本页已无入口（ADR-011 后学科直接进教材页），保留文件是因为 app.json 仍注册且红线要求
+   「不得删除有效代码」。样式全部来自全局 tokens.wxss + components.wxss。 */

@@ -1,22 +1,42 @@
-<!-- 列表页共享模板（DRY：4 个列表页复用；§8：无网络 Retry / 无数据 Empty） -->
+<!-- 列表页共享模板（DRY：learning-path / textbook / semester 三页复用）。
+     UI v1.1 迁移（2026-09-14）：改用 styles/components.wxss 的 u-* 类，色值全部走 tokens。
+     title / icon 为可选入参：传了就在列表上方显示分区标题与行首图标——
+     「选择教材 / 选择册次」是 ADR-011 定的最顶层入口，不能是个没有标题的裸列表。 -->
 <template name="list">
-  <view wx:if="{{loading}}" class="hint">加载中…</view>
-  <view wx:elif="{{loadFailed}}" class="hint">
-    <text>加载失败，请检查网络</text>
-    <button size="mini" bindtap="onRetry">重试</button>
+  <view wx:if="{{loading}}" class="u-empty">
+    <text class="u-empty-text">加载中…</text>
   </view>
-  <view wx:elif="{{items.length === 0}}" class="hint">暂无数据</view>
+  <view wx:elif="{{loadFailed}}" class="u-empty">
+    <text class="u-empty-icon">📡</text>
+    <text class="u-empty-text">加载失败，请检查网络</text>
+    <button class="u-btn u-btn-primary u-btn-sm" bindtap="onRetry" hover-class="u-tap" hover-stay-time="60">重试</button>
+  </view>
+  <view wx:elif="{{items.length === 0}}" class="u-empty">
+    <text class="u-empty-icon">📭</text>
+    <text class="u-empty-text">暂无数据</text>
+  </view>
   <block wx:else>
-    <view
-      wx:for="{{items}}"
-      wx:key="id"
-      class="list-item"
-      data-id="{{item.id}}"
-      data-open="{{item.open}}"
-      bindtap="onTapItem"
-    >
-      <text>{{item.title}}</text>
-      <text wx:if="{{!item.open}}" class="tag">敬请期待</text>
+    <view wx:if="{{title}}" class="u-section">
+      <text class="u-section-title">{{title}}</text>
+    </view>
+    <view class="u-list">
+      <view
+        wx:for="{{items}}"
+        wx:key="id"
+        class="u-row"
+        data-id="{{item.id}}"
+        data-open="{{item.open}}"
+        bindtap="onTapItem" hover-class="u-tap-flat" hover-stay-time="60"
+      >
+        <view wx:if="{{icon}}" class="u-row-icon">{{icon}}</view>
+        <view class="u-row-body">
+          <view class="u-row-title">{{item.title}}</view>
+        </view>
+        <view class="u-row-extra">
+          <text wx:if="{{!item.open}}" class="u-chip u-chip-muted">敬请期待</text>
+          <view class="u-arrow"></view>
+        </view>
+      </view>
     </view>
   </block>
 </template>

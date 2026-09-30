@@ -1,0 +1,2371 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SuperEasy Learning · UI v1.1「清爽蓝·淡色版」预览</title>
+    <style>
+      /* ------------------------------------------------------------------
+     本文件是**静态目视复核稿**，不是真机截图。
+     尺寸按小程序 rpx→px（750rpx 设计宽度 = 375px）1:2 换算，
+     色值与 miniprogram/styles/tokens.wxss 一一对应。
+     ------------------------------------------------------------------ */
+      :root {
+        --brand-50: #f0f5fe;
+        --brand-100: #e4edfd;
+        --brand-200: #cbdcf9;
+        --brand-300: #abc5f3;
+        --brand-400: #87aaeb;
+        --brand-500: #5a85e0;
+        --brand-600: #3f6bc4;
+        --brand-700: #2f5296;
+        --ink-1: #2a3444;
+        --ink-2: #5d6779;
+        --ink-3: #9aa3b4;
+        --ink-4: #c8ceda;
+        --line: #eaeff6;
+        --bg-page: #f5f7fa;
+        --bg-card: #ffffff;
+        --bg-subtle: #f8fafd;
+        --success: #2fa06b;
+        --success-bg: #e8f5ee;
+        --warning: #d99a3c;
+        --warning-bg: #fdf5e8;
+        --danger: #dd655d;
+        --danger-bg: #fceeed;
+        --state-todo: #9aa3b4;
+        --state-todo-bg: #f2f5f9;
+        --subject-en: #5a85e0;
+        --subject-en-bg: #eef4fe;
+        --subject-math: #dd9d63;
+        --subject-math-bg: #fcf2e7;
+        --subject-cn: #3fb294;
+        --subject-cn-bg: #e8f6f2;
+        --subject-default: #8b7cd8;
+        --subject-default-bg: #f3f0fd;
+        --grad-hero: linear-gradient(180deg, #eaf2fe 0%, #dde9fb 100%);
+        --grad-brand: linear-gradient(180deg, #5a85e0 0%, #3f6bc4 100%);
+        --shadow-card: 0 1px 6px rgba(42, 52, 68, 0.05);
+        --shadow-brand: 0 3px 9px rgba(90, 133, 224, 0.24);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 28px 20px 60px;
+        background: #eef1f6;
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', Helvetica, sans-serif;
+        color: var(--ink-1);
+      }
+      h1 {
+        font-size: 20px;
+        margin: 0 0 6px;
+      }
+      .lead {
+        color: var(--ink-2);
+        font-size: 13px;
+        margin: 0 0 18px;
+        line-height: 1.6;
+      }
+      .h2 {
+        font-size: 15px;
+        margin: 0 0 10px;
+      }
+      .tbl {
+        width: 100%;
+        max-width: 900px;
+        border-collapse: collapse;
+        font-size: 12px;
+        margin: 0 0 14px;
+        background: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: var(--shadow-card);
+      }
+      .tbl th,
+      .tbl td {
+        padding: 9px 12px;
+        text-align: left;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+        line-height: 1.5;
+      }
+      .tbl th {
+        background: var(--brand-50);
+        color: var(--brand-700);
+        font-weight: 600;
+        white-space: nowrap;
+      }
+      .tbl tr:last-child td {
+        border-bottom: none;
+      }
+      .swatches {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 0 0 26px;
+      }
+      .sw {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        color: var(--ink-2);
+      }
+      .sw i {
+        width: 22px;
+        height: 22px;
+        border-radius: 6px;
+        display: block;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+      }
+      .row-wrap {
+        display: flex;
+        gap: 22px;
+        flex-wrap: wrap;
+        align-items: flex-start;
+      }
+
+      .phone {
+        width: 375px;
+        background: var(--bg-page);
+        border-radius: 26px;
+        overflow: hidden;
+        box-shadow: 0 10px 34px rgba(42, 52, 68, 0.14);
+        display: flex;
+        flex-direction: column;
+      }
+      .nav {
+        height: 44px;
+        background: #fff;
+        color: var(--ink-1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+        font-weight: 600;
+        flex-shrink: 0;
+        border-bottom: 0.5px solid var(--line);
+      }
+      .screen {
+        height: 640px;
+        overflow: hidden;
+      }
+      .caption {
+        text-align: center;
+        font-size: 12px;
+        color: var(--ink-2);
+        margin-top: 8px;
+        width: 375px;
+      }
+
+      /* ---- ⑳ 门禁解锁卡（ADR-015） ---- */
+      .eg-card {
+        margin: 12px;
+        padding: 24px 16px 16px;
+        background: var(--bg-card);
+        border-radius: 14px;
+        box-shadow: var(--shadow-card);
+        text-align: center;
+      }
+      .eg-icon {
+        font-size: 28px;
+        line-height: 1;
+      }
+      .eg-title {
+        margin-top: 8px;
+        font-size: 17px;
+        font-weight: 600;
+        color: var(--ink-1);
+      }
+      .eg-desc {
+        margin-top: 6px;
+        font-size: 14px;
+        line-height: 1.6;
+        color: var(--ink-2);
+      }
+      .eg-btn {
+        margin-top: 16px;
+        height: 44px;
+        line-height: 44px;
+        border-radius: 999px;
+        font-size: 15px;
+        color: #ffffff;
+        background: var(--grad-brand);
+        box-shadow: var(--shadow-brand);
+      }
+      .eg-member {
+        margin-top: 8px;
+        font-size: 11px;
+        color: var(--ink-3);
+      }
+
+      /* ---- ㉑ 分数模型（B-7） ---- */
+      .fr-card {
+        margin: 0 12px 12px;
+        padding: 16px 12px;
+        background: var(--bg-card);
+        border-radius: 14px;
+        box-shadow: var(--shadow-card);
+      }
+      .fr-bar {
+        display: flex;
+        gap: 1.5px;
+        height: 24px;
+        border-radius: 6px;
+        background: var(--bg-subtle);
+        overflow: hidden;
+      }
+      .fr-bar + .fr-bar {
+        margin-top: 12px;
+      }
+      .fr-seg {
+        flex: 1;
+        min-width: 0;
+        background: var(--brand-100);
+      }
+      .fr-seg.on {
+        background: var(--brand-500);
+      }
+      .fr-seg.is-start {
+        margin-left: 3px;
+      }
+      .fr-seg:first-child {
+        margin-left: 0;
+      }
+      .fr-fill {
+        flex: none;
+        height: 100%;
+        background: var(--brand-500);
+        border-radius: 6px;
+      }
+      .fr-label {
+        margin-top: 4px;
+        font-size: 12px;
+        color: var(--ink-2);
+        text-align: center;
+      }
+      .fr-rel {
+        margin-top: 6px;
+        font-size: 12px;
+        color: var(--brand-600);
+        text-align: center;
+      }
+      .fr-case {
+        font-size: 12px;
+        color: var(--ink-3);
+        margin: 0 0 8px;
+      }
+
+      .section {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 16px 12px 8px;
+      }
+      .section-title {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--ink-1);
+      }
+      .section-title::before {
+        content: '';
+        display: inline-block;
+        width: 3px;
+        height: 13px;
+        margin-right: 6px;
+        border-radius: 2px;
+        background: var(--brand-400);
+        vertical-align: -1px;
+      }
+      .section-more {
+        font-size: 12px;
+        color: var(--ink-3);
+      }
+      .card {
+        margin: 0 12px 12px;
+        padding: 12px;
+        background: var(--bg-card);
+        border-radius: 14px;
+        box-shadow: var(--shadow-card);
+      }
+      .list {
+        margin: 0 12px 12px;
+        padding: 0 12px;
+        background: var(--bg-card);
+        border-radius: 14px;
+        box-shadow: var(--shadow-card);
+        overflow: hidden;
+      }
+      .list-indent {
+        margin: 6px 12px 12px;
+      }
+      .u-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 0;
+      }
+      .u-row + .u-row {
+        border-top: 0.5px solid var(--line);
+      }
+      .u-row-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+        flex-shrink: 0;
+        background: var(--brand-50);
+        color: var(--brand-500);
+      }
+      .ico-en {
+        background: var(--subject-en-bg);
+        color: var(--subject-en);
+      }
+      .ico-math {
+        background: var(--subject-math-bg);
+        color: var(--subject-math);
+      }
+      .ico-word {
+        background: var(--subject-en-bg);
+        color: var(--subject-en);
+      }
+      .ico-grammar {
+        background: var(--subject-default-bg);
+        color: var(--subject-default);
+      }
+      .u-row-body {
+        flex: 1;
+        min-width: 0;
+      }
+      .u-row-title {
+        font-size: 15px;
+        color: var(--ink-1);
+        line-height: 1.4;
+      }
+      .u-row-sub {
+        margin-top: 3px;
+        font-size: 12px;
+        color: var(--ink-3);
+        line-height: 1.4;
+      }
+      .u-row-tags {
+        margin-top: 4px;
+        display: flex;
+        gap: 6px;
+      }
+      .u-row-extra {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-shrink: 0;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 11px;
+        line-height: 1.6;
+        white-space: nowrap;
+      }
+      .chip-brand {
+        background: #eaf1fd;
+        color: var(--brand-600);
+      }
+      .chip-success {
+        background: var(--success-bg);
+        color: var(--success);
+      }
+      .chip-muted {
+        background: var(--state-todo-bg);
+        color: var(--state-todo);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 28px;
+        padding: 0 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        background: var(--brand-50);
+        color: var(--brand-500);
+        white-space: nowrap;
+      }
+      .btn-primary {
+        background: var(--grad-brand);
+        color: #fff;
+      }
+      .btn-ghost {
+        background: transparent;
+        border: 1px solid var(--brand-300);
+        color: var(--brand-500);
+      }
+      .btn-block {
+        display: flex;
+        width: 100%;
+        height: 38px;
+        font-size: 15px;
+      }
+      .arrow {
+        width: 7px;
+        height: 7px;
+        border-right: 1.5px solid var(--ink-4);
+        border-bottom: 1.5px solid var(--ink-4);
+        transform: rotate(-45deg);
+        flex-shrink: 0;
+      }
+      .arrow-down {
+        transform: rotate(45deg);
+      }
+      .arrow-up {
+        transform: rotate(135deg);
+      }
+      .tip {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0 12px 12px;
+        padding: 8px 12px;
+        background: var(--warning-bg);
+        border-radius: 10px;
+      }
+      .tip-text {
+        flex: 1;
+        font-size: 12px;
+        color: #9a6a20;
+        line-height: 1.5;
+      }
+      .empty-sub {
+        font-size: 12px;
+        color: var(--ink-4);
+      }
+
+      .hero {
+        padding: 16px 12px 24px;
+        background: var(--grad-hero);
+        border-radius: 0 0 14px 14px;
+      }
+      .hero-sub {
+        font-size: 12px;
+        color: var(--ink-2);
+      }
+      .hero-title {
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--ink-1);
+        line-height: 1.4;
+      }
+      .hero-switch {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 12px;
+        padding: 5px 12px;
+        border-radius: 999px;
+        background: #fff;
+        border: 1px solid var(--brand-200);
+        color: var(--brand-600);
+        font-size: 12px;
+      }
+
+      .banner {
+        margin: 12px;
+        height: 130px;
+        border-radius: 14px;
+        box-shadow: var(--shadow-card);
+        background: linear-gradient(120deg, #eef4fe, #f7fafe);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--ink-3);
+        font-size: 12px;
+        border: 0.5px solid var(--line);
+      }
+      .home-stats {
+        margin: 12px;
+        padding: 16px 12px 12px;
+        border-radius: 14px;
+        background: var(--grad-hero);
+        box-shadow: var(--shadow-card);
+      }
+      .home-hello {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--ink-1);
+      }
+      .home-sub {
+        margin-top: 3px;
+        font-size: 12px;
+        color: var(--ink-2);
+      }
+      .home-row {
+        display: flex;
+        align-items: center;
+        margin: 16px 0 12px;
+      }
+      .home-stat {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        position: relative;
+      }
+      .home-stat + .home-stat::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1px;
+        height: 28px;
+        background: var(--brand-200);
+      }
+      .home-num {
+        font-size: 26px;
+        font-weight: 700;
+        color: var(--brand-700);
+        line-height: 1.1;
+      }
+      .home-label {
+        font-size: 12px;
+        color: var(--ink-2);
+      }
+      .recent-empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px 12px;
+      }
+
+      .mine-hero {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .avatar {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: var(--shadow-card);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        flex-shrink: 0;
+      }
+
+      /* AI 辅导页 */
+      .ai-page {
+        display: flex;
+        flex-direction: column;
+        height: 640px;
+      }
+      .ai-ctx {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        margin: 0 12px 8px;
+        padding: 8px 12px;
+        background: var(--grad-hero);
+        border-radius: 10px;
+      }
+      .ai-ctx-label {
+        font-size: 11px;
+        color: var(--brand-600);
+      }
+      .ai-ctx-title {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--ink-1);
+      }
+      .ai-ctx-stem {
+        font-size: 12px;
+        color: var(--ink-2);
+        line-height: 1.5;
+      }
+      /* 选项 / 你选了 / 正确答案 —— 答错进来时必现 */
+      .ai-ctx-meta {
+        font-size: 11px;
+        color: var(--ink-2);
+        line-height: 1.6;
+      }
+      .ai-chat {
+        flex: 1;
+        padding: 0 12px;
+        overflow: hidden;
+      }
+      .ai-msg {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 12px;
+      }
+      .ai-msg.is-ai {
+        align-items: flex-start;
+      }
+      .ai-msg.is-user {
+        align-items: flex-end;
+      }
+      .ai-bubble {
+        max-width: 78%;
+        padding: 8px 12px;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      .ai-bubble.is-ai {
+        background: #fff;
+        color: var(--ink-1);
+        border-radius: 3px 10px 10px 10px;
+        box-shadow: var(--shadow-card);
+      }
+      .ai-bubble.is-user {
+        background: var(--brand-500);
+        color: #fff;
+        border-radius: 10px 3px 10px 10px;
+      }
+      .ai-src {
+        margin-top: 3px;
+        font-size: 11px;
+        color: var(--ink-4);
+      }
+      .ai-quick {
+        padding: 6px 0;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+      .ai-quick-inner {
+        display: inline-flex;
+        gap: 6px;
+        padding: 0 12px;
+      }
+      .ai-quick-item {
+        display: inline-flex;
+        align-items: center;
+        height: 30px;
+        padding: 0 12px;
+        border-radius: 999px;
+        background: #fff;
+        border: 1px solid var(--brand-200);
+        color: var(--brand-600);
+        font-size: 12px;
+      }
+      .ai-composer {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        background: #fff;
+        border-top: 0.5px solid var(--line);
+      }
+      .ai-input {
+        flex: 1;
+        height: 38px;
+        padding: 0 12px;
+        background: var(--bg-subtle);
+        border-radius: 999px;
+        font-size: 14px;
+        color: var(--ink-4);
+        display: flex;
+        align-items: center;
+      }
+      .ai-disclaim {
+        padding: 0 12px 12px;
+        text-align: center;
+        font-size: 11px;
+        color: var(--ink-4);
+        line-height: 1.5;
+        background: #fff;
+      }
+
+      /* 学科切换（自由问答） */
+      .ai-subjects {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 4px;
+      }
+      .ai-subjects-label {
+        font-size: 11px;
+        color: var(--ink-3);
+      }
+      .ai-subject {
+        padding: 0 8px;
+        height: 22px;
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid var(--brand-200);
+        color: var(--brand-600);
+        font-size: 11px;
+      }
+      .ai-subject.on {
+        background: var(--brand-500);
+        border-color: var(--brand-500);
+        color: #fff;
+      }
+
+      /* 测试页（答错态） */
+      .quiz-progress {
+        text-align: center;
+        font-size: 12px;
+        color: var(--ink-3);
+      }
+      .quiz-badge {
+        display: inline-block;
+        padding: 1px 8px;
+        border-radius: 999px;
+        background: var(--subject-en-bg);
+        color: var(--subject-en);
+        font-size: 11px;
+        margin-right: 6px;
+      }
+      .quiz-word {
+        margin: 22px 0;
+        text-align: center;
+        font-size: 26px;
+        font-weight: 600;
+        color: var(--ink-1);
+      }
+      .quiz-opts {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 18px;
+      }
+      .quiz-opt {
+        padding: 11px 12px;
+        border-radius: 10px;
+        background: var(--bg-card);
+        border: 1px solid var(--line);
+        font-size: 14px;
+        color: var(--ink-1);
+        text-align: center;
+      }
+      .quiz-opt.right {
+        background: var(--success-bg);
+        border-color: var(--success);
+        color: var(--success);
+      }
+      .quiz-opt.wrong {
+        background: var(--danger-bg);
+        border-color: var(--danger);
+        color: var(--danger);
+      }
+      .answer-actions {
+        display: flex;
+        gap: 8px;
+      }
+      .answer-actions .btn {
+        flex: 1;
+        height: 38px;
+        font-size: 14px;
+      }
+
+      /* 第二批迁移页（2026-09-14）：教材/册次列表、章节列表、知识卡 */
+      .kc {
+        margin: 0 12px 16px;
+        padding: 20px 14px;
+        background: var(--bg-card);
+        border-radius: 14px;
+        box-shadow: var(--shadow-card);
+      }
+      .kc-word-row {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .kc-word {
+        font-size: 26px;
+        font-weight: 600;
+        color: var(--ink-1);
+        line-height: 1.25;
+      }
+      .kc-ipa {
+        font-size: 13px;
+        color: var(--ink-3);
+      }
+      .kc-tags {
+        margin-top: 10px;
+      }
+      .kc-meaning {
+        margin-top: 10px;
+        font-size: 17px;
+        color: var(--ink-1);
+        line-height: 1.6;
+      }
+      .kc-expl {
+        margin-top: 10px;
+        padding: 10px;
+        background: var(--bg-subtle);
+        border-radius: 8px;
+        font-size: 13px;
+        line-height: 1.8;
+        color: var(--ink-2);
+      }
+      .kc-eg {
+        margin-top: 10px;
+        font-size: 14px;
+        color: var(--ink-1);
+        line-height: 1.7;
+      }
+      .kc-tr {
+        margin-top: 4px;
+        font-size: 13px;
+        color: var(--ink-3);
+        line-height: 1.6;
+      }
+      .kc-prog {
+        margin-top: 14px;
+        text-align: center;
+        font-size: 12px;
+        color: var(--ink-3);
+      }
+      .kc-actions {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 14px 12px 0;
+      }
+      .kc-nav {
+        display: flex;
+        gap: 10px;
+        margin: 14px 12px 0;
+      }
+      .kc-nav .btn {
+        flex: 1;
+        height: 38px;
+        font-size: 14px;
+      }
+      .kc-unknown {
+        border-color: var(--danger);
+        color: var(--danger);
+      }
+
+      /* 第三批迁移（2026-09-14 中午）：测试 / 测试结果 / 统计 / 登录 / 游戏中心 / 速算 */
+      .empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        padding: 70px 12px;
+        text-align: center;
+      }
+      .empty-icon {
+        font-size: 40px;
+        line-height: 1;
+      }
+      .empty-text {
+        font-size: 14px;
+        color: var(--ink-3);
+      }
+      /* 进度条（测试页） */
+      .qz-bar {
+        margin-top: 8px;
+        height: 4px;
+        border-radius: 999px;
+        background: var(--state-todo-bg);
+        overflow: hidden;
+      }
+      .qz-bar-fill {
+        width: 40%;
+        height: 100%;
+        border-radius: 999px;
+        background: var(--brand-400);
+      }
+      /* 带 A/B/C/D 圆标的选项 */
+      .opt-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .opt-letter {
+        width: 22px;
+        height: 22px;
+        flex-shrink: 0;
+        border-radius: 50%;
+        background: var(--brand-50);
+        color: var(--brand-600);
+        font-size: 12px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .quiz-opt.right .opt-letter {
+        background: var(--success);
+        color: #fff;
+      }
+      .quiz-opt.wrong .opt-letter {
+        background: var(--danger);
+        color: #fff;
+      }
+      /* 测试结果 */
+      .tr-card {
+        margin: 24px 12px 0;
+        padding: 28px 12px;
+        background: var(--bg-card);
+        border-radius: 14px;
+        box-shadow: var(--shadow-card);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .tr-accuracy {
+        font-size: 48px;
+        font-weight: 700;
+        line-height: 1.1;
+        color: var(--warning);
+      }
+      .tr-label {
+        margin-top: 6px;
+        font-size: 15px;
+        color: var(--ink-2);
+      }
+      .tr-duration {
+        margin-top: 4px;
+        font-size: 12px;
+        color: var(--ink-3);
+      }
+      .tr-actions {
+        margin: 28px 12px 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      /* 统计 2×2 */
+      .st-grid {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 12px;
+        gap: 10px;
+      }
+      .st-card {
+        width: calc((100% - 10px) / 2);
+        padding: 20px 8px;
+        background: var(--bg-card);
+        border-radius: 14px;
+        box-shadow: var(--shadow-card);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        box-sizing: border-box;
+      }
+      .st-icon {
+        font-size: 20px;
+        line-height: 1;
+      }
+      .st-num {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--brand-700);
+        line-height: 1.2;
+      }
+      .st-label {
+        font-size: 12px;
+        color: var(--ink-2);
+      }
+      /* 登录 */
+      .lg-brand {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 80px;
+      }
+      .lg-logo {
+        width: 70px;
+        height: 70px;
+        border-radius: 14px;
+        background: var(--brand-50);
+        border: 1px solid var(--brand-200);
+        color: var(--brand-500);
+        font-size: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .lg-name {
+        margin-top: 12px;
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--ink-1);
+      }
+      .lg-slogan {
+        margin-top: 4px;
+        font-size: 12px;
+        color: var(--ink-3);
+      }
+      .lg-panel {
+        margin: 70px 12px 0;
+      }
+      .lg-note {
+        margin-top: 10px;
+        text-align: center;
+        font-size: 11px;
+        color: var(--ink-4);
+      }
+      /* 游戏 HUD / 计时条（g- 前缀，与 styles/game.wxss 对应） */
+      .g-hud {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin: 10px 12px;
+        padding: 10px 12px;
+        background: var(--bg-card);
+        border-radius: 10px;
+        box-shadow: var(--shadow-card);
+        font-size: 12px;
+        color: var(--ink-2);
+      }
+      .g-hud-score {
+        color: var(--brand-700);
+        font-weight: 600;
+      }
+      .g-timer {
+        margin: 0 12px;
+        height: 5px;
+        border-radius: 999px;
+        background: var(--state-todo-bg);
+        overflow: hidden;
+      }
+      .g-timer-fill {
+        width: 62%;
+        height: 100%;
+        border-radius: 999px;
+        background: var(--brand-400);
+      }
+      .g-timer-urgent {
+        width: 12%;
+        height: 100%;
+        border-radius: 999px;
+        background: var(--danger);
+      }
+      /* 速算：算式牌 + 数字键盘 */
+      .md-problem {
+        margin: 12px;
+        padding: 24px 12px 14px;
+        background: var(--bg-card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        box-shadow: var(--shadow-card);
+        text-align: center;
+      }
+      .md-problem-text {
+        font-size: 30px;
+        font-weight: 700;
+        color: var(--ink-1);
+      }
+      .md-input {
+        margin-top: 8px;
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--brand-700);
+      }
+      .md-keypad {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin: 14px 12px 0;
+      }
+      .md-key {
+        height: 46px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: var(--bg-card);
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow-card);
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--ink-1);
+      }
+      .md-key-ok {
+        background: var(--grad-brand);
+        border: none;
+        color: #fff;
+        font-size: 15px;
+      }
+      /* 设置页 V1（2026-09-14） */
+      .set-picker {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin: 6px 12px 12px;
+        padding: 12px;
+        background: var(--bg-card);
+        border-radius: 14px;
+        box-shadow: var(--shadow-card);
+      }
+      .set-chip {
+        background: var(--state-todo-bg);
+        color: var(--ink-2);
+        padding: 5px 12px;
+        font-size: 12px;
+      }
+      .set-chip-on {
+        background: var(--state-doing-bg);
+        color: var(--brand-600);
+        font-weight: 600;
+      }
+      .set-hint {
+        margin-top: 6px;
+        font-size: 11px;
+        color: var(--ink-3);
+        line-height: 1.7;
+      }
+      .set-actions {
+        margin: 28px 12px 0;
+      }
+      .set-reset {
+        border-color: var(--danger);
+        color: var(--danger);
+      }
+      .set-note {
+        margin-top: 10px;
+        text-align: center;
+        font-size: 11px;
+        color: var(--ink-4);
+        line-height: 1.6;
+      }
+
+      .tabbar {
+        height: 50px;
+        background: #fff;
+        display: flex;
+        border-top: 0.5px solid var(--line);
+        flex-shrink: 0;
+      }
+      .tab {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+        font-size: 10px;
+        color: #9aa3b4;
+      }
+      .tab.on {
+        color: #3f6bc4;
+      }
+      .tab img {
+        width: 26px;
+        height: 26px;
+        display: block;
+      }
+      .note {
+        max-width: 960px;
+        margin: 28px auto 0;
+        font-size: 12px;
+        color: var(--ink-2);
+        line-height: 1.9;
+        background: #fff;
+        border-radius: 12px;
+        padding: 16px 18px;
+        box-shadow: var(--shadow-card);
+      }
+      .note b {
+        color: var(--ink-1);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>SuperEasy Learning · UI v1.1「清爽蓝 · 淡色版」</h1>
+    <p class="lead">
+      <b>19 屏</b>静态预览（非真机截图）：4 个 Tab 页 + AI 辅导 3 个入口 + 第二批 4 屏 + 第三批 6 屏
+      + 设置页 V1，覆盖全站 28 个页面。尺寸按 750rpx = 375px 换算， 色值与
+      <code>miniprogram/styles/tokens.wxss</code> 一一对应；tabBar 图标用的是本次本地生成的真实
+      PNG。
+    </p>
+
+    <h2 class="h2">AI 辅导：到底在哪些页面？</h2>
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>入口（用户路径）</th>
+          <th>进去时 AI 拿到什么</th>
+          <th>学科从哪来</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>⑤</td>
+          <td>测试页 → 答错 → <b>✨ 问 AI 为什么</b></td>
+          <td>题干 + 4 选项 + 你选的 + 正确答案 + 三级提示 + 知识点</td>
+          <td>题目所属学科，<b>不可改</b></td>
+        </tr>
+        <tr>
+          <td>⑦</td>
+          <td>学习详情页 → <b>✨ 问 AI</b></td>
+          <td>当前知识点名 + 学科 + 年级</td>
+          <td>册次反查，<b>不可改</b></td>
+        </tr>
+        <tr>
+          <td>⑧</td>
+          <td>我的 → <b>AI 辅导</b>（自由问答）</td>
+          <td>年级（学科等用户点）</td>
+          <td><b>默认「不限」</b>，页内 chip 自选</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="lead">
+      只有<b>自由问答</b>才让用户选学科：题目与知识点场景的学科是内容本身的属性，
+      让用户改会出现「问着英语题却标成数学」的错上下文。
+    </p>
+
+    <div class="swatches">
+      <span class="sw"><i style="background: #5a85e0"></i>--brand-500 #5a85e0</span>
+      <span class="sw"><i style="background: #3f6bc4"></i>--brand-600 #3f6bc4</span>
+      <span class="sw"><i style="background: #2f5296"></i>--brand-700</span>
+      <span class="sw"><i style="background: #eaf2fe"></i>淡蓝头部渐变起</span>
+      <span class="sw"><i style="background: #2a3444"></i>--ink-1 #2a3444</span>
+      <span class="sw"><i style="background: #9aa3b4"></i>--ink-3</span>
+      <span class="sw"><i style="background: #2fa06b"></i>--success（已完成）</span>
+      <span class="sw"><i style="background: #dd9d63"></i>--subject-math</span>
+      <span class="sw"><i style="background: #f5f7fa"></i>--bg-page</span>
+    </div>
+
+    <div class="row-wrap">
+      <!-- ============================ 首页 ============================ -->
+      <div>
+        <div class="phone">
+          <div class="nav">SuperEasy Learning</div>
+          <div class="screen">
+            <div class="banner">Banner 轮播（有数据才显示）</div>
+
+            <div class="home-stats">
+              <div class="home-hello">下午好，同学</div>
+              <div class="home-sub">已连续学习 5 天，保持住</div>
+              <div class="home-row">
+                <div class="home-stat">
+                  <span class="home-num">12</span><span class="home-label">今日复习</span>
+                </div>
+                <div class="home-stat">
+                  <span class="home-num">5</span><span class="home-label">连续学习（天）</span>
+                </div>
+              </div>
+              <div class="btn btn-block btn-primary">继续上次学习</div>
+            </div>
+
+            <div class="tip">
+              <span class="tip-text">📚 还没选教材：选一次版本 / 年级 / 学期，以后直达课程</span
+              ><span class="arrow"></span>
+            </div>
+
+            <div class="section"><span class="section-title">最近学习</span></div>
+            <div class="list">
+              <div class="u-row">
+                <div class="u-row-icon">📖</div>
+                <div class="u-row-body">
+                  <div class="u-row-title">Unit 3 Look at me</div>
+                  <div class="u-row-sub">继续上次进度</div>
+                </div>
+                <div class="u-row-extra">
+                  <span class="chip chip-brand">继续</span><span class="btn">🎮 挑战</span>
+                </div>
+              </div>
+              <div class="u-row">
+                <div class="u-row-icon">📖</div>
+                <div class="u-row-body">
+                  <div class="u-row-title">Unit 2 Colours</div>
+                  <div class="u-row-sub">继续上次进度</div>
+                </div>
+                <div class="u-row-extra">
+                  <span class="chip chip-brand">继续</span><span class="btn">🎮 挑战</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="section"><span class="section-title">学科</span></div>
+            <div class="list">
+              <div class="u-row">
+                <div class="u-row-icon ico-en">🔤</div>
+                <div class="u-row-body">
+                  <div class="u-row-title">英语</div>
+                  <div class="u-row-sub">单词 · 语法</div>
+                </div>
+                <div class="u-row-extra">
+                  <span class="chip chip-brand">进入学习</span><span class="arrow"></span>
+                </div>
+              </div>
+              <div class="u-row">
+                <div class="u-row-icon ico-math">🔢</div>
+                <div class="u-row-body">
+                  <div class="u-row-title">数学</div>
+                  <div class="u-row-sub">概念 · 公式</div>
+                </div>
+                <div class="u-row-extra">
+                  <span class="chip chip-brand">进入学习</span><span class="arrow"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tabbar">
+            <div class="tab on">
+              <img src="../../miniprogram/assets/tabbar/home_on.png" alt="" />首页
+            </div>
+            <div class="tab">
+              <img src="../../miniprogram/assets/tabbar/study.png" alt="" />学习
+            </div>
+            <div class="tab">
+              <img src="../../miniprogram/assets/tabbar/practice.png" alt="" />练习
+            </div>
+            <div class="tab"><img src="../../miniprogram/assets/tabbar/mine.png" alt="" />我的</div>
+          </div>
+        </div>
+        <div class="caption">
+          ① 首页 —— 顺序按 Specification §12.5：Banner → 统计条 → 最近学习 → 学科（纵向列表）
+        </div>
+      </div>
+
+      <!-- ============================ 学习 ============================ -->
+      <div>
+        <div class="phone">
+          <div class="nav">SuperEasy Learning</div>
+          <div class="screen">
+            <div class="hero">
+              <div class="hero-sub">当前教材</div>
+              <div class="hero-title">人教版 · 三年级上册</div>
+              <div class="hero-switch">
+                <span>切换教材</span><span class="arrow arrow-down"></span>
+              </div>
+            </div>
+
+            <div>
+              <div class="list" style="margin-top: 12px">
+                <div class="u-row">
+                  <div class="u-row-icon ico-word">词</div>
+                  <div class="u-row-body">
+                    <div class="u-row-title">单词</div>
+                    <div class="u-row-sub">6 单元</div>
+                  </div>
+                  <div class="u-row-extra"><span class="arrow arrow-up"></span></div>
+                </div>
+              </div>
+              <div class="list list-indent">
+                <div class="u-row">
+                  <div class="u-row-body">
+                    <div class="u-row-title">Unit 1 Hello!</div>
+                    <div class="u-row-tags"><span class="chip chip-success">已完成</span></div>
+                  </div>
+                  <div class="u-row-extra">
+                    <span class="btn">测试</span><span class="btn btn-primary">挑战</span>
+                  </div>
+                </div>
+                <div class="u-row">
+                  <div class="u-row-body">
+                    <div class="u-row-title">Unit 3 Look at me</div>
+                    <div class="u-row-tags"><span class="chip chip-brand">学习中</span></div>
+                  </div>
+                  <div class="u-row-extra">
+                    <span class="btn">测试</span><span class="btn btn-primary">挑战</span>
+                  </div>
+                </div>
+                <div class="u-row">
+                  <div class="u-row-body">
+                    <div class="u-row-title">Unit 2 Colours</div>
+                    <div class="u-row-tags"><span class="chip chip-muted">未开始</span></div>
+                  </div>
+                  <div class="u-row-extra">
+                    <span class="btn">测试</span><span class="btn btn-primary">挑战</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="list">
+              <div class="u-row">
+                <div class="u-row-icon ico-grammar">法</div>
+                <div class="u-row-body">
+                  <div class="u-row-title">语法</div>
+                  <div class="u-row-sub">4 专题</div>
+                </div>
+                <div class="u-row-extra"><span class="arrow arrow-down"></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="tabbar">
+            <div class="tab"><img src="../../miniprogram/assets/tabbar/home.png" alt="" />首页</div>
+            <div class="tab on">
+              <img src="../../miniprogram/assets/tabbar/study_on.png" alt="" />学习
+            </div>
+            <div class="tab">
+              <img src="../../miniprogram/assets/tabbar/practice.png" alt="" />练习
+            </div>
+            <div class="tab"><img src="../../miniprogram/assets/tabbar/mine.png" alt="" />我的</div>
+          </div>
+        </div>
+        <div class="caption">
+          ② 学习 —— 淡蓝头部 + 分区卡折叠；状态改彩色 chip（未开始 / 学习中 / 已完成）
+        </div>
+      </div>
+
+      <!-- ============================ 练习 ============================ -->
+      <div>
+        <div class="phone">
+          <div class="nav">SuperEasy Learning</div>
+          <div class="screen">
+            <div class="hero">
+              <div class="hero-sub">当前教材</div>
+              <div class="hero-title">人教版 · 三年级上册</div>
+              <div class="hero-switch">
+                <span>切换教材</span><span class="arrow arrow-down"></span>
+              </div>
+            </div>
+
+            <div class="section">
+              <span class="section-title">选一个章节开始玩</span
+              ><span class="section-more">点章节 → 挑游戏</span>
+            </div>
+            <div class="list list-indent">
+              <div class="u-row">
+                <div class="u-row-body">
+                  <div class="u-row-title">Unit 1 Hello!</div>
+                  <div class="u-row-tags"><span class="chip chip-success">已完成</span></div>
+                </div>
+                <div class="u-row-extra"><span class="btn btn-primary">挑战</span></div>
+              </div>
+              <div class="u-row">
+                <div class="u-row-body">
+                  <div class="u-row-title">Unit 3 Look at me</div>
+                  <div class="u-row-tags"><span class="chip chip-brand">学习中</span></div>
+                </div>
+                <div class="u-row-extra"><span class="btn btn-primary">挑战</span></div>
+              </div>
+              <div class="u-row">
+                <div class="u-row-body">
+                  <div class="u-row-title">Unit 2 Colours</div>
+                  <div class="u-row-tags"><span class="chip chip-muted">未开始</span></div>
+                </div>
+                <div class="u-row-extra"><span class="btn btn-primary">挑战</span></div>
+              </div>
+              <div class="u-row">
+                <div class="u-row-body">
+                  <div class="u-row-title">Unit 4 We love animals</div>
+                  <div class="u-row-tags"><span class="chip chip-muted">未开始</span></div>
+                </div>
+                <div class="u-row-extra"><span class="btn btn-primary">挑战</span></div>
+              </div>
+              <div class="u-row">
+                <div class="u-row-body">
+                  <div class="u-row-title">Unit 5 Let's eat!</div>
+                  <div class="u-row-tags"><span class="chip chip-muted">未开始</span></div>
+                </div>
+                <div class="u-row-extra"><span class="btn btn-primary">挑战</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="tabbar">
+            <div class="tab"><img src="../../miniprogram/assets/tabbar/home.png" alt="" />首页</div>
+            <div class="tab">
+              <img src="../../miniprogram/assets/tabbar/study.png" alt="" />学习
+            </div>
+            <div class="tab on">
+              <img src="../../miniprogram/assets/tabbar/practice_on.png" alt="" />练习
+            </div>
+            <div class="tab"><img src="../../miniprogram/assets/tabbar/mine.png" alt="" />我的</div>
+          </div>
+        </div>
+        <div class="caption">③ 练习 —— 同款头部与行样式，只保留「挑战」入口</div>
+      </div>
+
+      <!-- ============================ 我的 ============================ -->
+      <div>
+        <div class="phone">
+          <div class="nav">SuperEasy Learning</div>
+          <div class="screen">
+            <div class="hero mine-hero">
+              <div class="avatar">🙂</div>
+              <div class="u-row-body">
+                <div class="hero-title">你好，同学</div>
+                <div class="hero-sub">人教版 · 三年级上册</div>
+              </div>
+            </div>
+
+            <div class="list" style="margin-top: 12px">
+              <div class="u-row">
+                <div class="u-row-icon">📚</div>
+                <div class="u-row-body">
+                  <div class="u-row-title">教材选择</div>
+                  <div class="u-row-sub">切换版本 / 年级 / 册次</div>
+                </div>
+                <div class="u-row-extra">
+                  <span class="chip chip-brand">三年级上册</span><span class="arrow"></span>
+                </div>
+              </div>
+              <div class="u-row">
+                <div class="u-row-icon">✨</div>
+                <div class="u-row-body">
+                  <div class="u-row-title">AI 辅导</div>
+                  <div class="u-row-sub">看不懂就直接问，换个说法讲到懂</div>
+                </div>
+                <div class="u-row-extra"><span class="arrow"></span></div>
+              </div>
+              <div class="u-row">
+                <div class="u-row-icon">⭐</div>
+                <div class="u-row-body">
+                  <div class="u-row-title">我的收藏</div>
+                  <div class="u-row-sub">收藏的知识点</div>
+                </div>
+                <div class="u-row-extra"><span class="arrow"></span></div>
+              </div>
+              <div class="u-row">
+                <div class="u-row-icon">📊</div>
+                <div class="u-row-body">
+                  <div class="u-row-title">学习统计</div>
+                  <div class="u-row-sub">复习量与连续天数</div>
+                </div>
+                <div class="u-row-extra"><span class="arrow"></span></div>
+              </div>
+              <div class="u-row">
+                <div class="u-row-icon">⚙️</div>
+                <div class="u-row-body">
+                  <div class="u-row-title">设置</div>
+                  <div class="u-row-sub">偏好与通知</div>
+                </div>
+                <div class="u-row-extra"><span class="arrow"></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="tabbar">
+            <div class="tab"><img src="../../miniprogram/assets/tabbar/home.png" alt="" />首页</div>
+            <div class="tab">
+              <img src="../../miniprogram/assets/tabbar/study.png" alt="" />学习
+            </div>
+            <div class="tab">
+              <img src="../../miniprogram/assets/tabbar/practice.png" alt="" />练习
+            </div>
+            <div class="tab on">
+              <img src="../../miniprogram/assets/tabbar/mine_on.png" alt="" />我的
+            </div>
+          </div>
+        </div>
+        <div class="caption">④ 我的 —— 头像 + 当前教材；新增「AI 辅导」入口（✨）</div>
+      </div>
+
+      <!-- ====================== 测试页 · 答错态 ====================== -->
+      <div>
+        <div class="phone">
+          <div class="nav">单元测试</div>
+          <div class="screen">
+            <div class="quiz-progress"><span class="quiz-badge">单词题</span>3 / 10</div>
+            <div class="quiz-word">apple</div>
+            <div class="quiz-opts">
+              <div class="quiz-opt wrong">香蕉</div>
+              <div class="quiz-opt right">苹果</div>
+              <div class="quiz-opt">橙子</div>
+              <div class="quiz-opt">梨</div>
+            </div>
+            <div class="answer-actions">
+              <span class="btn btn-ghost">✨ 问 AI 为什么</span>
+              <span class="btn btn-primary">下一题</span>
+            </div>
+          </div>
+        </div>
+        <div class="caption">
+          ⑤ 测试页答错态 —— 答对自动进下一题（不留按钮），答错才出现「<b>✨ 问 AI 为什么</b>」+
+          下一题
+        </div>
+      </div>
+
+      <!-- =================== AI 辅导 · 带题进入 =================== -->
+      <div>
+        <div class="phone">
+          <div class="nav">AI 辅导</div>
+          <div class="screen">
+            <div class="ai-page">
+              <div class="ai-ctx">
+                <span class="ai-ctx-label">AI 正在辅导</span>
+                <span class="ai-ctx-title">英语 · apple</span>
+                <span class="ai-ctx-stem">apple</span>
+                <span class="ai-ctx-meta">选项：A. 香蕉　B. 苹果　C. 橙子　D. 梨</span>
+                <span class="ai-ctx-meta">你选了：香蕉</span>
+                <span class="ai-ctx-meta">正确答案：苹果</span>
+              </div>
+
+              <div class="ai-chat">
+                <div class="ai-msg is-ai">
+                  <div class="ai-bubble is-ai">
+                    题目我看到了。是想先弄懂题意，还是想知道为什么选这个答案？
+                  </div>
+                </div>
+                <div class="ai-msg is-user">
+                  <div class="ai-bubble is-user">错因在哪</div>
+                </div>
+                <div class="ai-msg is-ai">
+                  <div class="ai-bubble is-ai">
+                    你选的「香蕉」是 banana。apple 和 banana
+                    都是水果，容易混——建议把两个词配着图一起记， 而不是单独背中文释义。
+                  </div>
+                  <span class="ai-src">内容由 AI 生成</span>
+                </div>
+              </div>
+
+              <div class="ai-quick">
+                <div class="ai-quick-inner">
+                  <span class="ai-quick-item">我没看懂</span>
+                  <span class="ai-quick-item">再简单一点</span>
+                  <span class="ai-quick-item">只提示一步</span>
+                  <span class="ai-quick-item">为什么</span>
+                  <span class="ai-quick-item">错因在哪</span>
+                  <span class="ai-quick-item">给我一道类似题</span>
+                </div>
+              </div>
+
+              <div class="ai-composer">
+                <div class="ai-input">直接问我，比如：为什么这里要用这个公式？</div>
+                <span class="btn btn-primary">发送</span>
+              </div>
+              <div class="ai-disclaim">内容由 AI 生成，仅供参考；标准答案以题库与老师讲解为准</div>
+            </div>
+          </div>
+        </div>
+        <div class="caption">
+          ⑥ AI 辅导 · <b>答错带题进入</b> —— 上下文条列出选项 / 你选了 /
+          正确答案；快捷栏换成「错因在哪 · 类似题」。题干、选项、三级提示经内存交接传入，不走 URL
+        </div>
+      </div>
+
+      <!-- ========================= AI 辅导 ========================= -->
+      <div>
+        <div class="phone">
+          <div class="nav">AI 辅导</div>
+          <div class="screen">
+            <div class="ai-page">
+              <div class="ai-ctx">
+                <span class="ai-ctx-label">AI 正在辅导</span>
+                <span class="ai-ctx-title">英语 · hello</span>
+              </div>
+
+              <div class="ai-chat">
+                <div class="ai-msg is-ai">
+                  <div class="ai-bubble is-ai">
+                    关于这个知识点，你可以问我「为什么」「举个例子」，或者让我换个更简单的说法。
+                  </div>
+                </div>
+                <div class="ai-msg is-user">
+                  <div class="ai-bubble is-user">为什么 hello 后面有时加 s？</div>
+                </div>
+                <div class="ai-msg is-ai">
+                  <div class="ai-bubble is-ai">
+                    你看到的是 hellos 吗？其实那是两个不同的词：hello 是打招呼，可以叠用；而 helloes
+                    并不存在。如果你记的是 he/she/it 后面动词加 s，那是「第三人称单数」，和 hello
+                    无关。
+                  </div>
+                  <span class="ai-src">内容由 AI 生成</span>
+                </div>
+              </div>
+
+              <div class="ai-quick">
+                <div class="ai-quick-inner">
+                  <span class="ai-quick-item">我没看懂</span>
+                  <span class="ai-quick-item">再简单一点</span>
+                  <span class="ai-quick-item">举个例子</span>
+                  <span class="ai-quick-item">只提示一步</span>
+                  <span class="ai-quick-item">为什么</span>
+                  <span class="ai-quick-item">学习建议</span>
+                </div>
+              </div>
+
+              <div class="ai-composer">
+                <div class="ai-input">直接问我，比如：为什么这里要用这个公式？</div>
+                <span class="btn btn-primary">发送</span>
+              </div>
+              <div class="ai-disclaim">内容由 AI 生成，仅供参考；标准答案以题库与老师讲解为准</div>
+            </div>
+          </div>
+        </div>
+        <div class="caption">
+          ⑦ AI 辅导 · 知识点进入（学习详情页「✨ 问 AI」）——
+          同一种界面、同一套令牌，只是快捷栏随场景换成「举个例子 · 学习建议」
+        </div>
+      </div>
+
+      <!-- =================== AI 辅导 · 自由问答 =================== -->
+      <div>
+        <div class="phone">
+          <div class="nav">AI 辅导</div>
+          <div class="screen">
+            <div class="ai-page">
+              <div class="ai-ctx">
+                <span class="ai-ctx-label">AI 正在辅导</span>
+                <span class="ai-ctx-title">自由问答</span>
+                <div class="ai-subjects">
+                  <span class="ai-subjects-label">学科</span>
+                  <span class="ai-subject on">不限</span>
+                  <span class="ai-subject">英语</span>
+                  <span class="ai-subject">数学</span>
+                </div>
+              </div>
+
+              <div class="ai-chat">
+                <div class="ai-msg is-ai">
+                  <div class="ai-bubble is-ai">我是你的 AI 助教。哪里卡住了，直接问我。</div>
+                </div>
+              </div>
+
+              <div class="ai-quick">
+                <div class="ai-quick-inner">
+                  <span class="ai-quick-item">学习建议</span>
+                </div>
+              </div>
+
+              <div class="ai-composer">
+                <div class="ai-input">直接问我，比如：为什么这里要用这个公式？</div>
+                <span class="btn btn-primary">发送</span>
+              </div>
+              <div class="ai-disclaim">内容由 AI 生成，仅供参考；标准答案以题库与老师讲解为准</div>
+            </div>
+          </div>
+        </div>
+        <div class="caption">
+          ⑧ AI 辅导 · <b>自由问答</b>（我的 → AI 辅导）—— 学科<b
+            >默认「不限」，不预设成当前教材的学科</b
+          >
+          ；要限定哪一科由用户在页内点选。年级仍会带上（那是真年级，不影响讲法）
+        </div>
+      </div>
+
+      <!-- ================= 第二批迁移 ① 教材选择（共享列表模板） ================= -->
+      <div>
+        <div class="phone">
+          <div class="nav">选择教材</div>
+          <div class="screen">
+            <div class="section"><span class="section-title">选择教材</span></div>
+            <div class="list">
+              <div class="u-row">
+                <div class="u-row-icon">📘</div>
+                <div class="u-row-body"><div class="u-row-title">人教版</div></div>
+                <div class="u-row-extra"><span class="arrow"></span></div>
+              </div>
+              <div class="u-row">
+                <div class="u-row-icon">📘</div>
+                <div class="u-row-body"><div class="u-row-title">北师大版</div></div>
+                <div class="u-row-extra"><span class="arrow"></span></div>
+              </div>
+              <div class="u-row">
+                <div class="u-row-icon">📘</div>
+                <div class="u-row-body"><div class="u-row-title">苏教版</div></div>
+                <div class="u-row-extra">
+                  <span class="chip chip-muted">敬请期待</span><span class="arrow"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="caption">
+          ⑨ 教材选择 —— 改共享模板 <code>shared/list.wxml</code> 一处，教材 / 册次 /
+          学习路径三页同时生效； ADR-011 定的顶层入口，补了分区标题，不再是没有标题的裸列表
+        </div>
+      </div>
+
+      <!-- ================= 第二批迁移 ② 章节列表（顺手修 bug） ================= -->
+      <div>
+        <div class="phone">
+          <div class="nav">章节</div>
+          <div class="screen">
+            <div class="section"><span class="section-title">章节</span></div>
+            <div class="list">
+              <div class="u-row">
+                <div class="u-row-body">
+                  <div class="u-row-title">Unit 1 Hello</div>
+                  <div class="u-row-tags"><span class="chip chip-success">已完成</span></div>
+                </div>
+                <div class="u-row-extra">
+                  <span class="btn">测试</span><span class="btn btn-primary">挑战</span>
+                </div>
+              </div>
+              <div class="u-row">
+                <div class="u-row-body">
+                  <div class="u-row-title">Unit 2 Colours</div>
+                  <div class="u-row-tags"><span class="chip chip-brand">学习中</span></div>
+                </div>
+                <div class="u-row-extra"><span class="btn btn-primary">挑战</span></div>
+              </div>
+              <div class="u-row">
+                <div class="u-row-body">
+                  <div class="u-row-title">Unit 3 Look at me</div>
+                  <div class="u-row-tags"><span class="chip chip-muted">未开始</span></div>
+                </div>
+                <div class="u-row-extra"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="caption">
+          ⑩ 章节列表 —— <b>顺手修了一个真 bug</b>：本页用了 <code>chapter-items</code> 模板却<b
+            >没有 import</b
+          >，章节列表实际一片空白 （学习页 / 练习页有 import 所以一直正常，只有本页受害）
+        </div>
+      </div>
+
+      <!-- ================= 第二批迁移 ③ 学习详情（知识卡） ================= -->
+      <div>
+        <div class="phone">
+          <div class="nav">学习</div>
+          <div class="screen">
+            <div class="kc">
+              <div class="kc-word-row">
+                <span class="kc-word">apple</span><span class="kc-ipa">/ˈæpl/</span>
+              </div>
+              <div class="kc-tags"><span class="chip chip-muted">n.</span></div>
+              <div class="kc-meaning">苹果</div>
+              <div class="kc-eg">I eat an apple every day.</div>
+              <div class="kc-tr">我每天吃一个苹果。</div>
+            </div>
+            <div class="kc-prog">3 / 20</div>
+            <div class="kc-actions">
+              <span class="btn">☆ 收藏</span><span class="btn">🔊 发音</span
+              ><span class="btn">✨ 问 AI</span>
+            </div>
+            <div class="kc-nav">
+              <span class="btn btn-ghost">上一条</span><span class="btn btn-primary">下一条</span>
+            </div>
+          </div>
+        </div>
+        <div class="caption">
+          ⑪ 学习详情 —— 词性改用 chip（原来与正文同为灰字，读不出层级）； 操作区与导航区统一
+          u-btn；旧的 <code>shared/card.wxss</code> 已随本次删除
+        </div>
+      </div>
+
+      <!-- ================= 第二批迁移 ④ 复习详情 ================= -->
+      <div>
+        <div class="phone">
+          <div class="nav">复习</div>
+          <div class="screen">
+            <div class="kc">
+              <div class="kc-word-row">
+                <span class="kc-word">banana</span><span class="kc-ipa">/bəˈnɑːnə/</span>
+              </div>
+              <div class="kc-meaning">香蕉</div>
+              <div class="kc-expl">注意与 apple 区分：两者都是水果，建议配图一起记。</div>
+            </div>
+            <div class="kc-prog">2 / 12</div>
+            <div class="kc-nav">
+              <span class="btn btn-ghost kc-unknown">不认识</span
+              ><span class="btn btn-primary">认识</span>
+            </div>
+          </div>
+        </div>
+        <div class="caption">
+          ⑫ 复习详情 —— 「不认识」从<b>实心红 #fa5151</b> 改为<b> danger 描边</b>
+          （v1.1 讲淡，实心红块太抢眼，语义靠描边色就够）；空态补了「明天再来」的引导文案
+        </div>
+      </div>
+
+      <!-- ================= 第三批 ① 测试页（答错态） ================= -->
+      <div>
+        <div class="phone">
+          <div class="nav">章节测试</div>
+          <div class="screen">
+            <div class="card" style="padding: 12px 14px">
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  font-size: 12px;
+                  color: var(--ink-2);
+                "
+              >
+                <span><span class="chip chip-success">单词题</span></span>
+                <span>第 4 / 20 题</span>
+              </div>
+              <div class="qz-bar"><div class="qz-bar-fill"></div></div>
+            </div>
+            <div class="card" style="text-align: center; padding: 20px 12px">
+              <div style="font-size: 26px; font-weight: 600; color: var(--ink-1)">apple</div>
+            </div>
+            <div class="quiz-opts" style="margin: 12px">
+              <div class="quiz-opt opt-row"><span class="opt-letter">A</span>苹果</div>
+              <div class="quiz-opt right opt-row"><span class="opt-letter">B</span>香蕉</div>
+              <div class="quiz-opt wrong opt-row"><span class="opt-letter">C</span>橘子</div>
+              <div class="quiz-opt opt-row"><span class="opt-letter">D</span>葡萄</div>
+            </div>
+            <div class="answer-actions" style="margin: 0 12px">
+              <span class="btn btn-ghost">✨ 问 AI 为什么</span
+              ><span class="btn btn-primary">下一题</span>
+            </div>
+          </div>
+        </div>
+        <div class="caption">
+          ⑬ 测试页 —— 选项加 <b>A/B/C/D 圆标</b>（AI 页说「本题选
+          B」，原来选项没标号，学生对不上号）； 对错反馈改为<b>淡底 + 描边</b
+          >；顶部补进度条。听力题的喇叭也换成淡蓝底 + 品牌色图标
+        </div>
+      </div>
+
+      <!-- ================= 第三批 ② 测试结果 ================= -->
+      <div>
+        <div class="phone">
+          <div class="nav">测试结果</div>
+          <div class="screen">
+            <div class="tr-card">
+              <div class="tr-accuracy">75%</div>
+              <div class="tr-label">正确率（15 / 20）</div>
+              <div class="tr-duration">用时 3 分 12 秒</div>
+            </div>
+            <div class="tr-actions">
+              <span class="btn btn-block btn-primary">重新学习</span>
+              <span class="btn btn-block">去复习</span>
+              <span class="btn btn-block btn-ghost">返回章节</span>
+            </div>
+          </div>
+        </div>
+        <div class="caption">
+          ⑭ 测试结果 —— 正确率<b>按分数段着色</b>（≥80 绿 / 60~79 橙 / &lt;60 红），
+          原来固定绿色，90% 和 40% 长得一样，看不出刚才考得怎样
+        </div>
+      </div>
+
+      <!-- ================= 第三批 ③ 统计 ================= -->
+      <div>
+        <div class="phone">
+          <div class="nav">学习统计</div>
+          <div class="screen">
+            <div class="st-grid">
+              <div class="st-card">
+                <span class="st-icon">🔁</span><span class="st-num">12</span
+                ><span class="st-label">今日复习知识点</span>
+              </div>
+              <div class="st-card">
+                <span class="st-icon">📘</span><span class="st-num">3</span
+                ><span class="st-label">今日学习章节</span>
+              </div>
+              <div class="st-card">
+                <span class="st-icon">📚</span><span class="st-num">248</span
+                ><span class="st-label">累计知识点</span>
+              </div>
+              <div class="st-card">
+                <span class="st-icon">🔥</span><span class="st-num">7</span
+                ><span class="st-label">连续学习（天）</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="caption">
+          ⑮ 统计 —— 2×2 卡片加图标便于扫读；数字用 <b>--brand-700 深一档</b>：
+          淡色原则淡化的是大面积底色，数字是要被读的信息，不能一起变淡
+        </div>
+      </div>
+
+      <!-- ================= 第三批 ④ 登录 ================= -->
+      <div>
+        <div class="phone">
+          <div class="nav">登录</div>
+          <div class="screen">
+            <div class="lg-brand">
+              <div class="lg-logo">📖</div>
+              <div class="lg-name">SuperEasy 学习</div>
+              <div class="lg-slogan">跟着课本走，每天进步一点点</div>
+            </div>
+            <div class="lg-panel">
+              <span class="btn btn-block btn-primary">微信登录</span>
+              <div class="lg-note">登录即表示同意使用微信账号快速登录</div>
+            </div>
+          </div>
+        </div>
+        <div class="caption">
+          ⑯ 登录 —— 原来只有一个裸按钮（第一次打开不知道进的是哪个 App），
+          补品牌区与说明；失败态给排查方向，按钮文案变「重新登录」
+        </div>
+      </div>
+
+      <!-- ================= 第三批 ⑤ 游戏中心 ================= -->
+      <div>
+        <div class="phone">
+          <div class="nav">游戏中心</div>
+          <div class="screen">
+            <div class="section">
+              <span class="section-title">游戏中心</span
+              ><span class="section-more">英语 · 已按学科筛选</span>
+            </div>
+            <div class="list">
+              <div class="u-row">
+                <span class="u-row-icon">🧩</span>
+                <span class="u-row-body"
+                  ><span class="u-row-title">消消乐</span
+                  ><span class="u-row-sub">点选「单词 + 释义」配对消除，60 秒全部清空</span></span
+                >
+                <span class="arrow"></span>
+              </div>
+              <div class="u-row">
+                <span class="u-row-icon">⚡</span>
+                <span class="u-row-body"
+                  ><span class="u-row-title">极速选择</span
+                  ><span class="u-row-sub">每题 5 秒快答，速度就是分数</span></span
+                >
+                <span class="arrow"></span>
+              </div>
+              <div class="u-row">
+                <span class="u-row-icon">🎧</span>
+                <span class="u-row-body"
+                  ><span class="u-row-title">听音找词</span
+                  ><span class="u-row-sub">听发音选单词，训练听力辨识</span></span
+                >
+                <span class="arrow"></span>
+              </div>
+              <div class="u-row">
+                <span class="u-row-icon">🔤</span>
+                <span class="u-row-body"
+                  ><span class="u-row-title">语法闯关</span
+                  ><span class="u-row-sub">语法点专项四选一，限时快答巩固语法</span></span
+                >
+                <span class="arrow"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="caption">
+          ⑰ 游戏中心 —— 补齐 <b>config/games 的 icon 字段</b>（纯文字列表扫读慢）；
+          右上角标注学科筛选结果，否则按学科过滤后列表变短，会被误认为少做了功能
+        </div>
+      </div>
+
+      <!-- ================= 第三批 ⑥ 速算 ================= -->
+      <div>
+        <div class="phone">
+          <div class="nav">速算</div>
+          <div class="screen">
+            <div class="g-hud">
+              <span class="g-hud-score">得分 120</span><span>第 6 / 20 题</span
+              ><span style="color: var(--success); font-weight: 600">连击 ×3</span>
+            </div>
+            <div class="md-problem">
+              <div class="md-problem-text">17 + 25 = ?</div>
+              <div class="md-input">42</div>
+              <div class="g-timer" style="margin-top: 12px">
+                <div class="g-timer-fill"></div>
+              </div>
+            </div>
+            <div class="md-keypad">
+              <div class="md-key">7</div>
+              <div class="md-key">8</div>
+              <div class="md-key">9</div>
+              <div class="md-key">4</div>
+              <div class="md-key">5</div>
+              <div class="md-key">6</div>
+              <div class="md-key">1</div>
+              <div class="md-key">2</div>
+              <div class="md-key">3</div>
+              <div class="md-key" style="color: var(--ink-2); font-size: 18px">⌫</div>
+              <div class="md-key">0</div>
+              <div class="md-key md-key-ok">确定</div>
+            </div>
+          </div>
+        </div>
+        <div class="caption">
+          ⑱ 速算 —— 键盘保持 3×4 实体键位（数字输入的手感依赖固定位置）， 配色改淡：白底 +
+          发丝描边，只有「确定」用实色渐变；算式牌的对错反馈同样改为淡底
+        </div>
+      </div>
+
+      <!-- ================= 设置页 V1（2026-09-14 定义） ================= -->
+      <div>
+        <div class="phone">
+          <div class="nav">设置</div>
+          <div class="screen">
+            <div class="section"><span class="section-title">学习</span></div>
+            <div class="list">
+              <div class="u-row">
+                <span class="u-row-icon">📚</span>
+                <span class="u-row-body"
+                  ><span class="u-row-title">当前教材</span
+                  ><span class="u-row-sub">人教版 · 三年级上册</span></span
+                >
+                <span class="arrow"></span>
+              </div>
+              <div class="u-row">
+                <span class="u-row-icon">🎓</span>
+                <span class="u-row-body"
+                  ><span class="u-row-title">年级</span
+                  ><span class="u-row-sub">三年级 · 手动指定</span></span
+                >
+                <span class="arrow arrow-up"></span>
+              </div>
+            </div>
+            <div class="set-picker">
+              <span class="chip set-chip">跟随册次</span>
+              <span class="chip set-chip">一年级</span>
+              <span class="chip set-chip">二年级</span>
+              <span class="chip set-chip set-chip-on">三年级</span>
+              <span class="chip set-chip">四年级</span>
+              <span class="chip set-chip">五年级</span>
+              <span class="chip set-chip">六年级</span>
+              <span class="chip set-chip">七年级</span>
+              <span class="chip set-chip">八年级</span>
+              <span class="chip set-chip">九年级</span>
+              <div class="set-hint">
+                手动指定后，学习页与测试只出现该年级及以前的内容，换教材册次也不会再覆盖它。
+              </div>
+            </div>
+            <div class="section"><span class="section-title">关于</span></div>
+            <div class="list">
+              <div class="u-row">
+                <span class="u-row-icon">ℹ️</span>
+                <span class="u-row-body"><span class="u-row-title">版本</span></span>
+                <span class="u-row-extra"><span class="u-row-sub">1.0.0</span></span>
+              </div>
+            </div>
+            <div class="set-actions">
+              <span class="btn btn-block btn-ghost set-reset">恢复默认设置</span>
+              <div class="set-note">只清除本机保存的学科与年级偏好，云端学习记录不受影响</div>
+            </div>
+          </div>
+        </div>
+        <div class="caption">
+          ⑲ 设置（原「占位·待定义」，V1 已定义） —— 核心是<b>年级可手动指定</b>：
+          年级原来只能由册次名解析，专题册次叫「全册」时解析不出 →
+          超纲内容照样出现。手动值优先级最高，只存本机（换设备重选一次即可）
+        </div>
+      </div>
+
+      <!-- ================= ⑳ 门禁解锁卡（ADR-015） ================= -->
+      <div>
+        <div class="phone">
+          <div class="nav">测试结果</div>
+          <div class="screen">
+            <div class="eg-card">
+              <div class="eg-icon">🔒</div>
+              <div class="eg-title">本次测试分析</div>
+              <div class="eg-desc">观看一段短视频即可解锁本次测试的正确率与薄弱点分析</div>
+              <div class="eg-btn">观看视频解锁本次分析</div>
+              <div class="eg-member">会员可免观看，开通入口敬请期待</div>
+            </div>
+            <div class="set-actions">
+              <span class="btn btn-block">重新学习</span>
+              <span class="btn btn-block btn-ghost">去复习</span>
+              <span class="btn btn-block btn-ghost">返回章节</span>
+            </div>
+          </div>
+        </div>
+        <div class="caption">
+          ⑳ 门禁解锁卡（ADR-015 变现 P0） —— 只拦<b>本次测试分析</b>与<b>AI 辅导</b>， 学习 / 复习 /
+          小游戏永远免费。三个出口按钮照样在，<b>不挡退路</b>。
+          文案统一「观看视频」，不出现「广告」二字；
+          <b>广告位当前留空 → 整套门禁自动放行</b>，可安全上线，填上 id 才生效
+        </div>
+      </div>
+
+      <!-- ================= ㉑ 分数模型（B-7） ================= -->
+      <div>
+        <div class="phone">
+          <div class="nav">数学 · 分数</div>
+          <div class="screen">
+            <div class="section"><span class="section-title">分数模型</span></div>
+
+            <div class="fr-card">
+              <div class="fr-case">真分数 3/4 —— 一个整体分 4 份，涂 3 份</div>
+              <div class="fr-bar">
+                <span class="fr-seg is-start on"></span><span class="fr-seg on"></span
+                ><span class="fr-seg on"></span><span class="fr-seg"></span>
+              </div>
+              <div class="fr-label">3/4</div>
+            </div>
+
+            <div class="fr-card">
+              <div class="fr-case">假分数 5/4 —— 化成 1 又 1/4，画两个整体（份间留缝区分）</div>
+              <div class="fr-bar">
+                <span class="fr-seg is-start on"></span><span class="fr-seg on"></span
+                ><span class="fr-seg on"></span><span class="fr-seg on"></span
+                ><span class="fr-seg is-start on"></span><span class="fr-seg"></span
+                ><span class="fr-seg"></span><span class="fr-seg"></span>
+              </div>
+              <div class="fr-label">1 1/4</div>
+            </div>
+
+            <div class="fr-card">
+              <div class="fr-case">比大小 2/3 vs 3/4 —— 两根条等宽，各按自己的分母等分</div>
+              <div class="fr-bar">
+                <span class="fr-seg is-start on"></span><span class="fr-seg on"></span
+                ><span class="fr-seg"></span>
+              </div>
+              <div class="fr-label">2/3</div>
+              <div class="fr-bar">
+                <span class="fr-seg is-start on"></span><span class="fr-seg on"></span
+                ><span class="fr-seg on"></span><span class="fr-seg"></span>
+              </div>
+              <div class="fr-label">3/4</div>
+              <div class="fr-rel">2/3 &lt; 3/4</div>
+            </div>
+
+            <div class="fr-card">
+              <div class="fr-case">分母过大（37/100）—— 等分线太细，改画连续条</div>
+              <div class="fr-bar"><span class="fr-fill" style="width: 37%"></span></div>
+              <div class="fr-label">37/100</div>
+            </div>
+          </div>
+        </div>
+        <div class="caption">
+          ㉑ 分数模型（B-7 第 2 个可视化组件） —— 一根条 = 一个整体，按分母等分、分子涂色。
+          <b>假分数化成带分数再画</b>（5/4 → 1 又 1/4 的两个整体）， 不是在 4 等分的条上涂 5 段 ——
+          那样学生数不清有几个整体。 比大小看<b>长度</b>不看份数；1/2 与 2/4 判等（留了浮点容差）
+        </div>
+      </div>
+
+      <!-- ================= ㉒ 平面直角坐标系（B-7） ================= -->
+      <div>
+        <div class="phone">
+          <div class="nav">数学 · 坐标系</div>
+          <div class="screen">
+            <div class="section"><span class="section-title">y = 0.5x + 1</span></div>
+            <div class="fr-card">
+              <!-- 静态摹本：真机是 canvas 2d 绘制，这里用 SVG 画出同样的几何关系 -->
+              <svg viewBox="0 0 300 240" width="100%" height="240" role="img">
+                <g stroke="#eaeff6" stroke-width="1">
+                  <line x1="26" y1="26" x2="26" y2="214" />
+                  <line x1="50.8" y1="26" x2="50.8" y2="214" />
+                  <line x1="75.6" y1="26" x2="75.6" y2="214" />
+                  <line x1="100.4" y1="26" x2="100.4" y2="214" />
+                  <line x1="125.2" y1="26" x2="125.2" y2="214" />
+                  <line x1="150" y1="26" x2="150" y2="214" />
+                  <line x1="174.8" y1="26" x2="174.8" y2="214" />
+                  <line x1="199.6" y1="26" x2="199.6" y2="214" />
+                  <line x1="224.4" y1="26" x2="224.4" y2="214" />
+                  <line x1="249.2" y1="26" x2="249.2" y2="214" />
+                  <line x1="274" y1="26" x2="274" y2="214" />
+                  <line x1="26" y1="214" x2="274" y2="214" />
+                  <line x1="26" y1="195.2" x2="274" y2="195.2" />
+                  <line x1="26" y1="176.4" x2="274" y2="176.4" />
+                  <line x1="26" y1="157.6" x2="274" y2="157.6" />
+                  <line x1="26" y1="138.8" x2="274" y2="138.8" />
+                  <line x1="26" y1="120" x2="274" y2="120" />
+                  <line x1="26" y1="101.2" x2="274" y2="101.2" />
+                  <line x1="26" y1="82.4" x2="274" y2="82.4" />
+                  <line x1="26" y1="63.6" x2="274" y2="63.6" />
+                  <line x1="26" y1="44.8" x2="274" y2="44.8" />
+                  <line x1="26" y1="26" x2="274" y2="26" />
+                </g>
+                <g stroke="#9aa3b4" stroke-width="1">
+                  <line x1="26" y1="120" x2="274" y2="120" />
+                  <line x1="150" y1="26" x2="150" y2="214" />
+                </g>
+                <line x1="26" y1="148.2" x2="274" y2="54.2" stroke="#5a85e0" stroke-width="2" />
+                <circle cx="174.8" cy="82.4" r="4" fill="#3f6bc4" />
+                <circle cx="75.6" cy="120" r="4" fill="#3f6bc4" />
+                <g fill="#9aa3b4" font-size="10" font-family="sans-serif" text-anchor="middle">
+                  <text x="26" y="124">-5</text>
+                  <text x="50.8" y="124">-4</text>
+                  <text x="75.6" y="124">-3</text>
+                  <text x="100.4" y="124">-2</text>
+                  <text x="125.2" y="124">-1</text>
+                  <text x="174.8" y="124">1</text>
+                  <text x="199.6" y="124">2</text>
+                  <text x="224.4" y="124">3</text>
+                  <text x="249.2" y="124">4</text>
+                  <text x="274" y="124">5</text>
+                </g>
+                <g
+                  fill="#9aa3b4"
+                  font-size="10"
+                  font-family="sans-serif"
+                  text-anchor="end"
+                  dominant-baseline="middle"
+                >
+                  <text x="146" y="214">-5</text>
+                  <text x="146" y="195.2">-4</text>
+                  <text x="146" y="176.4">-3</text>
+                  <text x="146" y="157.6">-2</text>
+                  <text x="146" y="138.8">-1</text>
+                  <text x="146" y="101.2">1</text>
+                  <text x="146" y="82.4">2</text>
+                  <text x="146" y="63.6">3</text>
+                  <text x="146" y="44.8">4</text>
+                  <text x="146" y="26">5</text>
+                </g>
+              </svg>
+            </div>
+            <div class="fr-card">
+              <div class="fr-case">0 不在范围内时，轴自动贴到边框（否则图上看不见轴）</div>
+              <svg viewBox="0 0 300 150" width="100%" height="150" role="img">
+                <rect x="0.5" y="0.5" width="299" height="149" rx="6" fill="#f8fafd" />
+                <g stroke="#eaeff6" stroke-width="1">
+                  <line x1="26" y1="26" x2="26" y2="124" />
+                  <line x1="90.5" y1="26" x2="90.5" y2="124" />
+                  <line x1="155" y1="26" x2="155" y2="124" />
+                  <line x1="219.5" y1="26" x2="219.5" y2="124" />
+                  <line x1="274" y1="26" x2="274" y2="124" />
+                  <line x1="26" y1="124" x2="274" y2="124" />
+                  <line x1="26" y1="99.5" x2="274" y2="99.5" />
+                  <line x1="26" y1="75" x2="274" y2="75" />
+                  <line x1="26" y1="50.5" x2="274" y2="50.5" />
+                  <line x1="26" y1="26" x2="274" y2="26" />
+                </g>
+                <g stroke="#9aa3b4" stroke-width="1">
+                  <line x1="26" y1="124" x2="274" y2="124" />
+                  <line x1="26" y1="26" x2="26" y2="124" />
+                </g>
+                <g fill="#9aa3b4" font-size="10" font-family="sans-serif">
+                  <text x="26" y="136" text-anchor="middle">1</text>
+                  <text x="90.5" y="136" text-anchor="middle">2</text>
+                  <text x="155" y="136" text-anchor="middle">3</text>
+                  <text x="219.5" y="136" text-anchor="middle">4</text>
+                  <text x="274" y="136" text-anchor="middle">5</text>
+                  <text x="20" y="124" text-anchor="end" dominant-baseline="middle">1</text>
+                  <text x="20" y="99.5" text-anchor="end" dominant-baseline="middle">2</text>
+                  <text x="20" y="75" text-anchor="end" dominant-baseline="middle">3</text>
+                  <text x="20" y="50.5" text-anchor="end" dominant-baseline="middle">4</text>
+                  <text x="20" y="26" text-anchor="end" dominant-baseline="middle">5</text>
+                </g>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="caption">
+          ㉒ 平面直角坐标系（B-7 第 3 个，canvas 2d） —— 网格 + 轴 + 刻度 + 描点 + 一次函数 y = kx +
+          b。
+          <b>所有像素坐标在 <code>utils/coordinatePlane.ts</code> 算好并单测</b>，组件只管描线。 0
+          不在范围内时轴自动贴边框；函数线裁剪在绘图区内，不会盖住刻度数字
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>v1.1 调色（本轮）</b>：① 头部由深蓝渐变（#2f6bff→#1f52d6）改为<b>极淡蓝渐变</b>
+      （#eaf2fe→#dde9fb）+ 深色文字；② 导航栏改回<b>白底黑字</b>（常驻元素，深色底最累眼）； ③
+      全部色降饱和（主色 #2f6bff → #5a85e0，绿色 #16a34a → #2fa06b）； ④
+      阴影削弱一档，去掉"浮起来"的塑料感。只有实心按钮与强调数字用较深的 #3f6bc4 承载白字（对比度约
+      4.8:1）。<br />
+      <b>AI 辅导（本轮新增）</b>：三个入口——⑤ 测试页<b>答错后「✨ 问 AI 为什么」</b>（把题干 + 4
+      个选项 + 学生答案 + 正确答案 + 三级程序化提示<b>一起</b>交过去，AI 才知道在讲哪道题）、 ⑦
+      学习详情页「✨ 问 AI」（带知识点）、⑧ 我的页 AI 辅导（自由问答）。
+      <b>自由问答不预设学科</b>：学科 chip 默认「不限」，由用户点选 ——
+      原来会默认成「当前教材偏好」那一科，学生明明想问英语却顶着「数学」。
+      <b>题目 / 知识点场景的学科仍由内容本身决定</b>（⑤⑥ 的英语），不给用户改。
+      界面遵守需求第三十九章： <b>AI 只解释不判分</b>，底部常驻免责说明；AI
+      不可用时气泡下方标注「程序化提示」，不把兜底文案冒充成 AI 说的。<br />
+      <b>交接方式</b>：题干/选项/提示走内存交接（<code>aiTutorHandoff</code>，用完即焚），不走 URL——
+      中文编码后太长且选项是数组。交接丢失时自动退回 URL 参数，页面照旧可用。<br />
+      <b>第二批迁移（2026-09-14 上午）</b>：⑨~⑫ —— 教材 / 册次 / 学习路径三页改共享模板一处即可
+      （已补分区标题）；章节 / 收藏 / 学习详情 / 复习详情四页改用 u-* 与 tokens。 **两个共享旧样式
+      <code>pages/shared/list.wxss</code> 与 <code>card.wxss</code> 已删除**，
+      至此全项目不再有「新旧并存」的样式来源。顺手修了章节页缺 import 的空白 bug。<br />
+      <b>第三批迁移（2026-09-14 中午）：全站收口完成</b>。⑬~⑱ —— 测试页补 A/B/C/D
+      选项标号与进度条、测试结果按分数段着色、统计 2×2 卡片加图标、登录补品牌区、游戏中心补齐 icon
+      字段并标注学科筛选、速算键盘改淡。 同时<b>抽出 <code>styles/game.wxss</code>（g- 前缀）</b>：5
+      个答题类小游戏原来各写一份 .hud / .timer-bar / .options，内容几乎一样，改一次要动五处文件。
+      <code>components.wxss</code> 也补了 <code>.u-option</code> / <code>.u-speaker</code>，
+      测试页与 4 个小游戏共用同一套选项与喇叭。 至此<b>全部 28 个页面均已迁移 v1.1</b>， 全项目 wxss
+      里不再有硬编码色值（唯一例外：小蜜蜂的深色街机画面，色值走
+      <code>--game-*</code> 令牌，属于有意保留 —— 中文方块在深底上才看得清）。<br />
+      <b>与冻结规格的一致性</b>：§12.1「纵向列表替代九宫格」、§12.5 首页区块顺序均按 v1 冻结稿保留；
+      本轮变更的是配色与视觉密度，以及章节状态文案（改成中文，符合 §12.1「界面文案一律中文」）。
+    </div>
+  </body>
+</html>

@@ -1,7 +1,23 @@
-<view wx:if="{{loading}}" class="hint">加载中…</view>
-<view wx:elif="{{loadFailed}}" class="hint">
-  <text>加载失败，请检查网络</text>
-  <button size="mini" bindtap="onRetry">重试</button>
+<!-- 章节列表页（Chapter 04 §5）：条目与学习页 / 练习页共用 chapter-items.wxml，
+     改那个模板等于一次改三个页面。
+     ⚠️ 2026-09-14 修：原来这里用了 chapter-items 却**没有 import**，模板找不到名，
+     章节列表实际是一片空白（学习页 / 练习页有 import 所以正常，只有本页受害）。
+     本页入口：测试结果页「返回章节」、游戏结算页、学习路径页。 -->
+<import src="../shared/chapter-items.wxml" />
+
+<view wx:if="{{loading}}" class="u-empty">
+  <text class="u-empty-text">加载中…</text>
 </view>
-<view wx:elif="{{items.length === 0}}" class="hint">暂无数据</view>
-<template wx:else is="chapter-items" data="{{ items, semesterId }}" />
+<view wx:elif="{{loadFailed}}" class="u-empty">
+  <text class="u-empty-icon">📡</text>
+  <text class="u-empty-text">加载失败，请检查网络</text>
+  <button class="u-btn u-btn-primary u-btn-sm" bindtap="onRetry" hover-class="u-tap" hover-stay-time="60">重试</button>
+</view>
+<view wx:elif="{{items.length === 0}}" class="u-empty">
+  <text class="u-empty-icon">📭</text>
+  <text class="u-empty-text">暂无数据</text>
+</view>
+<block wx:else>
+  <view class="u-section"><text class="u-section-title">章节</text></view>
+  <template is="chapter-items" data="{{ items, semesterId }}" />
+</block>

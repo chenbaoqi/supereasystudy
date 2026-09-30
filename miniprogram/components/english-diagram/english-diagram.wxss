@@ -1,0 +1,163 @@
+/* 英语示意图（WXML/CSS 版）：色值全部走 tokens，尺寸用 rpx 自适配屏幕。 */
+.ed-wrap {
+  width: 100%;
+  min-height: 260rpx;
+  padding: var(--sp-4) var(--sp-3);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------- 时态轴 ---------- */
+.ed-wrap .ed-axis {
+  position: relative;
+  width: 86%;
+  height: 4rpx;
+  background: var(--ink-3);
+  border-radius: 2rpx;
+}
+
+.ed-ticks {
+  display: flex;
+  justify-content: space-between;
+  width: 86%;
+  margin-top: -14rpx; /* 让圆点压在轴线上 */
+}
+
+.ed-tick {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 33%;
+}
+
+.ed-dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  background: var(--ink-3);
+}
+
+/* 当前时态的锚点：更大、品牌色 */
+.ed-dot-on {
+  width: 28rpx;
+  height: 28rpx;
+  margin-top: -6rpx; /* 大圆仍压在轴线上 */
+  background: var(--brand-600);
+}
+
+.ed-label {
+  margin-top: 10rpx;
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+}
+
+.ed-label-on {
+  font-weight: 500;
+  color: var(--brand-600);
+}
+
+/* 进行时：一段正在持续的粗线；完成时：从过去延伸到锚点的条 */
+.ed-bar {
+  position: absolute;
+  top: -7rpx;
+  height: 12rpx;
+  border-radius: 6rpx;
+  background: var(--brand-600);
+}
+
+.ed-caption {
+  margin-top: var(--sp-5);
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  text-align: center;
+}
+
+/* ---------- 介词方位 ---------- */
+.ed-scene {
+  position: relative;
+  width: 100%;
+  height: 320rpx;
+}
+
+/* 盒子几何与 utils/englishDiagram.ts 的注释严格对齐：
+   left 32% / top 38% / 宽 36% / 高 40% ⇒ 中心 (50,58)、顶边 y=38% */
+.ed-box {
+  position: absolute;
+  left: 32%;
+  top: 38%;
+  width: 36%;
+  height: 40%;
+  border-radius: var(--radius-card);
+  background: var(--brand-50);
+  border: 2rpx solid var(--brand-200);
+  box-sizing: border-box;
+}
+
+/* between 的两个盒子：各占一半宽度，中间留出球的位置 */
+.ed-box-twin {
+  width: 26%;
+  height: 40%;
+}
+
+/* behind：盒子要盖在球上面 */
+.ed-box-front {
+  z-index: 2;
+}
+
+.ed-ball-behind {
+  z-index: 1;
+}
+
+/* 球的位置由介词决定（left/top 百分比来自 utils/englishDiagram 的计算） */
+.ed-ball {
+  position: absolute;
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  background: var(--brand-600);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 2rpx 0 var(--brand-200);
+}
+
+/* ---------- 词族 ---------- */
+.ed-family {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--sp-3);
+}
+
+.ed-root {
+  padding: 14rpx 30rpx;
+  border-radius: 999rpx;
+  background: var(--brand-600);
+  color: #ffffff;
+  font-size: var(--fs-md);
+  font-weight: 500;
+}
+
+.ed-arrow {
+  color: var(--ink-3);
+  font-size: var(--fs-md);
+}
+
+.ed-members {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  justify-content: center;
+}
+
+.ed-member {
+  padding: 12rpx 24rpx;
+  border-radius: 999rpx;
+  background: var(--brand-50);
+  border: 1rpx solid var(--brand-200);
+  color: var(--brand-600);
+  font-size: var(--fs-sm);
+}

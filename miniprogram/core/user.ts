@@ -8,10 +8,15 @@ export interface UserPreferences {
   readonly semesterName: string; // 名称冗余（如 三年级上册）
 }
 
+// 按学科维度的教材偏好（多科支持）：key = subjectId，value = 该学科当前册次。
+// 旧字段 preferences 保留不动（§7 不得删除已有字段），语义收敛为「最近一次选择 / 兼容回退」。
+export type PreferencesBySubject = Readonly<Record<string, UserPreferences>>;
+
 // 用户（users 集合）。openid 是微信登录与身份恢复的凭据
 // （Chapter 04 §5 Login：自动检测登录/微信登录/恢复用户）。
 // 角色体系（游客/VIP 预留/管理员）见 Specification 第三章，字段后续扩展。
 export interface User extends BaseEntity {
   readonly openid: string;
   readonly preferences?: UserPreferences; // 教材偏好（Chapter 14；未设置时无此字段）
+  readonly preferencesBySubject?: PreferencesBySubject; // 分科偏好（新增可选，旧用户无此字段）
 }

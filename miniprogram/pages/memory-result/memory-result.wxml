@@ -1,28 +1,45 @@
-<view wx:if="{{missing}}" class="hint">没有可显示的游戏结果</view>
+<!-- 游戏结果页（消消乐 / 极速选择 / 听音找词 / 语法闯关 / 速算 共用）
+     UI v1.1（2026-09-14）：得分用深一档的 --brand-700（原固定绿色 #07c160），
+     掌握/薄弱标签走 u-chip，按钮分主次三级（再来一次 = 主，返回学习 = 次，加入复习 = 描边）。 -->
+<view wx:if="{{missing}}" class="u-empty">
+  <view class="u-empty-icon">📊</view>
+  <view class="u-empty-text">没有可显示的游戏结果</view>
+</view>
 
-<view wx:else class="container">
-  <view class="score">{{score}}</view>
-  <view class="meta">正确 {{correctCount}} · 错误 {{wrongCount}} · 用时 {{duration}} 秒</view>
-  <view wx:if="{{avgResponseText}}" class="meta">平均反应 {{avgResponseText}} 秒</view>
-
-  <view wx:if="{{mastered.length > 0}}" class="section">
-    <view class="section-title mastered-title">掌握知识</view>
-    <view class="tags">
-      <text wx:for="{{mastered}}" wx:key="_id" class="tag mastered">{{item.word}}</text>
+<view wx:else class="mr-page">
+  <view class="u-card mr-score-card">
+    <view class="mr-score">{{score}}</view>
+    <view class="mr-meta">正确 {{correctCount}} · 错误 {{wrongCount}} · 用时 {{duration}} 秒</view>
+    <view wx:if="{{avgResponseText}}" class="mr-meta">平均反应 {{avgResponseText}} 秒</view>
+    <!-- 全站钱包入账（L1）：玩哪个游戏都在长大 -->
+    <view wx:if="{{wallet}}" class="mr-wallet">
+      <text class="mr-wallet-gain">{{wallet.gain}}</text>
+      <text wx:if="{{wallet.badges}}" class="mr-wallet-badges">{{wallet.badges}}</text>
     </view>
   </view>
 
-  <view wx:if="{{weak.length > 0}}" class="section">
-    <view class="section-title weak-title">薄弱知识</view>
-    <view class="tags">
-      <text wx:for="{{weak}}" wx:key="_id" class="tag weak">{{item.word}}</text>
+  <view wx:if="{{mastered.length > 0}}" class="u-card">
+    <view class="mr-title is-mastered">掌握知识</view>
+    <view class="mr-tags">
+      <text wx:for="{{mastered}}" wx:key="_id" class="u-chip u-chip-success">{{item.word}}</text>
     </view>
   </view>
 
-  <view class="actions">
-    <button type="primary" bindtap="onReplay">再来一次</button>
-    <button bindtap="onBackToStudy">返回学习</button>
-    <button bindtap="onAddToReview" disabled="{{integrating || integrated}}">
+  <view wx:if="{{weak.length > 0}}" class="u-card">
+    <view class="mr-title is-weak">薄弱知识</view>
+    <view class="mr-tags">
+      <text wx:for="{{weak}}" wx:key="_id" class="u-chip u-chip-danger">{{item.word}}</text>
+    </view>
+  </view>
+
+  <view class="mr-actions">
+    <button class="u-btn u-btn-primary u-btn-block" bindtap="onReplay" hover-class="u-tap" hover-stay-time="60">再来一次</button>
+    <button class="u-btn u-btn-block" bindtap="onBackToStudy" hover-class="u-tap" hover-stay-time="60">返回学习</button>
+    <button
+      class="u-btn u-btn-ghost u-btn-block mr-add"
+      disabled="{{integrating || integrated}}"
+      bindtap="onAddToReview" hover-class="u-tap" hover-stay-time="60"
+    >
       {{integrated ? '已加入复习' : '加入复习'}}
     </button>
   </view>

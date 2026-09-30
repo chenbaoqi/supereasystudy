@@ -1,36 +1,125 @@
-<view wx:if="{{loading}}" class="hint">加载中…</view>
-<view wx:elif="{{!question && emptyType === 'grammar-pending'}}" class="hint">
-  <text>语法专项题目二期上线</text>
-  <text class="hint-sub">可先前往复习巩固今日语法点</text>
-  <button size="mini" type="primary" bindtap="onGoReview">去复习</button>
+<!-- 测试页（Chapter 04 §5 → Chapter 13 综合测评卷）。
+     UI v1.1（2026-09-14）：
+       1. 选项加 A/B/C/D 标号 —— AI 辅导页说「本题选 B」，而这里的选项原来没有标号，学生对不上号。
+       2. 对错反馈从「实色绿/红底」改成「淡底 + 描边 + 深色字」——实色块在连续答题时最晃眼。
+       3. 选项与喇叭改用 components.wxss 的 u-option / u-speaker，与 4 个小游戏共用同一套。 -->
+<view wx:if="{{loading}}" class="u-empty">
+  <view class="u-empty-icon">⏳</view>
+  <view class="u-empty-text">加载中…</view>
 </view>
-<view wx:elif="{{!question}}" class="hint">暂无题目</view>
-<view wx:else class="container">
-  <view class="progress">
-    <text class="kind-badge {{question.kind}}">
-      {{question.kind === 'listening' ? '听力题' : question.kind === 'grammar' ? '语法题' : '单词题'}}
-    </text>
-    {{currentIndex + 1}} / {{total}}
+
+<view wx:elif="{{!question && emptyType === 'grammar-pending'}}" class="u-empty">
+  <view class="u-empty-icon">📝</view>
+  <view class="u-empty-text">语法专项题目二期上线</view>
+  <view class="u-empty-sub">可先前往复习巩固今日语法点</view>
+  <button class="u-btn u-btn-primary" bindtap="onGoReview" hover-class="u-tap" hover-stay-time="60">去复习</button>
+</view>
+
+<view wx:elif="{{!question}}" class="u-empty">
+  <view class="u-empty-icon">📭</view>
+  <view class="u-empty-text">暂无题目</view>
+</view>
+
+<view wx:else class="ts-page">
+  <!-- 头部：题型 + 进度条 -->
+  <view class="u-card ts-head">
+    <view class="ts-meta">
+      <text
+        class="u-chip {{question.kind === 'listening' ? 'u-chip-brand' : question.kind === 'grammar' ? 'u-chip-warning' : question.kind === 'quiz' ? 'u-chip-brand' : 'u-chip-success'}}"
+      >
+        {{question.kind === 'listening' ? '听力题' : question.kind === 'grammar' ? '语法题' : question.kind === 'quiz' ? '练习题' : '单词题'}}
+      </text>
+      <text class="ts-progress">第 {{currentIndex + 1}} / {{total}} 题</text>
+    </view>
+    <view class="ts-bar">
+      <view class="ts-bar-fill" style="width: {{(currentIndex + 1) / total * 100}}%"></view>
+    </view>
   </view>
-  <!-- 听力题：发音喇叭代替文字题干（Chapter 13 §3/Q4） -->
-  <view wx:if="{{question.kind === 'listening'}}" class="speaker-wrap">
-    <button class="speaker" bindtap="onReplayAudio">🔊</button>
-    <view class="speaker-hint">点击重播</view>
+
+  <!-- 题干：听力题用喇叭代替文字（Chapter 13 §3/Q4） -->
+  <view class="u-card ts-stem">
+    <block wx:if="{{question.kind === 'listening'}}">
+      <view class="u-speaker-wrap">
+        <button class="u-speaker" bindtap="onReplayAudio" hover-class="u-tap" hover-stay-time="60">🔊</button>
+        <view class="u-speaker-hint">点击重播</view>
+      </view>
+    </block>
+    <view wx:else class="ts-prompt">{{question.prompt}}</view>
   </view>
-  <view wx:else class="word">{{question.prompt}}</view>
-  <view class="options">
+
+  <!-- 题目配图（B-7 闭环）：画什么由题目自己声明（visual），
+       认不出来的类型不渲染也不报错 —— 教学场景里「题能答」优先于「题有图」 -->
+  <view wx:if="{{visualType}}" class="ts-visual">
+    <math-number-line
+      wx:if="{{visualType === 'number-line'}}"
+      min="{{visualProps.min}}"
+      max="{{visualProps.max}}"
+      step="{{visualProps.step}}"
+      value="{{visualProps.value}}"
+      range-from="{{visualProps.rangeFrom}}"
+      range-to="{{visualProps.rangeTo}}"
+    />
+    <math-fraction
+      wx:elif="{{visualType === 'fraction'}}"
+      numerator="{{visualProps.numerator}}"
+      denominator="{{visualProps.denominator}}"
+      whole="{{visualProps.whole}}"
+      compare="{{visualProps.compare}}"
+    />
+    <math-coordinate-plane
+      wx:elif="{{visualType === 'coordinate-plane'}}"
+      x-min="{{visualProps.xMin}}"
+      x-max="{{visualProps.xMax}}"
+      y-min="{{visualProps.yMin}}"
+      y-max="{{visualProps.yMax}}"
+      step="{{visualProps.step}}"
+      height="{{visualProps.height}}"
+      points="{{visualProps.points}}"
+      line-k="{{visualProps.lineK}}"
+      line-b="{{visualProps.lineB}}"
+    />
+    <math-geometry
+      wx:elif="{{visualType === 'geometry'}}"
+      base="{{visualProps.base}}"
+      height="{{visualProps.height}}"
+      offset="{{visualProps.offset}}"
+    />
+    <english-diagram
+      wx:elif="{{visualType === 'tense' || visualType === 'preposition' || visualType === 'word-family'}}"
+      kind="{{visualType}}"
+      tense="{{visualProps.tense}}"
+      aspect="{{visualProps.aspect}}"
+      position="{{visualProps.position}}"
+      root="{{visualProps.root}}"
+      members="{{visualProps.members}}"
+    />
+    <optics-diagram
+      wx:elif="{{visualType === 'optics'}}"
+      kind="{{visualProps.kind}}"
+    />
+  </view>
+
+  <!-- 选项 -->
+  <view class="u-options">
     <button
       wx:for="{{question.options}}"
       wx:key="*this"
-      class="option {{answered ? (index === question.correctIndex ? 'correct' : (index === selected ? 'wrong' : '')) : ''}}"
+      class="u-option {{answered ? (index === question.correctIndex ? 'is-correct' : (index === selected ? 'is-wrong' : '')) : ''}}"
       data-index="{{index}}"
-      bindtap="onSelect"
+      bindtap="onSelect" hover-class="u-tap-flat" hover-stay-time="60"
     >
-      {{item}}
+      <text class="u-option-letter">{{optionLetters[index]}}</text>
+      <text class="u-option-text">{{item}}</text>
     </button>
   </view>
+
   <!-- 答对自动进下一题（无需按钮）；答错才显示手动继续 -->
-  <button wx:if="{{answered && !isCorrect}}" type="primary" bindtap="onNext">
-    {{isLastQuestion ? '查看结果' : '下一题'}}
-  </button>
+  <view wx:if="{{answered && !isCorrect}}" class="answer-actions">
+    <button wx:if="{{showAiTutor}}" class="u-btn u-btn-ghost answer-ai" bindtap="onAskAi" hover-class="u-tap" hover-stay-time="60">
+      ✨ 问 AI 为什么
+    </button>
+    <button class="u-btn u-btn-primary answer-next" bindtap="onNext" hover-class="u-tap" hover-stay-time="60">
+      {{isLastQuestion ? '查看结果' : '下一题'}}
+    </button>
+  </view>
 </view>

@@ -1,3 +1,67 @@
-<view class="page-placeholder">
-  <text>练习 · Phase 2</text>
+<!-- 练习 tab（游戏入口）：展示当前教材册次的章节列表，点章节进入游戏中心选游戏。
+     复用 study tab 的章节装配与共享模板；游戏均为「按章节锁定知识点」（memory-game onLoad 要求 chapterId），
+     故 practice 不直接开游戏，而是落到章节后再经 game-center 选游戏，与既有「学习 tab → 章节 → 挑战」机制一致。
+     UI v1（2026-09-13）：与学习页同一套渐变头部 + 全局组件类。 -->
+<import src="../shared/chapter-items.wxml" />
+
+<view wx:if="{{loading}}" class="u-empty">
+  <text class="u-empty-text">加载中…</text>
 </view>
+
+<block wx:elif="{{!hasPreference}}">
+  <view class="u-empty">
+    <text class="u-empty-icon">🎮</text>
+    <text class="u-empty-text">还没有选择教材</text>
+    <text class="u-empty-sub">选一次教材和册次，就可以边玩边练</text>
+    <button class="u-btn u-btn-primary" bindtap="onTapGuide" hover-class="u-tap" hover-stay-time="60">去选择</button>
+  </view>
+</block>
+
+<block wx:else>
+  <view class="u-hero">
+    <view class="u-hero-sub">当前教材</view>
+    <view class="u-hero-title study-book">{{subjectName ? subjectName + ' · ' : ''}}{{textbookName}} · {{semesterName}}</view>
+    <view class="study-switch" bindtap="onTapSwitch" hover-class="u-tap" hover-stay-time="60">
+      <text>切换教材</text>
+      <view class="u-arrow u-arrow-down"></view>
+    </view>
+  </view>
+
+  <!-- 拼写练习（2026-09-21）：只给英语——数学没有「把公式拼出来」这回事。
+       产出型练习：看中文把单词打出来，补上 2348 道四选一缺的那半边。 -->
+  <view wx:if="{{isEnglish}}" class="u-list pc-spelling">
+    <view class="u-row" bindtap="onTapSpelling" hover-class="u-tap-flat" hover-stay-time="60">
+      <view class="u-row-icon">⌨️</view>
+      <view class="u-row-body">
+        <view class="u-row-title">拼写练习</view>
+        <view class="u-row-sub">看中文，把单词打出来</view>
+      </view>
+      <view class="u-row-extra">
+        <view class="u-arrow"></view>
+      </view>
+    </view>
+    <!-- 跟读练习（2026-09-29）：与拼写对称的「开口说」那半边，也只给英语 -->
+    <view class="u-row" bindtap="onTapFollowRead" hover-class="u-tap-flat" hover-stay-time="60">
+      <view class="u-row-icon">🎤</view>
+      <view class="u-row-body">
+        <view class="u-row-title">跟读练习</view>
+        <view class="u-row-sub">听发音，把单词读出来</view>
+      </view>
+      <view class="u-row-extra">
+        <view class="u-arrow"></view>
+      </view>
+    </view>
+  </view>
+
+  <view class="u-section">
+    <text class="u-section-title">选一个章节开始玩</text>
+    <text class="u-section-more">点章节 → 挑游戏</text>
+  </view>
+  <template is="chapter-items" data="{{ items, semesterId }}" />
+
+  <view wx:if="{{items.length === 0}}" class="u-card">
+    <text class="u-empty-sub">当前年级还没有可练的单元，换个册次试试</text>
+  </view>
+
+  <view class="u-safe-bottom"></view>
+</block>

@@ -1,0 +1,23 @@
+<!-- 变现门禁（ADR-015）。
+     checking 阶段什么都不渲染：避免门框在内容到位前闪一下（闪一下用户会以为内容丢了）。 -->
+<block wx:if="{{state === 'open'}}">
+  <slot />
+</block>
+
+<view wx:elif="{{state === 'gated'}}" class="eg-card">
+  <view class="eg-icon">🔒</view>
+  <view class="eg-title">{{title}}</view>
+  <view class="eg-desc">{{desc}}</view>
+
+  <button
+    class="eg-btn {{unlocking ? 'is-busy' : ''}}"
+    hover-class="eg-btn-hover"
+    disabled="{{unlocking}}"
+    loading="{{unlocking}}"
+    bindtap="onUnlock"
+  >
+    {{unlocking ? '正在准备视频…' : buttonText}}
+  </button>
+
+  <view class="eg-member">{{memberText}}</view>
+</view>

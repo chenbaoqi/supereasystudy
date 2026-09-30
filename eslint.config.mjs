@@ -42,6 +42,8 @@ export default tseslint.config(
         setInterval: 'readonly',
         clearTimeout: 'readonly',
         clearInterval: 'readonly',
+        Buffer: 'readonly',
+        URL: 'readonly',
       },
     },
     rules: {
@@ -50,13 +52,21 @@ export default tseslint.config(
     },
   },
   {
-    // 工程脚本运行在本地 Node 环境
+    // 工程脚本运行在本地 Node 环境（CJS：直接 require 数据文件、读写磁盘）
     files: ['scripts/**/*.{js,mjs}'],
     languageOptions: {
       globals: {
+        module: 'writable',
+        exports: 'writable',
+        require: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
         process: 'readonly',
         console: 'readonly',
       },
+    },
+    rules: {
+      '@typescript-eslint/no-require-imports': 'off',
     },
   },
   {

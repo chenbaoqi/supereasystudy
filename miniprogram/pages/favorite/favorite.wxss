@@ -1,18 +1,4 @@
-/* 收藏页样式（§15 UI 从简） */
-@import '../shared/list.wxss';
-
-.cell {
-  display: flex;
-  flex-direction: column;
-  gap: 8rpx;
-}
-
-.word {
-  font-size: 34rpx;
-  font-weight: 600;
-}
-
-.meaning {
-  color: #666666;
-  font-size: 28rpx;
-}
+/* 收藏页：无私有样式。
+   列表走 u-list / u-row（词 = u-row-title，释义 = u-row-sub），空态用 u-empty。
+   （2026-09-14 UI v1.1 迁移：原先的 .cell / .word / .meaning 三个私有类与
+   @import '../shared/list.wxss' 已全部删除，色值统一走 tokens。） */

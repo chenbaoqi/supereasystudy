@@ -1,56 +1,56 @@
-/* 学习 tab「我的教材」样式（Chapter 14 §4） */
-@import '../shared/list.wxss';
+/* 学习 tab 样式（UI v1.1「清爽蓝·淡色版」）
+   通用件走 styles/，本文件只保留：分区图标配色 + 头部切教材按钮。 */
 
-.hint {
-  padding: 120rpx 0;
-  text-align: center;
-  color: #999999;
-  font-size: 28rpx;
+/* 教材名可能较长，允许换行（原来单行会被截断） */
+.study-book {
+  font-size: var(--fs-lg);
+  line-height: 1.4;
 }
 
-.guide-card {
-  margin: 60rpx 30rpx;
-  padding: 48rpx 32rpx;
-  background: #ffffff;
-  border-radius: 16rpx;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20rpx;
-}
-
-.guide-title {
-  font-size: 34rpx;
-  font-weight: 600;
-}
-
-.guide-desc {
-  color: #999999;
-  font-size: 26rpx;
-}
-
-.guide-btn {
-  margin-top: 16rpx;
-  width: 60%;
-}
-
-.current-bar {
+/* 头部「切换教材」胶囊：白底 + 主色文字（v1 的白色半透明款在淡蓝底上看不清） */
+/* 两个并列的切换入口：换科目 / 切换教材（2026-09-21） */
+.study-switch-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin: 20rpx 30rpx;
-  padding: 24rpx 32rpx;
-  background: #e8f9f0;
-  border-radius: 16rpx;
+  gap: var(--sp-4);
 }
 
-.current-text {
-  font-size: 30rpx;
-  font-weight: 600;
-  color: #07c160;
+.study-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-top: var(--sp-4);
+  padding: 10rpx 24rpx;
+  border-radius: var(--r-pill);
+  background: var(--bg-card);
+  border: 1rpx solid var(--brand-200);
+  color: var(--brand-600);
+  font-size: var(--fs-sm);
 }
 
-.switch-tag {
-  color: #07c160;
-  font-size: 24rpx;
+/* 首个分区卡与头部之间留白（.u-list 默认没有上外边距，会贴着头部圆角） */
+.partition:first-child .u-list {
+  margin-top: var(--sp-4);
+}
+
+/* 分区图标配色（英语=单词/语法，数学=概念/公式）
+   色值与 tokens.wxss 的 --subject-* 同源（降饱和版），改配色只改这两处。 */
+.cat-icon.word {
+  background: var(--subject-en-bg);
+  color: var(--subject-en);
+}
+
+.cat-icon.grammar {
+  background: var(--subject-default-bg);
+  color: var(--subject-default);
+}
+
+.cat-icon.concept {
+  background: var(--subject-cn-bg);
+  color: var(--subject-cn);
+}
+
+.cat-icon.formula {
+  background: var(--subject-math-bg);
+  color: var(--subject-math);
 }

@@ -1,0 +1,594 @@
+/* ==========================================================================
+   通用组件样式 Design System v1（配套 styles/tokens.wxss）
+   --------------------------------------------------------------------------
+   只在 app.wxss 里 @import 一次，全局可用。
+
+   命名前缀 u- 的原因：仓库里已有 .card（pages/shared/card.wxss、statistics.wxss）、
+   .grid（statistics.wxss）、.tag / .list-item / .status（原 pages/shared/list.wxss）与
+   .card（原 pages/shared/card.wxss、statistics.wxss）—— 两个共享旧样式已于 2026-09-14 迁移删除
+   等局部类，同名会互相覆盖。加前缀后新旧共存，改 4 个 tab 页不会影响其它页面。
+   ========================================================================== */
+
+/* ---------------------------------------------------------------- 区块标题 */
+.u-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: var(--sp-5) var(--gutter) var(--sp-3);
+}
+
+.u-section-title {
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: var(--ink-1);
+  letter-spacing: 0.5rpx;
+}
+
+/* 标题左侧竖条装饰 */
+.u-section-title::before {
+  content: '';
+  display: inline-block;
+  width: 6rpx;
+  height: 26rpx;
+  margin-right: 12rpx;
+  border-radius: 3rpx;
+  background: var(--brand-500);
+  vertical-align: -2rpx;
+}
+
+.u-section-more {
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+}
+
+/* ------------------------------------------------------------------- 卡片 */
+.u-card {
+  margin: 0 var(--gutter) var(--sp-4);
+  padding: var(--sp-4);
+  background: var(--bg-card);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
+  transition: var(--tap-transition);
+}
+
+/* 无外边距版（自己嵌在分组容器里时用） */
+.u-card-inset {
+  margin: 0;
+  box-shadow: none;
+  background: var(--bg-subtle);
+}
+
+/* --------------------------------------------------------------- 列表行 */
+/* 分组容器：给内部行加发丝分隔线，整体是一张圆角白卡 */
+.u-list {
+  margin: 0 var(--gutter) var(--sp-4);
+  padding: 0 var(--sp-4);
+  background: var(--bg-card);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.u-row {
+  display: flex;
+  align-items: center;
+  transition: var(--tap-transition);
+  /* 允许换行：右侧有两个按钮（测试 + 挑战）时，宁可操作区落到第二行，
+     也不能把标题列压到零宽 —— 中文在零宽容器里会一个字一行，变成竖条 */
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  padding: var(--sp-4) 0;
+}
+
+.u-row + .u-row {
+  border-top: 1rpx solid var(--line);
+}
+
+/* 行左侧图标（圆形浅底） */
+.u-row-icon {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30rpx;
+  flex-shrink: 0;
+  background: var(--brand-50);
+  color: var(--brand-500);
+}
+
+/* 标题列：basis 用 auto（而非 flex:1 的 0），这样 flex 先按「内容宽度」试排，
+   真的放不下才换行；min-width 是保底 —— 约 8 个中文字（fs-md=30rpx），
+   低于这个宽度中文会逐字换行。别改回 min-width: 0。 */
+.u-row-body {
+  flex: 1 1 auto;
+  min-width: 260rpx;
+}
+
+.u-row-title {
+  font-size: var(--fs-md);
+  color: var(--ink-1);
+  line-height: 1.4;
+}
+
+.u-row-sub {
+  margin-top: 6rpx;
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+  line-height: 1.4;
+}
+
+/* 标题下方的标签行（状态 / 计数等），与标题保持 8rpx 呼吸 */
+.u-row-tags {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-top: 8rpx;
+}
+
+.u-row-extra {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-shrink: 0;
+  /* 换行后按钮组靠右，与单行时的视觉位置一致 */
+  margin-left: auto;
+}
+
+/* 行内按钮只按「内容 + padding」占宽：button 自带样式在不同基础库下可能带额外宽度，
+   这里显式钉死，避免两个按钮合起来把标题列吃掉 */
+.u-row-extra .u-btn {
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+/* 缩进一级的列表（章节列表嵌在分区卡片下方时用） */
+.u-list-indent {
+  margin: var(--sp-2) var(--gutter) var(--sp-4);
+}
+
+/* 箭头（纯 CSS，不依赖图片/字体）：默认朝右，另有上/下两个方向 */
+.u-arrow {
+  width: 14rpx;
+  height: 14rpx;
+  border-right: 3rpx solid var(--ink-4);
+  border-bottom: 3rpx solid var(--ink-4);
+  transform: rotate(-45deg);
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.u-arrow-down {
+  transform: rotate(45deg);
+}
+
+.u-arrow-up {
+  transform: rotate(135deg);
+}
+
+/* ------------------------------------------------------------ 标签 / 药丸 */
+.u-chip {
+  display: inline-flex;
+  align-items: center;
+  transition: var(--tap-transition);
+  padding: 4rpx 16rpx;
+  border-radius: var(--r-pill);
+  font-size: var(--fs-xs);
+  line-height: 1.6;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* chip 上的品牌色用 600 而不是 500：24rpx 小字在浅底上需要更高对比度才读得清 */
+.u-chip-brand {
+  background: var(--state-doing-bg);
+  color: var(--brand-600);
+}
+
+.u-chip-success {
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.u-chip-warning {
+  background: var(--warning-bg);
+  color: var(--warning);
+}
+
+.u-chip-danger {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.u-chip-muted {
+  background: var(--state-todo-bg);
+  color: var(--state-todo);
+}
+
+/* --------------------------------------------------------------- 按钮 */
+/* 注意：小程序 button 自带边框（::after）与上下 margin，必须显式清掉 */
+.u-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0 var(--sp-5);
+  height: 76rpx;
+  border-radius: var(--r-pill);
+  font-size: var(--fs-md);
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  flex-shrink: 0;
+  border: none;
+  background: var(--brand-50);
+  color: var(--brand-500);
+  transition: var(--tap-transition);
+}
+
+.u-btn::after {
+  border: none;
+}
+
+.u-btn-primary {
+  background: var(--grad-brand);
+  color: #ffffff;
+  box-shadow: var(--shadow-brand);
+}
+
+.u-btn-primary.u-btn-disabled,
+.u-btn-primary[disabled] {
+  background: var(--brand-200);
+  color: #ffffff;
+  box-shadow: none;
+}
+
+.u-btn-ghost {
+  background: transparent;
+  border: 2rpx solid var(--brand-300);
+  color: var(--brand-500);
+}
+
+.u-btn-sm {
+  height: 56rpx;
+  padding: 0 var(--sp-4);
+  font-size: var(--fs-sm);
+}
+
+.u-btn-block {
+  width: 100%;
+}
+
+/* ⚠️ 上面这条「撤回不了」微信内置样式，必须再用双类名提一次权（2026-09-16 实测）：
+   微信给 button 内置了 width:184px，特异性 (0,1,1)，会压过单类名 (0,1,0) ——
+   `.u-btn-block` 的 width:100% 一直是**失效**的，所有「满宽」按钮实际渲染成 184px 小胶囊
+   （截图实测「退出本关」180px，本该占满 441px 的内容宽）。
+   双类名 (0,2,0) 才压得住内置规则，恢复「-block 就是满宽」这个契约。
+   ⚠️ 没带 -block 的裸 .u-btn 仍会被内置规则定成 184px；要给它们宽度，
+      也得用双类名（如 `.u-btn.某页面类`）或加父选择器，单类名不够。 */
+.u-btn.u-btn-block {
+  width: 100%;
+}
+
+/* -------------------------------------------------- 选项（答题页 / 游戏页共用） */
+/* v1.1：对错反馈一律「淡底 + 描边 + 深色字」，不再用实色绿/红整块铺底。
+   测试页、极速选择、听音找词、语法闯关都用这一套，改一处等于改四处。 */
+.u-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  margin: 0 var(--gutter) var(--sp-5);
+}
+
+/* button 自带边框（::after）与圆角必须清掉，否则会出现双层描边 */
+.u-option {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin: 0;
+  padding: var(--sp-4) var(--sp-5);
+  min-height: 96rpx;
+  border-radius: var(--r-md);
+  background: var(--bg-card);
+  border: 2rpx solid var(--line);
+  box-shadow: var(--shadow-card);
+  text-align: left;
+  font-size: var(--fs-md);
+  color: var(--ink-1);
+  line-height: 1.5;
+  transition: var(--tap-transition);
+}
+
+.u-option::after {
+  border: none;
+}
+
+.u-option-letter {
+  width: 44rpx;
+  height: 44rpx;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--brand-50);
+  color: var(--brand-600);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.u-option-text {
+  flex: 1;
+  min-width: 0;
+  word-break: break-all;
+}
+
+.u-option.is-correct {
+  background: var(--success-bg);
+  border-color: var(--success);
+  color: var(--success);
+}
+
+.u-option.is-wrong {
+  background: var(--danger-bg);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* 选中态的字母圆片改为实色：小面积实色是提示，不会晃眼 */
+.u-option.is-correct .u-option-letter {
+  background: var(--success);
+  color: #ffffff;
+}
+
+.u-option.is-wrong .u-option-letter {
+  background: var(--danger);
+  color: #ffffff;
+}
+
+/* ------------------------------------------------------ 发音喇叭（听力 / 听音） */
+.u-speaker-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: var(--sp-5) 0;
+}
+
+.u-speaker {
+  width: 140rpx;
+  height: 140rpx;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--brand-50);
+  border: 2rpx solid var(--brand-200);
+  color: var(--brand-500);
+  font-size: 56rpx;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.u-speaker::after {
+  border: none;
+}
+
+.u-speaker[disabled] {
+  opacity: 0.5;
+}
+
+.u-speaker-hint {
+  margin-top: var(--sp-3);
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+}
+
+/* --------------------------------------------------------------- 空状态 */
+.u-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: 140rpx var(--gutter);
+  text-align: center;
+}
+
+.u-empty-icon {
+  font-size: 80rpx;
+  line-height: 1;
+}
+
+.u-empty-text {
+  font-size: var(--fs-base);
+  color: var(--ink-3);
+}
+
+.u-empty-sub {
+  font-size: var(--fs-sm);
+  color: var(--ink-4);
+}
+
+/* ------------------------------------------------------------ 统计数字块 */
+.u-stats {
+  display: flex;
+  align-items: center;
+}
+
+.u-stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6rpx;
+}
+
+.u-stat-num {
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  color: var(--ink-1);
+  line-height: 1.2;
+}
+
+.u-stat-label {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+/* 统计块之间的竖分隔线 */
+.u-stat + .u-stat {
+  position: relative;
+}
+
+.u-stat + .u-stat::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1rpx;
+  height: 48rpx;
+  background: var(--line);
+}
+
+/* ------------------------------------------------------------ 网格（宫格） */
+.u-grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 var(--gutter);
+  gap: var(--sp-3);
+}
+
+.u-grid > view {
+  width: calc((100% - var(--sp-3)) / 2);
+}
+
+/* ------------------------------------------------------------ 提示条（引导） */
+.u-tip {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin: 0 var(--gutter) var(--sp-4);
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--warning-bg);
+  border-radius: var(--r-md);
+}
+
+.u-tip-text {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--fs-sm);
+  color: #9a6a20;
+  line-height: 1.5;
+}
+
+/* ------------------------------------------------------------ 英雄区（头部） */
+/* 头部用极淡蓝渐变 + 深色文字：常驻的大色块最容易累眼，
+   v1.1 把 v1 的深蓝渐变（#2f6bff→#1f52d6）整段换掉。 */
+.u-hero {
+  padding: var(--sp-5) var(--gutter) var(--sp-6);
+  background: var(--grad-hero);
+  border-radius: 0 0 var(--r-lg) var(--r-lg);
+}
+
+.u-hero-title {
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  color: var(--ink-1);
+}
+
+.u-hero-sub {
+  margin-top: 8rpx;
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+/* 压在英雄区下沿的白卡（负 margin 制造悬浮感） */
+.u-hero-card {
+  margin: var(--sp-4) 0 0;
+  padding: var(--sp-4) var(--sp-5);
+  background: var(--bg-card);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-float);
+}
+
+/* --------------------------------------------------- 学科主题色的图标底色 */
+/* 首页学科入口是**纵向列表**（Specification §12.1 冻结：纵向列表替代九宫格），
+   主题色只落在左侧圆形图标上，避免大面积色块刺眼。
+   选择器写双类名是为了稳定压过 .u-row-icon 的默认蓝底。 */
+.u-row-icon.u-icon-en {
+  background: var(--subject-en-bg);
+  color: var(--subject-en);
+}
+
+.u-row-icon.u-icon-math {
+  background: var(--subject-math-bg);
+  color: var(--subject-math);
+}
+
+.u-row-icon.u-icon-cn {
+  background: var(--subject-cn-bg);
+  color: var(--subject-cn);
+}
+
+.u-row-icon.u-icon-default {
+  background: var(--subject-default-bg);
+  color: var(--subject-default);
+}
+
+/* 未开放学科：整行压暗，右侧给「敬请期待」chip */
+.u-row-locked {
+  opacity: 0.62;
+}
+
+/* ---------------------------------------------------------------- Banner */
+.u-banner {
+  margin: var(--sp-4) var(--gutter);
+  height: 260rpx;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.u-banner-image {
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------------------------------------------------------------- 杂项 */
+.u-divider {
+  height: 1rpx;
+  background: var(--line);
+}
+
+.u-safe-bottom {
+  height: 40rpx;
+}
+
+/* ============================================================ 按下态（hover） */
+/* ⚠️ WXSS **不支持 :active 伪类**（官方只支持 .class / #id / element / ::after / ::before），
+   想让「点上去有反应」只能靠元素的 hover-class 属性显式指定，一个都漏不掉。
+   用法：<view class="u-btn" hover-class="u-tap" hover-stay-time="60" bindtap="...">
+
+   三档的区别：
+     .u-tap        小控件（按钮 / chip / 图标按钮）→ 缩一下 + 变暗，最接近「按下去」
+     .u-tap-flat   大块面（整行 / 卡片 / 答题选项）→ 只变暗。大块做缩放会整屏抖，很难受
+     .u-tap-deep   游戏键盘（.key 之类）→ 缩得更多，配合音效才跟得上节奏
+
+   ⚠️ 这里必须用 !important：页面 wxss 在 app.wxss 之后加载，页面里的双类名
+   （如 `.pad .key`，特异性 (0,2,0)）会压过单类名 (0,1,0)，按下态会静默失效
+   —— 和 button 内置 width:184px 是同一类坑，只不过那次要提权，这次要压过去。
+   hover 类只在按住期间生效，用 !important 没有别的副作用。 */
+.u-tap {
+  transform: scale(0.96) !important;
+  opacity: 0.85 !important;
+}
+
+.u-tap-flat {
+  opacity: 0.75 !important;
+}
+
+.u-tap-deep {
+  transform: scale(0.93) !important;
+  opacity: 0.7 !important;
+}

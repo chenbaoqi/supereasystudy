@@ -1,13 +1,112 @@
-.hint{ padding:120rpx 0; text-align:center; color:#999; font-size:28rpx; }
-.ready{ display:flex; flex-direction:column; align-items:center; padding-top:160rpx; gap:24rpx; background:#1a1a2e; min-height:100vh; color:#e0e0e0; }
-.ready .title{ font-size:44rpx; font-weight:600; color:#00ff88; }
-.ready .rules{ color:#aaa; font-size:26rpx; }
-.diff{ display:flex; align-items:center; gap:12rpx; margin-top:12rpx; }
-.diff-label{ font-size:26rpx; }
-.diff-btn{ margin:0; }
-.diff-btn.active{ background:#00ff88; color:#1a1a2e; }
-.start{ margin-top:48rpx; width:60%; }
-.game-canvas{ width:750rpx; height:1040rpx; display:block; background:#1a1a2e; }
-.input-bar{ text-align:center; font-size:36rpx; font-weight:600; padding:16rpx 0; letter-spacing:4rpx; background:#0f3460; color:#00ff88; }
-.cursor{ animation:blink 0.8s infinite; }
-@keyframes blink{ 50%{ opacity:0; } }
+/* 小蜜蜂 UI v1.1（2026-09-14）
+   深色街机主题是**有意保留的例外**：游戏画面必须深底（中文方块才看得清），
+   所以这里不用淡色主题，但色值仍全部取自 tokens.wxss 的 --game-*，不在页面里硬编码。 */
+.ss-ready {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 160rpx;
+  gap: var(--sp-3);
+  min-height: 100vh;
+  background: var(--game-bg);
+  color: var(--game-text);
+  box-sizing: border-box;
+}
+
+.ss-title {
+  font-size: 44rpx;
+  font-weight: 700;
+  color: var(--game-accent);
+}
+
+.ss-rules {
+  font-size: var(--fs-sm);
+  color: var(--game-text-dim);
+}
+
+/* ------------------------------------------------------------- 难度选择 */
+.ss-diff {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-top: var(--sp-2);
+}
+
+.ss-diff-label {
+  font-size: var(--fs-sm);
+}
+
+.ss-diff-btn {
+  margin: 0;
+}
+
+.ss-diff-btn.active {
+  background: var(--game-accent);
+  color: var(--game-bg);
+}
+
+.ss-actions {
+  width: 60%;
+  margin-top: var(--sp-6);
+}
+
+/* --------------------------------------------------------------- 游戏区 */
+/* 控制条压在画布上沿，跟着画布一起深底，避免一条浅色横带把画面切断 */
+.ss-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-2);
+  padding: var(--sp-1) var(--sp-3);
+  background: var(--game-bg-bar);
+}
+
+.ss-ctrl {
+  height: 48rpx;
+  margin: 0;
+  padding: 0 18rpx;
+  border-radius: var(--r-pill);
+  border: none;
+  background: var(--game-surface);
+  color: var(--game-text);
+  font-size: var(--fs-xs);
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ss-ctrl::after {
+  border: none;
+}
+
+.ss-ctrl.on {
+  background: var(--game-accent);
+  color: var(--game-bg);
+}
+
+.ss-canvas {
+  width: 750rpx;
+  height: 720rpx;
+  display: block;
+  background: var(--game-bg);
+}
+
+.ss-input-bar {
+  padding: var(--sp-3) 0;
+  text-align: center;
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  letter-spacing: 4rpx;
+  background: var(--game-bg-bar);
+  color: var(--game-accent);
+}
+
+.ss-cursor {
+  animation: ss-blink 0.8s infinite;
+}
+
+@keyframes ss-blink {
+  50% {
+    opacity: 0;
+  }
+}

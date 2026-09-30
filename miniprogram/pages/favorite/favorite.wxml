@@ -1,20 +1,34 @@
-<view wx:if="{{loading}}" class="hint">加载中…</view>
-<view wx:elif="{{loadFailed}}" class="hint">
-  <text>加载失败，请检查网络</text>
-  <button size="mini" bindtap="onRetry">重试</button>
+<!-- 我的收藏（Chapter 05 §6）：列表项 = 知识点（词 / 释义），点击回到所属章节继续学。
+     UI v1.1（2026-09-14）：改用 u-list / u-row，原来 .list-item + .cell 的私有样式已删。 -->
+<view wx:if="{{loading}}" class="u-empty">
+  <text class="u-empty-text">加载中…</text>
 </view>
-<view wx:elif="{{items.length === 0}}" class="hint">暂无数据</view>
+<view wx:elif="{{loadFailed}}" class="u-empty">
+  <text class="u-empty-icon">📡</text>
+  <text class="u-empty-text">加载失败，请检查网络</text>
+  <button class="u-btn u-btn-primary u-btn-sm" bindtap="onRetry" hover-class="u-tap" hover-stay-time="60">重试</button>
+</view>
+<view wx:elif="{{items.length === 0}}" class="u-empty">
+  <text class="u-empty-icon">⭐</text>
+  <text class="u-empty-text">还没有收藏</text>
+  <text class="u-empty-sub">在学习详情页点「收藏」，之后就能在这里快速回看</text>
+</view>
 <block wx:else>
-  <view
-    wx:for="{{items}}"
-    wx:key="favorite._id"
-    class="list-item"
-    data-chapter-id="{{item.knowledge.chapterId}}"
-    bindtap="onTapItem"
-  >
-    <view class="cell">
-      <text class="word">{{item.knowledge.word}}</text>
-      <text class="meaning">{{item.knowledge.meaning}}</text>
+  <view class="u-section"><text class="u-section-title">我的收藏</text></view>
+  <view class="u-list">
+    <view
+      wx:for="{{items}}"
+      wx:key="favorite._id"
+      class="u-row"
+      data-chapter-id="{{item.knowledge.chapterId}}"
+      bindtap="onTapItem" hover-class="u-tap-flat" hover-stay-time="60"
+    >
+      <view class="u-row-icon">📖</view>
+      <view class="u-row-body">
+        <view class="u-row-title">{{item.knowledge.word}}</view>
+        <view class="u-row-sub">{{item.knowledge.meaning}}</view>
+      </view>
+      <view class="u-row-extra"><view class="u-arrow"></view></view>
     </view>
   </view>
 </block>

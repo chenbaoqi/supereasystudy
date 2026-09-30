@@ -55,3 +55,30 @@ export function buildWordChoiceQuestions(
     };
   });
 }
+
+// 语法专项四选一（Chapter 13 Q2：type='grammar' 知识点内嵌 quiz[] → 四选一题目）。
+// 每个 quiz 展开为一道题：prompt=题干(stem)、options=选项、correctIndex=正确下标、word=语法点名（副标题）。
+// 选项独立洗牌，correctIndex 在洗牌后重新定位（避免依赖原始下标）。
+export function buildGrammarQuestions(
+  grammarList: readonly Knowledge[],
+  random: () => number = Math.random,
+): ChoiceQuestion[] {
+  const questions: ChoiceQuestion[] = [];
+  for (const knowledge of grammarList) {
+    const quizzes = knowledge.quiz ?? [];
+    for (const quiz of quizzes) {
+      if (quiz.options.length === 0) continue;
+      const correctText = quiz.options[quiz.answerIndex];
+      if (correctText === undefined) continue; // 跳过 answerIndex 越界的脏数据
+      const options = shuffle(quiz.options, random);
+      questions.push({
+        knowledgeId: knowledge._id,
+        word: knowledge.word,
+        prompt: quiz.stem,
+        options,
+        correctIndex: options.indexOf(correctText),
+      });
+    }
+  }
+  return questions;
+}

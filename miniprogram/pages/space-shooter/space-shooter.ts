@@ -3,7 +3,9 @@
 import { SHOOTER_DIFFICULTY, type ShooterDifficulty } from '../../config/gameRules';
 import type { Knowledge } from '../../core/knowledge';
 import { spaceShooterService } from '../../services/spaceShooterService';
-import { shooterAudio } from '../../services/shooterAudio';
+import { gradeScope } from '../../services/gradeScope';
+import { restoreShooterAudioPreference, shooterAudio } from '../../services/shooterAudio';
+import { pronunciationService } from '../../services/pronunciationService';
 import {
   type EngineState,
   applyHit,
@@ -19,7 +21,7 @@ import { userService } from '../../services/userService';
 
 type GameStatus = 'READY' | 'PLAYING' | 'PAUSED' | 'FINISHED';
 const CANVAS_W = 375;
-const CANVAS_H = 520;
+const CANVAS_H = 360;
 const AIRPLANE_Y = CANVAS_H - 50;
 
 Page({
@@ -30,6 +32,9 @@ Page({
     inputText: '',
     score: 0,
     streak: 0,
+    musicOn: true,
+    pronounceOn: true,
+    paused: false,
   },
 
   chapterId: '',
@@ -52,6 +57,9 @@ Page({
   onLoad(query: Record<string, string>) {
     this.chapterId = query.chapterId ?? '';
     this.semesterId = query.semesterId ?? '';
+    // 上次关掉的就别再响：静音选择跨会话记住（音效是合成出来的，没素材也要守这条）
+    restoreShooterAudioPreference();
+    this.setData({ musicOn: !shooterAudio.isMuted() });
   },
 
   async onStart() {
@@ -61,7 +69,12 @@ Page({
       return;
     }
     this.userId = user._id;
-    const start = await spaceShooterService.startGame(user._id, this.chapterId);
+    // ADR-012：题源按当前年级过滤，别考还没学到的内容
+    const start = await spaceShooterService.startGame(
+      user._id,
+      this.chapterId,
+      gradeScope.currentGrade(),
+    );
     if (!start.eligible) {
       this.setData({ poolEmpty: true });
       return;
@@ -154,8 +167,18 @@ Page({
     }
     state = tickEnemies(state, CANVAS_H, dt);
     state = checkMissed(state, AIRPLANE_Y);
-    if (state.missIds.length > (this.engine?.missIds.length ?? 0)) {
+    // Game Over：方块落地（非初级）
+    if (state.missIds.length > (this.engine?.missIds.length ?? 0) && diff !== 'easy') {
       shooterAudio.playSfx('miss');
+      shooterAudio.stopBgm();
+      void this.finish();
+      return state;
+    }
+    // 胜利：所有池内单词已命中且无敌机活跃
+    if (
+      state.hitIds.length >= this.pool.length &&
+      state.enemies.filter((e) => e.active).length === 0
+    ) {
       shooterAudio.stopBgm();
       void this.finish();
       return state;
@@ -188,7 +211,7 @@ Page({
       // 阴影
       ctx.fillStyle = 'rgba(0,0,0,0.3)';
       ctx.beginPath();
-      ctx.roundRect(enemy.x + 3, enemy.y + 3, enemy.w, enemy.h, 8);
+      ctx.roundRect(enemy.x + 3, enemy.y + 3, enemy.w, enemy.h, [8]);
       ctx.fill();
       // 渐变填充（红→暗红）
       const grad = ctx.createLinearGradient(enemy.x, enemy.y, enemy.x, enemy.y + enemy.h);
@@ -196,7 +219,7 @@ Page({
       grad.addColorStop(1, '#c0392b');
       ctx.fillStyle = grad;
       ctx.beginPath();
-      ctx.roundRect(enemy.x, enemy.y, enemy.w, enemy.h, 8);
+      ctx.roundRect(enemy.x, enemy.y, enemy.w, enemy.h, [8]);
       ctx.fill();
       // 描边
       ctx.strokeStyle = 'rgba(255,255,255,0.5)';
@@ -209,31 +232,91 @@ Page({
       ctx.textBaseline = 'middle';
       ctx.fillText(enemy.meaning, enemy.x + enemy.w / 2, enemy.y + enemy.h / 2);
     }
-    // 飞机（三角形，绿色，居中靠下）
-    ctx.fillStyle = '#0f3460';
-    ctx.strokeStyle = '#00ff88';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
+    // 战斗机（灰色机身+后掠翼+尾翼+座舱+引擎火焰）
     const ax = CANVAS_W / 2;
     const ay = AIRPLANE_Y;
-    ctx.moveTo(ax, ay - 24);
-    ctx.lineTo(ax - 18, ay + 8);
-    ctx.lineTo(ax + 18, ay + 8);
+    // 引擎火焰（随帧闪烁）
+    const flicker = 0.7 + 0.3 * Math.sin(Date.now() * 0.02);
+    ctx.fillStyle = `rgba(255, 120, 30, ${flicker})`;
+    ctx.beginPath();
+    ctx.moveTo(ax - 8, ay + 10);
+    ctx.lineTo(ax, ay + 26 * flicker);
+    ctx.lineTo(ax + 8, ay + 10);
+    ctx.fill();
+    // 机身
+    ctx.fillStyle = '#4a5568';
+    ctx.strokeStyle = '#a0aec0';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(ax, ay - 30);
+    ctx.lineTo(ax + 10, ay + 4);
+    ctx.lineTo(ax + 16, ay + 10);
+    ctx.lineTo(ax + 12, ay + 12);
+    ctx.lineTo(ax + 6, ay + 6);
+    ctx.lineTo(ax, ay + 10);
+    ctx.lineTo(ax - 6, ay + 6);
+    ctx.lineTo(ax - 12, ay + 12);
+    ctx.lineTo(ax - 16, ay + 10);
+    ctx.lineTo(ax - 10, ay + 4);
     ctx.closePath();
     ctx.fill();
     ctx.stroke();
-    // 子弹
+    // 座舱
+    ctx.fillStyle = '#63b3ed';
+    ctx.strokeStyle = '#2b6cb0';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.ellipse(ax, ay - 14, 6, 10, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    // 机炮
+    ctx.strokeStyle = '#e2e8f0';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(ax, ay - 30);
+    ctx.lineTo(ax, ay - 38);
+    ctx.stroke();
+    // 子弹（曳光弹+尾迹）
     for (const bullet of st.bullets) {
-      ctx.fillStyle = '#00ff88';
-      ctx.fillRect(bullet.x - 2, bullet.y - 10, 4, 10);
+      // 尾迹
+      ctx.strokeStyle = 'rgba(255,200,50,0.3)';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(bullet.x, bullet.y + 10);
+      ctx.lineTo(bullet.x, bullet.y);
+      ctx.stroke();
+      // 弹头
+      ctx.fillStyle = '#ffd700';
+      ctx.beginPath();
+      ctx.arc(bullet.x, bullet.y, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(bullet.x, bullet.y, 1.5, 0, Math.PI * 2);
+      ctx.fill();
     }
-    // 粒子
+    // 爆炸粒子（多色+大小衰减）
     for (const p of st.particles) {
       const alpha = p.life / p.maxLife;
-      ctx.fillStyle = `rgba(255, 200, 50, ${alpha})`;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, 4 * alpha, 0, Math.PI * 2);
-      ctx.fill();
+      const size = 5 * alpha;
+      if (alpha > 0.3) {
+        ctx.fillStyle = `rgba(255, 220, 50, ${alpha})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      if (alpha > 0.15) {
+        ctx.fillStyle = `rgba(255, 100, 30, ${alpha * 0.8})`;
+        ctx.beginPath();
+        ctx.arc(
+          p.x + (Math.random() - 0.5) * 8 * alpha,
+          p.y + (Math.random() - 0.5) * 8 * alpha,
+          size * 0.6,
+          0,
+          Math.PI * 2,
+        );
+        ctx.fill();
+      }
     }
     // HUD
     ctx.font = '18px sans-serif';
@@ -253,10 +336,35 @@ Page({
     let state = handleInput(this.engine, event.detail.key);
     const matchIndex = findMatch(state);
     if (matchIndex >= 0) {
-      state = applyHit(state, matchIndex, CANVAS_W / 2);
+      state = applyHit(state, matchIndex, CANVAS_W / 2, AIRPLANE_Y);
       shooterAudio.playSfx('shoot');
       shooterAudio.playSfx('hit');
       shooterAudio.playSfx('explode');
+      // 命中播读音（读音期间 BGM 临时降到 10%）
+      if (this.data.pronounceOn && state.enemies[matchIndex]) {
+        const enemy = state.enemies[matchIndex];
+        shooterAudio.duckBgm();
+        pronunciationService
+          .speak(enemy.word, enemy.pronunciation)
+          .then((src) => {
+            const audio = wx.createInnerAudioContext();
+            audio.volume = 1.0;
+            audio.src = src;
+            audio.play();
+            audio.onEnded(() => {
+              audio.destroy();
+              shooterAudio.restoreBgm();
+            });
+            audio.onError(() => {
+              audio.destroy();
+              shooterAudio.restoreBgm();
+            });
+          })
+          .catch(() => {
+            shooterAudio.restoreBgm();
+            wx.showToast({ title: '读音无法播放，检查插件配置', icon: 'none' });
+          });
+      }
     }
     this.engine = state;
     this.setData({ inputText: state.currentInput, score: state.score, streak: state.streak });
@@ -292,6 +400,31 @@ Page({
     wx.redirectTo({
       url: `/pages/memory-result/memory-result?chapterId=${this.chapterId}&semesterId=${this.semesterId}`,
     });
+  },
+
+  onToggleMusic() {
+    const on = !this.data.musicOn;
+    this.setData({ musicOn: on });
+    // 一个开关管全部声音：孩子不用理解「音乐」和「音效」的区别
+    shooterAudio.setMuted(!on);
+    if (on) shooterAudio.startBgm();
+    else shooterAudio.stopBgm();
+  },
+  onTogglePronounce() {
+    this.setData({ pronounceOn: !this.data.pronounceOn });
+  },
+  onPauseGame() {
+    if (this.data.status !== 'PLAYING') return;
+    this.setData({ status: 'PAUSED', paused: true });
+    shooterAudio.stopBgm();
+    if (this.rafId && this.segment) this.segment.cancelAnimationFrame(this.rafId);
+  },
+  onResume() {
+    if (!this.data.paused) return;
+    this.setData({ status: 'PLAYING', paused: false });
+    this.lastTick = 0;
+    if (this.data.musicOn) shooterAudio.startBgm();
+    this.startLoop();
   },
 
   onHide() {

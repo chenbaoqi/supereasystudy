@@ -12,6 +12,48 @@ import { fileURLToPath } from 'node:url';
 
 const REQUIRED_COLUMNS = ['subject', 'path', 'textbook', 'semester', 'chapter', 'word', 'meaning'];
 
+// 需求第四章：数据库必须支持 stage / grade / curriculumVersion。
+// 这些字段此前靠名称推断（且旧正则会把「一年级」误判为初中），现改为入库时显式写入。
+// 逻辑与 miniprogram/utils/stage.ts 保持一致，改一方务必同步另一方。
+const CN_DIGIT = { 一: 1, 二: 2, 三: 3, 四: 4, 五: 5, 六: 6, 七: 7, 八: 8, 九: 9 };
+const CURRICULUM_VERSIONS = ['人教版', '北师大版', '苏教版', '沪教版', '外研版', '通用'];
+
+function gradeOfSemester(name) {
+  const s = String(name || '');
+  const senior = /^高([一二三])/.exec(s);
+  if (senior) {
+    const d = CN_DIGIT[senior[1]];
+    return d ? 9 + d : null;
+  }
+  const normal = /^([一二三四五六七八九])年级/.exec(s);
+  if (normal) return CN_DIGIT[normal[1]] ?? null;
+  return null;
+}
+
+function stageOfGrade(grade) {
+  if (grade <= 6) return 'primary';
+  if (grade <= 9) return 'junior';
+  return 'senior';
+}
+
+// 专题教材（如「小学公式专题」）的册次是「全册」，跨年级无单一 grade，
+// 但学段可从教材名判定——这样专题也能按学段筛选。
+function stageOfTextbook(name) {
+  const s = String(name || '');
+  if (s.includes('高中')) return 'senior';
+  if (s.includes('初中')) return 'junior';
+  if (s.includes('小学')) return 'primary';
+  return null;
+}
+
+function curriculumVersionOfTextbook(name) {
+  const s = String(name || '');
+  for (const v of CURRICULUM_VERSIONS) {
+    if (s.includes(v)) return v;
+  }
+  return null;
+}
+
 function parseCsv(text) {
   // 带引号 CSV 解析（字段内可含逗号/引号/换行）
   const rows = [];
@@ -110,16 +152,27 @@ function main() {
       order: pathMap.size + 1,
       textbooks: new Map(),
     }));
-    const textbook = get(path.textbooks, row.textbook, () => ({
-      name: row.textbook,
-      order: path.textbooks.size + 1,
-      semesters: new Map(),
-    }));
-    const semester = get(textbook.semesters, row.semester, () => ({
-      name: row.semester,
-      order: textbook.semesters.size + 1,
-      chapters: new Map(),
-    }));
+    const textbook = get(path.textbooks, row.textbook, () => {
+      const version = curriculumVersionOfTextbook(row.textbook);
+      return {
+        name: row.textbook,
+        order: path.textbooks.size + 1,
+        ...(version ? { curriculumVersion: version } : {}),
+        semesters: new Map(),
+      };
+    });
+    const semester = get(textbook.semesters, row.semester, () => {
+      const grade = gradeOfSemester(row.semester);
+      // 年级优先；年级解析不出时（专题「全册」）退回教材名里的学段
+      const stage = grade !== null ? stageOfGrade(grade) : stageOfTextbook(row.textbook);
+      return {
+        name: row.semester,
+        order: textbook.semesters.size + 1,
+        ...(grade !== null ? { grade } : {}),
+        ...(stage ? { stage } : {}),
+        chapters: new Map(),
+      };
+    });
     const chapter = get(semester.chapters, row.chapter, () => ({
       title: row.chapter,
       order: semester.chapters.size + 1,

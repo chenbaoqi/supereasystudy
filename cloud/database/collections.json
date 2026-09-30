@@ -17,11 +17,22 @@
     "notices",
     "favorites",
     "memory_game_records",
-    "reading_passages"
+    "reading_passages",
+    "questions",
+    "knowledge_relations",
+    "user_mastery",
+    "user_wrong_questions",
+    "user_entitlements",
+    "math_island_progress",
+    "user_game_profile"
   ],
   "changelog": [
     "2026-07-19: 新增 favorites 集合（Owner 决策，ADR-005）：收藏独立于 learning_records 存储",
     "2026-07-19: 新增 memory_game_records 集合（Chapter 07 §9，ADR-006）：Memory Challenge 对局记录",
-    "2026-07-30: 新增 reading_passages 集合（Chapter 13 Q3，ADR-007）：阅读理解测评素材"
+    "2026-07-30: 新增 reading_passages 集合（Chapter 13 Q3，ADR-007）：阅读理解测评素材",
+    "2026-09-08: 新增 questions / knowledge_relations / user_mastery / user_wrong_questions 四集合（Owner 确认「需要建就建」，ADR-008）：数学学科引擎层落地所需。questions 存题库；knowledge_relations 存知识点前置/相关/后继关系；user_mastery 存「用户×知识点」掌握度；user_wrong_questions 存错题与补弱进度",
+    "2026-09-14: 新增 user_entitlements 集合（ADR-015 变现：会员态 + 按次解锁记录）：存会员等级/到期时间与 unlockKey→到期时间 的解锁表。集合未创建时权益服务按「不可用即放行」处理，不影响既有功能",
+    "2026-09-15: 新增 math_island_progress 集合（口算冒险岛·小学）：存「用户 → 冒险岛进度」一条文档（关卡状态 + 星星/金币累计）。进度按账号走，云端为权威副本，本机镜像仅作离线兜底；集合未创建或云不可用时回落本机镜像，不影响玩",
+    "2026-09-16: 新增 user_game_profile 集合（全站游戏成长账户，L1 打通）：存「用户 → 跨游戏钱包」一条文档（星星/金币/等级/徽章/每日打卡/宝箱/各游戏局数/累计答对）。所有游戏结算都往这里入账，冒险岛的星星/金币一次性并入（mergedIsland 标记把守，幂等）。⚠️ 与 math_island_progress 职责不重叠：后者只管冒险岛 7 关的关卡进度"
   ]
 }

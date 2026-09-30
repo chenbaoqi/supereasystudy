@@ -8,9 +8,12 @@ import {
   type MemoryGameRepository,
 } from '../repositories/memoryGameRepository';
 import { reviewService } from './reviewService';
+import { withinGrade } from './gradeScope';
 import { gameResultStore, type GameResultDetail } from './gameResultStore';
 import { selectPool } from './memoryGameLogic';
 import { buildChoiceQuestions, buildWordChoiceQuestions, type ChoiceQuestion } from './quizLogic';
+import { gameRewardService, walletViewOf, type RunRewarder } from './gameRewardService';
+import { loadUnfixedKnowledgeIds } from './wrongQuestionService';
 
 // 听音模式（Owner 2026-07-20 修订：双形式——听音选词 / 听音选义）
 export type ListenMode = 'word' | 'meaning';
@@ -41,19 +44,29 @@ export interface ListenFindServiceDeps {
       correctIds: string[],
     ): Promise<void>;
   };
+  // 全站钱包入账（缺省 = 真实服务；单测可注入替身）
+  rewarder?: RunRewarder;
   random?: () => number;
 }
 
 export function createListenFindService(deps: ListenFindServiceDeps) {
+  const rewarder = deps.rewarder ?? gameRewardService;
   return {
     async startGame(
-      _userId: string,
+      userId: string,
       chapterId: string,
       mode: ListenMode = 'word',
+      // ADR-012：跨年级专题包按当前年级过滤，不传 = 不限年级
+      grade: number | null = null,
     ): Promise<ListenGameStart> {
-      const knowledgeList = await deps.knowledgeRepository.listByChapter(chapterId);
       const random = deps.random ?? Math.random;
-      const { pool, eligible } = selectPool(knowledgeList, random);
+      // L4：未修复的错题优先进本局池子（与拉知识点并行，不额外拖慢开局）
+      const [rawList, wrongIds] = await Promise.all([
+        deps.knowledgeRepository.listByChapter(chapterId),
+        loadUnfixedKnowledgeIds(userId),
+      ]);
+      const knowledgeList = withinGrade(rawList, grade);
+      const { pool, eligible } = selectPool(knowledgeList, random, wrongIds);
       if (!eligible) return { eligible: false, questions: [] };
       // 双形式：选词=英文单词选项；选义=中文释义选项（题干均为发音）
       const questions =
@@ -96,6 +109,15 @@ export function createListenFindService(deps: ListenFindServiceDeps) {
         wrongIds: input.wrongIds,
         avgResponseMs,
         replayUrl: '/pages/listen-find/listen-find',
+        wallet: walletViewOf(
+          await rewarder.reward({
+            userId: input.userId,
+            gameId: 'listen',
+            correct: input.correctIds.length,
+            total: input.questions.length,
+            attempts: { correctIds: input.correctIds, wrongIds: input.wrongIds },
+          }),
+        ),
         integrateToReview: async () => {
           await deps.reviewResultApplier.applyGameResults(
             input.userId,

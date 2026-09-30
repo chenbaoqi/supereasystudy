@@ -1,59 +1,85 @@
-/* 首页样式（§15 UI 从简；统计卡与复习页同款） */
-@import '../shared/list.wxss';
-
-.banner {
-  margin: 20rpx 30rpx;
-  border-radius: 16rpx;
-  overflow: hidden;
-  height: 280rpx;
+/* 首页样式（UI v1.1「清爽蓝·淡色版」）
+   通用件（卡片 / 列表行 / 按钮 / 章节标题 / Banner）已在 styles/ 全局提供，
+   本文件只放首页特有的两块：淡蓝统计卡、失败态重试按钮。 */
+.retry-btn {
+  margin-top: var(--sp-2);
 }
 
-.banner-image {
-  width: 100%;
-  height: 100%;
+/* ② 学习统计条：淡蓝渐变卡（v1.1：由 v1 的深蓝实底改为极淡蓝，深色数字 + 主色按钮） */
+.home-stats {
+  margin: var(--sp-4) var(--gutter);
+  padding: var(--sp-5) var(--sp-4) var(--sp-4);
+  border-radius: var(--r-lg);
+  background: var(--grad-hero);
+  box-shadow: var(--shadow-card);
 }
 
-.stats {
+.home-hello {
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: var(--ink-1);
+}
+
+.home-sub {
+  margin-top: 6rpx;
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+.home-stats-row {
   display: flex;
-  justify-content: space-around;
-  margin: 20rpx 30rpx;
-  padding: 40rpx 0;
-  background: #ffffff;
-  border-radius: 16rpx;
+  align-items: center;
+  margin: var(--sp-5) 0 var(--sp-4);
 }
 
-.stat {
+.home-stat {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8rpx;
+  gap: 6rpx;
 }
 
-.num {
-  font-size: 44rpx;
-  font-weight: 600;
+.home-stat + .home-stat {
+  position: relative;
 }
 
-.label {
-  color: #999999;
-  font-size: 24rpx;
+.home-stat + .home-stat::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1rpx;
+  height: 56rpx;
+  background: var(--brand-200);
 }
 
-.section-title {
-  margin: 32rpx 30rpx 12rpx;
-  font-size: 28rpx;
-  color: #666666;
+/* 数字用 600 档品牌色：够醒目，又不是高饱和的刺眼蓝 */
+.home-stat-num {
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+  color: var(--brand-700);
+  line-height: 1.1;
 }
 
-/* 教材偏好引导卡（Chapter 14） */
-.guide-card {
-  margin: 20rpx 30rpx;
-  padding: 28rpx 32rpx;
-  background: #fff7e6;
-  border-radius: 16rpx;
+.home-stat-label {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
 }
 
-.guide-text {
-  font-size: 28rpx;
-  color: #b26a00;
+/* 淡底上的主按钮：用主色实底 + 白字（这里才需要对比度，不是反白） */
+.u-btn.home-cta {
+  background: var(--grad-brand);
+  color: #ffffff;
+  font-weight: 500;
+  box-shadow: var(--shadow-brand);
+}
+
+/* 最近学习为空时的兜底卡：比整块空白更容易理解「下一步该干嘛」 */
+.recent-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-5) var(--sp-4);
 }

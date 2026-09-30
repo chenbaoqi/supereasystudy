@@ -5,6 +5,9 @@ export const FEATURE_FLAGS = {
   adminEntry: false,
   // 激励广告（RULES §5：V1 仅保留接口与扩展点；广告位 ID 待申请，pending-decisions #6）
   rewardAd: false,
+  // AI 辅导（需求第三十八章）。关掉则一律走「程序化提示」，不消耗任何额度。
+  // 真实模型地址/密钥在云函数 aiTutor 的环境变量配置，与本开关无关。
+  aiTutor: true,
 } as const;
 
 export type FeatureFlag = keyof typeof FEATURE_FLAGS;

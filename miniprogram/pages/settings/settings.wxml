@@ -1,3 +1,87 @@
-<view class="page-placeholder">
-  <text>设置 · Phase 2</text>
+<!-- 设置页（2026-09-14 定义 V1，原为「占位·待定义」）
+     只放有明确痛点的两项：年级（可手动指定，覆盖册次推导）与恢复默认。
+     年级要显示「生效值 + 这个值从哪来」，否则用户不知道自己在改哪个。 -->
+<view class="u-section">
+  <view class="u-section-title">学习</view>
+</view>
+
+<view class="u-list">
+  <view class="u-row" bindtap="onTapTextbook" hover-class="u-tap-flat" hover-stay-time="60">
+    <view class="u-row-icon">📚</view>
+    <view class="u-row-body">
+      <view class="u-row-title">当前教材</view>
+      <view class="u-row-sub">
+        {{textbookName ? (subjectName ? subjectName + ' · ' : '') + textbookName + ' · ' + semesterName : '未选择，去挑一本教材'}}
+      </view>
+    </view>
+    <view class="u-arrow"></view>
+  </view>
+
+  <view class="u-row" bindtap="onToggleGradePicker" hover-class="u-tap-flat" hover-stay-time="60">
+    <view class="u-row-icon">🎓</view>
+    <view class="u-row-body">
+      <view class="u-row-title">年级</view>
+      <view class="u-row-sub">{{effectiveText}} · {{sourceText}}</view>
+    </view>
+    <view class="u-arrow {{pickingGrade ? 'u-arrow-up' : 'u-arrow-down'}}"></view>
+  </view>
+</view>
+
+<!-- 年级选择器：点「年级」行展开。用 chip 而不是 wx.showActionSheet ——
+     后者项数受限、样式不可控，而且 10 个年级会挤成一竖条 -->
+<view wx:if="{{pickingGrade}}" class="set-picker">
+  <view
+    wx:for="{{gradeOptions}}"
+    wx:key="value"
+    class="u-chip set-chip {{item.value === activeOption ? 'set-chip-on' : ''}}"
+    data-grade="{{item.value}}"
+    bindtap="onPickGrade" hover-class="u-tap-flat" hover-stay-time="60"
+  >
+    {{item.label}}
+  </view>
+  <view class="set-hint">
+    手动指定后，学习页与测试只出现该年级及以前的内容，换教材册次也不会再覆盖它。
+    册次名能解析出年级时（如「三年级上册」），保持「跟随册次」即可。
+  </view>
+</view>
+
+<!-- 触感：视觉按下态（全站 hover-class）之外，答题结果再震一下。
+     默认开、可关——15ms 的震动点哪儿都来一下会很吵，得给个退出口。 -->
+<view class="u-section">
+  <view class="u-section-title">交互</view>
+</view>
+
+<view class="u-list">
+  <view class="u-row" bindtap="onToggleHaptic" hover-class="u-tap-flat" hover-stay-time="60">
+    <view class="u-row-icon">📳</view>
+    <view class="u-row-body">
+      <view class="u-row-title">按键触感</view>
+      <view class="u-row-sub">答对、答错、通关时震一下（需系统已开启触感反馈）</view>
+    </view>
+    <!-- 开关是自绘的：原生 switch 是微信绿，跟设计令牌对不上 -->
+    <view class="set-switch {{hapticOn ? 'set-switch-on' : ''}}">
+      <view class="set-switch-dot"></view>
+    </view>
+  </view>
+</view>
+
+<view class="u-section">
+  <view class="u-section-title">关于</view>
+</view>
+
+<view class="u-list">
+  <view class="u-row">
+    <view class="u-row-icon">ℹ️</view>
+    <view class="u-row-body">
+      <view class="u-row-title">版本</view>
+    </view>
+    <view class="u-row-extra">
+      <text class="u-row-sub">{{version || '开发版'}}</text>
+    </view>
+  </view>
+</view>
+
+<view class="set-actions">
+  <button class="u-btn u-btn-ghost u-btn-block set-reset" bindtap="onReset" hover-class="u-tap" hover-stay-time="60">恢复默认设置</button>
+  <view class="set-note">只清除本机保存的学科与年级偏好，云端学习记录不受影响</view>
 </view>

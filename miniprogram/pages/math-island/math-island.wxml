@@ -1,0 +1,166 @@
+<!-- 口算冒险岛 · 冒险地图（数学学科·小学）
+     结构：钱包条 → 当前关卡大卡（一键继续）→ 自由练习（难度可改）→ 7 关地图。
+     美术全部用 emoji（零图片资源）；本页独有样式走 mi- 前缀，色值一律 var(--token)。 -->
+<view class="mi-page">
+  <!-- 顶部：星星 / 金币 / 年级推荐 -->
+  <view class="mi-top">
+    <view class="mi-top-row">
+      <text class="mi-top-title">🗺️ 口算冒险岛</text>
+      <text class="mi-wallet">⭐ {{stars}}　🪙 {{coins}}</text>
+    </view>
+    <text class="mi-top-sub" wx:if="{{gradeText}}">{{gradeText}}</text>
+    <text class="mi-top-offline" wx:if="{{offlineHint}}">{{offlineHint}}</text>
+  </view>
+
+  <!-- 成长：等级 / 每日打卡 / 宝箱 -->
+  <view class="mi-card mi-grow" wx:if="{{growth}}">
+    <view class="mi-rank">
+      <text class="mi-rank-icon">{{growth.rank.icon}}</text>
+      <view class="mi-rank-body">
+        <view class="mi-rank-title">{{growth.rank.title}} · Lv.{{growth.rank.level}}</view>
+        <view class="mi-rank-bar">
+          <view class="mi-rank-fill" style="width: {{growth.rank.percent}}%"></view>
+        </view>
+        <view class="mi-rank-hint">{{rankHint}}</view>
+      </view>
+    </view>
+
+    <view class="mi-grow-row">
+      <view class="mi-grow-cell">
+        <text class="mi-grow-label">📅 每日打卡</text>
+        <text class="mi-grow-value">
+          连续 {{growth.daily.streak}} 天 · 累计 {{growth.daily.totalDays}} 天
+        </text>
+        <text class="mi-grow-note">
+          {{growth.checkedToday ? '今天已打卡 ✅' : '明天再来，别断啦'}}
+        </text>
+      </view>
+      <button class="u-btn u-btn-ghost mi-chest-btn" bindtap="onOpenChest" hover-class="u-tap" hover-stay-time="60">
+        🎁 宝箱 🔑{{growth.chest.keys}}
+      </button>
+    </view>
+  </view>
+
+  <!-- 当前关卡 -->
+  <view class="mi-card mi-hero" wx:if="{{current}}">
+    <view class="mi-hero-env">{{current.def.env}}</view>
+    <view class="mi-hero-body">
+      <view class="mi-hero-name">{{current.def.icon}} {{current.def.name}}</view>
+      <view class="mi-hero-progress">{{current.progressText}}</view>
+      <view class="mi-hero-hint">{{current.hint}}</view>
+    </view>
+    <button class="u-btn u-btn-primary u-btn-block mi-hero-btn" bindtap="onStartCurrent" hover-class="u-tap" hover-stay-time="60">
+      🚀 开始挑战
+    </button>
+  </view>
+
+  <view class="mi-card mi-hero" wx:else>
+    <view class="mi-hero-env">🏆</view>
+    <view class="mi-hero-body">
+      <view class="mi-hero-name">全部关卡通关啦！</view>
+      <view class="mi-hero-hint">可以回任意一关再练一遍，看看能不能更快。</view>
+    </view>
+  </view>
+
+  <!-- 自由练习：难度按册次推荐，可手改 -->
+  <view class="u-section">
+    <view class="u-section-title">🎯 自由练习</view>
+    <view class="u-section-more">{{freeSummary}}</view>
+  </view>
+
+  <view class="mi-card">
+    <view class="mi-chip-row">
+      <text class="mi-chip-label">运算符</text>
+      <view class="mi-chips">
+        <view
+          wx:for="{{opChips}}"
+          wx:key="op"
+          class="mi-chip {{item.active ? 'is-on' : ''}}"
+          data-op="{{item.op}}"
+          bindtap="onToggleOp" hover-class="u-tap-flat" hover-stay-time="60"
+        >
+          {{item.symbol}}
+        </view>
+      </view>
+    </view>
+
+    <view class="mi-chip-row">
+      <text class="mi-chip-label">题量</text>
+      <view class="mi-chips">
+        <view
+          wx:for="{{countOptions}}"
+          wx:key="*this"
+          class="mi-chip {{item === count ? 'is-on' : ''}}"
+          data-v="{{item}}"
+          bindtap="onPickCount" hover-class="u-tap-flat" hover-stay-time="60"
+        >
+          {{item}}
+        </view>
+      </view>
+    </view>
+
+    <view class="mi-chip-row">
+      <text class="mi-chip-label">范围</text>
+      <view class="mi-chips">
+        <view
+          wx:for="{{rangeOptions}}"
+          wx:key="*this"
+          class="mi-chip {{item === range ? 'is-on' : ''}}"
+          data-v="{{item}}"
+          bindtap="onPickRange" hover-class="u-tap-flat" hover-stay-time="60"
+        >
+          {{item}} 以内
+        </view>
+      </view>
+    </view>
+
+    <button class="u-btn u-btn-ghost u-btn-block mi-free-btn" bindtap="onStartFree" hover-class="u-tap" hover-stay-time="60">
+      开始练习
+    </button>
+  </view>
+
+  <!-- 冒险地图 -->
+  <view class="u-section">
+    <view class="u-section-title">🗺️ 冒险地图</view>
+    <view class="u-section-more">{{allDone ? '已全部点亮' : '通关一关点亮下一个'}}</view>
+  </view>
+
+  <view class="mi-map">
+    <view
+      wx:for="{{levels}}"
+      wx:key="id"
+      class="mi-node {{item.state.done ? 'is-done' : (item.current ? 'is-current' : (item.unlocked ? 'is-open' : 'is-lock'))}}"
+      data-id="{{item.id}}"
+      bindtap="onTapLevel" hover-class="u-tap-flat" hover-stay-time="60"
+    >
+      <view class="mi-node-icon">{{item.state.done ? item.def.icon : item.unlocked ? item.def.icon : '🔒'}}</view>
+      <view class="mi-node-body">
+        <view class="mi-node-name">{{item.def.name}}</view>
+        <view class="mi-node-tag">{{item.def.tag}}</view>
+        <view class="mi-node-progress" wx:if="{{item.unlocked}}">{{item.progressText}}</view>
+        <view class="mi-node-progress" wx:else>先通过上一关</view>
+      </view>
+      <view class="mi-node-reward" wx:if="{{item.def.reward.stars > 0}}">
+        ⭐{{item.def.reward.stars}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 徽章墙 -->
+  <view class="u-section" wx:if="{{growth}}">
+    <view class="u-section-title">🏅 徽章墙</view>
+    <view class="u-section-more">{{growth.badgeOwned}}/{{growth.badgeTotal}}</view>
+  </view>
+
+  <view class="mi-badges" wx:if="{{growth}}">
+    <view
+      wx:for="{{growth.badges}}"
+      wx:key="id"
+      class="mi-badge {{item.owned ? 'is-on' : ''}}"
+    >
+      <view class="mi-badge-icon">{{item.icon}}</view>
+      <view class="mi-badge-name">{{item.name}}</view>
+      <view class="mi-badge-desc">{{item.owned ? item.desc : '未解锁'}}</view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,46 @@
+<!-- 勋章墙：摆出全部徽章。已获得的原色显示，未获得的置灰并写明「怎么才能得到」。
+     ⚠️ 三态分开：读取失败 / 加载中 / 有数据。 -->
+<view wx:if="{{loading}}" class="u-empty">
+  <text class="u-empty-text">加载中…</text>
+</view>
+
+<view wx:elif="{{source === 'error'}}" class="u-empty">
+  <text class="u-empty-icon">📶</text>
+  <text class="u-empty-text">读不到勋章</text>
+  <button class="u-btn u-btn-primary u-btn-sm bd-retry" bindtap="onRetry" hover-class="u-tap" hover-stay-time="60">重试</button>
+</view>
+
+<block wx:else>
+  <view class="u-section">
+    <text class="u-section-title">我的勋章</text>
+  </view>
+
+  <view class="bd-progress">
+    已获得 {{ownedCount}} / {{totalCount}} 枚
+  </view>
+
+  <view class="bd-grid">
+    <view
+      wx:for="{{badges}}"
+      wx:key="id"
+      class="bd-item {{item.owned ? '' : 'bd-item-locked'}}"
+      hover-class="u-tap-flat"
+      hover-stay-time="60"
+    >
+      <view class="bd-icon">{{item.owned ? item.icon : '❔'}}</view>
+      <view class="bd-name">{{item.name}}</view>
+      <!-- 未获得时 desc 就是「怎么解锁」，必须显示——不然孩子不知道该做什么 -->
+      <view class="bd-desc">{{item.desc}}</view>
+      <view wx:if="{{item.owned}}" class="bd-flag">已获得</view>
+      <!-- 未获得：进度条 + 「还差多少」，把冷冰冰的锁变成看得见的小目标 -->
+      <block wx:else>
+        <view class="bd-bar">
+          <view class="bd-bar-fill" style="width: {{item.pct}}%"></view>
+        </view>
+        <view class="bd-num">{{item.current}} / {{item.goal}}</view>
+      </block>
+    </view>
+  </view>
+
+  <view class="u-safe-bottom"></view>
+</block>

@@ -1,18 +1,56 @@
-<view class="game-list">
-  <view class="game-card" data-url="/pages/memory-game/memory-game" bindtap="onTapGame">
-    <view class="game-name">消消乐</view>
-    <view class="game-desc">点选「单词 + 释义」配对消除，60 秒全部清空</view>
+<!-- 游戏中心（Chapter 08 §16）
+     UI v1.1（2026-09-14）：改为带图标的纵向列表（与首页学科入口同一套 u-row），
+     右上角的学科标签说明「为什么这几个游戏」——按学科过滤后列表会变短，不给说明会以为少做了功能。 -->
+<view class="u-section">
+  <view class="u-section-title">游戏中心</view>
+  <view class="u-section-more">{{subjectName ? subjectName + ' · 已按学科筛选' : '全学科'}}</view>
+</view>
+
+<!-- 全站成长账户（L1）：跨游戏钱包，玩哪个游戏都在长大 -->
+<view wx:if="{{growth}}" class="u-card gc-growth">
+  <view class="gc-growth-head">
+    <text class="gc-growth-rank">{{growth.rank.icon}} {{growth.rank.title}} · Lv.{{growth.rank.level}}</text>
+    <text class="gc-growth-next">{{growth.rank.next === null ? '已满级' : '再 ' + growth.rank.toNext + ' ⭐ 升级'}}</text>
   </view>
-  <view class="game-card" data-url="/pages/speed-choice/speed-choice" bindtap="onTapGame">
-    <view class="game-name">极速选择</view>
-    <view class="game-desc">每题 5 秒快答，速度就是分数</view>
+  <view class="gc-growth-bar">
+    <view class="gc-growth-fill" style="width: {{growth.rank.percent}}%"></view>
   </view>
-  <view class="game-card" data-url="/pages/listen-find/listen-find" bindtap="onTapGame">
-    <view class="game-name">听音找词</view>
-    <view class="game-desc">听发音选单词，训练听力辨识</view>
+  <view class="gc-growth-meta">
+    ⭐ {{growth.stars}}　🪙 {{growth.coins}}　🏅 {{growth.badgeOwned}}/{{growth.badgeTotal}}
   </view>
-  <view class="game-card" data-url="/pages/space-shooter/space-shooter" bindtap="onTapGame">
-    <view class="game-name">小蜜蜂</view>
-    <view class="game-desc">键盘敲英文，射击中文方块</view>
+  <!-- 2026-09-20：勋章要「看得见」。原来只能在这一行看到「几 / 几」，
+       加一个入口直接进勋章墙——攒了一盒贴纸总得有地方贴。 -->
+  <view class="gc-growth-more" bindtap="onTapBadges" hover-class="u-tap-flat" hover-stay-time="60">
+    看全部成就 ›
   </view>
+</view>
+
+<!-- L2：给「每局都在写却没人读」的 memory_game_records 一个出口。
+     战绩是**账号级**的，不跟着上面的学科筛选一起消失——换个学科也该看得到。 -->
+<view class="u-list gc-entry">
+  <view class="u-row" bindtap="onTapRecords" hover-class="u-tap-flat" hover-stay-time="60">
+    <view class="u-row-icon">🏆</view>
+    <view class="u-row-body">
+      <view class="u-row-title">我的战绩</view>
+      <view class="u-row-sub">玩过的局、最高分与正确率</view>
+    </view>
+    <view class="u-arrow"></view>
+  </view>
+</view>
+
+<view wx:if="{{games.length > 0}}" class="u-list">
+  <view class="u-row" wx:for="{{games}}" wx:key="id" data-url="{{item.url}}" bindtap="onTapGame" hover-class="u-tap-flat" hover-stay-time="60">
+    <view class="u-row-icon">{{item.icon}}</view>
+    <view class="u-row-body">
+      <view class="u-row-title">{{item.name}}</view>
+      <view class="u-row-sub">{{item.desc}}</view>
+    </view>
+    <view class="u-arrow"></view>
+  </view>
+</view>
+
+<view wx:else class="u-empty">
+  <view class="u-empty-icon">🎮</view>
+  <view class="u-empty-text">当前学科暂无适配的小游戏</view>
+  <view class="u-empty-sub">换个学科进来看看，或在教材页切换学科</view>
 </view>

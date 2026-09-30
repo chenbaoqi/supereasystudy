@@ -4,6 +4,7 @@ import { LISTEN_QUESTION_SECONDS } from '../../config/gameRules';
 import type { ChoiceQuestion } from '../../services/quizLogic';
 import { scoreForCorrect, scoreForWrong } from '../../services/memoryGameLogic';
 import { listenFindService } from '../../services/listenFindService';
+import { gradeScope } from '../../services/gradeScope';
 import { pronunciationService } from '../../services/pronunciationService';
 import { userService } from '../../services/userService';
 
@@ -57,7 +58,13 @@ Page({
   // READY 页双模式入口（Owner 2026-07-20 修订：听音选词 / 听音选义）
   async onStartGame(event: WechatMiniprogram.TouchEvent) {
     const { mode } = event.currentTarget.dataset as { mode: ListenMode };
-    const start = await listenFindService.startGame(this.userId, this.chapterId, mode);
+    // ADR-012：题源按当前年级过滤，别考还没学到的内容
+    const start = await listenFindService.startGame(
+      this.userId,
+      this.chapterId,
+      mode,
+      gradeScope.currentGrade(),
+    );
     if (!start.eligible) {
       this.setData({ poolEmpty: true }); // §13：提示知识点不足
       return;

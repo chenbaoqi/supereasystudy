@@ -1,6 +1,6 @@
 <view
   class="memory-card {{selected ? 'selected' : ''}} {{wrong ? 'wrong' : ''}} {{eliminated ? 'eliminated' : ''}}"
-  bindtap="onTap"
+  bindtap="onTap" hover-class="u-tap-flat" hover-stay-time="60"
 >
   <text class="card-text">{{text}}</text>
 </view>

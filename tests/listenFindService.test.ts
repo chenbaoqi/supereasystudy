@@ -49,6 +49,7 @@ describe('ListenFindService（§9：gameType=listen）', () => {
   function createFakes() {
     const saved: MemoryGameRecordCreate[] = [];
     const applied: Array<{ wrongIds: string[]; correctIds: string[] }> = [];
+    const rewarded: Array<{ gameId: string; correct: number; total: number }> = [];
     const service = createListenFindService({
       knowledgeRepository: {
         async listByChapter() {
@@ -77,9 +78,22 @@ describe('ListenFindService（§9：gameType=listen）', () => {
           applied.push({ wrongIds, correctIds });
         },
       },
+      // 全站钱包替身：只记下被喂进来的数（真实入账要碰 wx / 云，测试里不跑）
+      rewarder: {
+        async reward(input: { gameId: string; correct: number; total: number }) {
+          rewarded.push({ gameId: input.gameId, correct: input.correct, total: input.total });
+          return {
+            stars: input.correct,
+            coins: input.correct,
+            newBadges: [],
+            gainText: input.correct > 0 ? `⭐+${input.correct} 🪙+${input.correct}` : '',
+            badgeText: '',
+          };
+        },
+      },
       random: seededRandom([0.1, 0.9]),
     });
-    return { service, saved, applied };
+    return { service, saved, applied, rewarded };
   }
 
   it('startGame（word 模式）：选项为英文单词；<4 不可开局', async () => {
@@ -121,6 +135,22 @@ describe('ListenFindService（§9：gameType=listen）', () => {
     expect(detail.mastered).toHaveLength(2);
     expect(detail.weak).toHaveLength(1);
     expect(gameResultStore.get()?.gameType).toBe('listen');
+  });
+
+  it('finishGame：把「答对数/总题数」喂给全站钱包（L1）', async () => {
+    const { service, rewarded } = createFakes();
+    const start = await service.startGame('user-1', CHAPTER, 'word');
+    const detail = await service.finishGame({
+      userId: 'user-1',
+      chapterId: CHAPTER,
+      questions: start.questions,
+      correctIds: ['k1', 'k2'],
+      wrongIds: ['k3'],
+      score: 24,
+      responseTimes: [2000, 4000, 6000],
+    });
+    expect(rewarded[0]).toEqual({ gameId: 'listen', correct: 2, total: start.questions.length });
+    expect(detail.wallet?.gain).toContain('⭐+2');
   });
 
   it('「加入复习」闭包触发 §12 集成', async () => {

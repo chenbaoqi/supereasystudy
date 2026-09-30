@@ -1,6 +1,39 @@
-.kb{ padding:10rpx 4rpx; background:#1a1a2e; user-select:none; }
-.kb-row{ display:flex; justify-content:center; gap:6rpx; margin-bottom:8rpx; }
-.kb-key{ width:64rpx; height:72rpx; background:#16213e; color:#e0e0e0; border-radius:6rpx; display:flex; align-items:center; justify-content:center; font-size:30rpx; font-weight:500; border:none; padding:0; line-height:1; }
-.kb-key:active{ background:#0f3460; color:#00ff88; }
-.kb-wide{ width:80rpx; }
-.kb-space{ width:420rpx; }
+/* 射击游戏键盘（小蜜蜂专用）：与小蜜蜂画布同属深色街机主题，
+   色值取自 tokens.wxss 的 --game-*，不在这里硬编码。
+   CSS 变量定义在 page 上，会沿元素树继承进自定义组件，故 var() 可直接用。 */
+.kb {
+  padding: 6rpx 2rpx;
+  background: var(--game-bg);
+  user-select: none;
+}
+.kb-row {
+  display: flex;
+  justify-content: center;
+  gap: 4rpx;
+  margin-bottom: 5rpx;
+}
+.kb-key {
+  width: 62rpx;
+  height: 56rpx;
+  background: var(--game-surface);
+  color: var(--game-text);
+  border-radius: 4rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26rpx;
+  font-weight: 500;
+  border: none;
+  padding: 0;
+  line-height: 1;
+}
+.kb-key:active {
+  background: var(--game-bg-bar);
+  color: var(--game-accent);
+}
+.kb-wide {
+  width: 78rpx;
+}
+.kb-space {
+  width: 400rpx;
+}

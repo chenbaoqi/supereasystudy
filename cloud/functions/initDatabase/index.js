@@ -26,6 +26,11 @@ const COLLECTIONS = [
   'favorites', // 2026-07-19 新增（ADR-005）：与 collections.json 保持同步
   'memory_game_records', // 2026-07-19 新增（ADR-006）：与 collections.json 保持同步
   'reading_passages', // 2026-07-30 新增（ADR-007）：与 collections.json 保持同步
+  'questions', // 2026-09-08 新增（ADR-008）：题库
+  'knowledge_relations', // 2026-09-08 新增（ADR-008）：知识图谱前置/相关/后继关系
+  'user_mastery', // 2026-09-08 新增（ADR-008）：用户×知识点掌握度
+  'user_wrong_questions', // 2026-09-08 新增（ADR-008）：错题与补弱进度
+  'user_entitlements', // 2026-09-14 新增（ADR-015）：会员态 + 按次解锁记录
 ];
 
 exports.main = async () => {

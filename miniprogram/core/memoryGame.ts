@@ -4,8 +4,11 @@ import type { BaseEntity } from './base';
 // RESULT 在小程序内表现为独立结果页（pages/memory-result）。
 export type MemoryGameStatus = 'READY' | 'PLAYING' | 'PAUSED' | 'FINISHED' | 'RESULT';
 
-// 游戏模式（Chapter 07 消消乐 / Chapter 08 极速选择 / Chapter 09 听音找词；系列持续扩展）
-export type MemoryGameType = 'match' | 'speed' | 'listen' | 'shooter';
+// 游戏模式（Chapter 07 消消乐 / Chapter 08 极速选择 / Chapter 09 听音找词 / 二期语法闯关 /
+// 口算冒险岛 / 情景应用闯关；系列持续扩展）
+// 注：'drill'（数学速算）已于 2026-09-16 下线归档，见 _archive-math-drill/RESTORE.md。
+export type MemoryGameType =
+  'match' | 'speed' | 'listen' | 'shooter' | 'grammar' | 'island' | 'scene';
 
 // 单局游戏记录（memory_game_records 集合，Chapter 07 §9 显式字段 + ADR-006；
 // Chapter 08 §9 追加 gameType/avgResponseMs——Memory Challenge 系列统一记录表）。

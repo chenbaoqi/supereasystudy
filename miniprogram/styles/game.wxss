@@ -1,0 +1,136 @@
+/* ==========================================================================
+   小游戏通用样式 Design System v1.1（配套 tokens.wxss + components.wxss）
+   --------------------------------------------------------------------------
+   为什么单独一个文件：
+     5 个答题类小游戏（消消乐 / 极速选择 / 听音找词 / 语法闯关 / 速算）原来各写一份
+     .hint / .ready / .title / .rules / .start / .hud / .timer-bar / .options，
+     类名不冲突但内容几乎一样，改一次要动五处文件。
+     v1.1 抽成 g- 前缀的共享样式，页面 wxss 只留真正独有的部分
+     （速算键盘、消消乐棋盘的卡片本身等）。
+
+     小蜜蜂（space-shooter）不走这里：它是深色街机画面，游戏性要求深底，
+     色值走 tokens.wxss 的 --game-* 一组，仍不在页面里硬编码。
+   ========================================================================== */
+
+.g-page {
+  padding-bottom: calc(var(--sp-6) + env(safe-area-inset-bottom));
+}
+
+/* ------------------------------------------------ 准备页（规则卡 + 开始按钮） */
+.g-ready {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: var(--sp-5) var(--gutter) 0;
+  padding: var(--sp-6) var(--sp-5);
+  background: var(--bg-card);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.g-title {
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  color: var(--ink-1);
+}
+
+.g-rules {
+  margin-top: var(--sp-2);
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  line-height: 1.6;
+  text-align: center;
+}
+
+.g-actions {
+  width: 100%;
+  margin-top: var(--sp-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+/* ------------------------------------------------------- HUD（得分 / 连击） */
+.g-hud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin: var(--sp-3) var(--gutter);
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--bg-card);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-card);
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+/* 得分是每时每刻都要看的信息，用深一档的品牌色，不跟着底色一起变淡 */
+.g-hud-score {
+  color: var(--brand-700);
+  font-weight: 600;
+}
+
+.g-combo {
+  color: var(--success);
+  font-weight: 600;
+}
+
+/* 喇叭里放的是文字（听音找词合成中显示「合成中…」）而不是 emoji 时，
+   字号要退回小字，否则四个汉字会撑破圆形。双类名是为了压过 .u-speaker 的 56rpx。 */
+.u-speaker.g-speaker-text {
+  font-size: var(--fs-sm);
+}
+
+/* --------------------------------------------------------------- 计时条 */
+.g-timer {
+  margin: 0 var(--gutter);
+  height: 10rpx;
+  border-radius: var(--r-pill);
+  background: var(--state-todo-bg);
+  overflow: hidden;
+}
+
+.g-timer-fill {
+  height: 100%;
+  border-radius: var(--r-pill);
+  background: var(--brand-400);
+  transition: width 0.2s linear;
+}
+
+/* 最后 1~2 秒变红提示，是"紧急"而不是"答错"，所以用 --danger 而不是更深的红 */
+.g-timer-fill.is-urgent {
+  background: var(--danger);
+}
+
+/* ------------------------------------------------------------------- 题干 */
+.g-stem {
+  margin: var(--sp-5) var(--gutter);
+  text-align: center;
+  font-size: var(--fs-2xl);
+  font-weight: 600;
+  color: var(--ink-1);
+  line-height: 1.35;
+  word-break: break-all;
+}
+
+/* 题干下方的小字补充（如「语法点：一般现在时」） */
+.g-point {
+  margin: calc(-1 * var(--sp-3)) var(--gutter) var(--sp-4);
+  text-align: center;
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+}
+
+/* ------------------------------------------------------------- 消消乐棋盘 */
+.g-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-3);
+  margin: var(--sp-4) var(--gutter) 0;
+}
+
+/* --------------------------------------------------------------- 退出按钮 */
+.g-exit {
+  margin: var(--sp-5) var(--gutter) 0;
+}

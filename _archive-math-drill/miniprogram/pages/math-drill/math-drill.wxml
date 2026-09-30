@@ -1,0 +1,55 @@
+<!-- 速算（数学学科，二期）
+     UI v1.1（2026-09-14）：HUD / 准备页 / 计时条复用 g- 样式；
+     键盘与算式牌是本页独有的，走 md- 前缀。
+     注意：键盘必须 3×4 实体键位（数字手感），不能换成列表。 -->
+<view class="md-page">
+  <view class="g-hud">
+    <text class="g-hud-score">得分 {{score}}</text>
+    <text>第 {{currentIndex + 1}} / {{total}} 题</text>
+    <text wx:if="{{streak > 1}}" class="g-combo">连击 ×{{streak}}</text>
+  </view>
+
+  <block wx:if="{{status === 'READY'}}">
+    <view class="g-ready">
+      <view class="g-title">速算挑战</view>
+      <view class="g-rules">限时四则运算 · 共 {{total}} 题 · 连击加分</view>
+      <view class="g-actions">
+        <button class="u-btn u-btn-primary u-btn-block" bindtap="onStartGame">开始</button>
+      </view>
+    </view>
+  </block>
+
+  <block wx:elif="{{status === 'FINISHED'}}">
+    <view class="g-ready">
+      <view class="g-title">完成！</view>
+      <view class="g-rules">最终得分 {{score}} · 正在生成报告…</view>
+    </view>
+  </block>
+
+  <block wx:else>
+    <view class="md-problem is-{{feedback}}">
+      <view class="md-problem-text">{{problem.text}} = ?</view>
+      <view class="md-input">{{input || '?'}}</view>
+      <view class="g-timer md-timer">
+        <view class="g-timer-fill" style="width: {{timePercent}}%"></view>
+      </view>
+    </view>
+
+    <view class="md-keypad">
+      <button class="md-key" data-k="7" bindtap="onKey">7</button>
+      <button class="md-key" data-k="8" bindtap="onKey">8</button>
+      <button class="md-key" data-k="9" bindtap="onKey">9</button>
+      <button class="md-key" data-k="4" bindtap="onKey">4</button>
+      <button class="md-key" data-k="5" bindtap="onKey">5</button>
+      <button class="md-key" data-k="6" bindtap="onKey">6</button>
+      <button class="md-key" data-k="1" bindtap="onKey">1</button>
+      <button class="md-key" data-k="2" bindtap="onKey">2</button>
+      <button class="md-key" data-k="3" bindtap="onKey">3</button>
+      <button class="md-key md-key-del" data-k="⌫" bindtap="onKey">⌫</button>
+      <button class="md-key" data-k="0" bindtap="onKey">0</button>
+      <button class="md-key md-key-ok" data-k="ok" bindtap="onKey">确定</button>
+    </view>
+
+    <button class="u-btn u-btn-ghost u-btn-block g-exit" bindtap="onExit">退出本局</button>
+  </block>
+</view>

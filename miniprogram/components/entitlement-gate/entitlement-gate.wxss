@@ -1,0 +1,68 @@
+/* 变现门禁卡（ADR-015）。
+   ⚠️ 微信的 app.wxss 全局样式对自定义组件无效，所以 u-btn 这类类目不能直接用，
+   这里自写一份 eg- 前缀的按钮；色值仍走 tokens 的 var()（自定义属性会继承进组件）。 */
+.eg-card {
+  /* 自带左右留白：宿主节点是页面里的普通 view，页面样式管不到组件内部节点 */
+  margin: var(--sp-4) var(--gutter);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--sp-6) var(--sp-5) var(--sp-5);
+  border-radius: var(--r-lg);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-card);
+  text-align: center;
+}
+
+.eg-icon {
+  font-size: 56rpx;
+  line-height: 1;
+}
+
+.eg-title {
+  margin-top: var(--sp-3);
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  /* 需要被读的标题用深一档：淡的是底色，不是文字 */
+  color: var(--ink-1);
+}
+
+.eg-desc {
+  margin-top: var(--sp-2);
+  font-size: var(--fs-base);
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.eg-btn {
+  width: 100%;
+  margin-top: var(--sp-5);
+  height: 88rpx;
+  line-height: 88rpx;
+  border-radius: var(--r-pill);
+  font-size: var(--fs-md);
+  color: #ffffff;
+  /* 实心主按钮走 grad-brand（白字需要足够的对比度），不能用 grad-hero */
+  background: var(--grad-brand);
+  box-shadow: var(--shadow-brand);
+  border: none;
+}
+
+.eg-btn::after {
+  border: none;
+}
+
+.eg-btn.is-busy {
+  box-shadow: none;
+  opacity: 0.75;
+}
+
+.eg-btn-hover {
+  opacity: 0.92;
+}
+
+.eg-member {
+  margin-top: var(--sp-3);
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}

@@ -14,19 +14,28 @@
 
 ## 当前状态（Phase 2 进行中）
 
-| Repository                 | 集合                                                                      | 关键方法                                                                        |
-| -------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| `subjectRepository`        | subjects                                                                  | listAll                                                                         |
-| `learningPathRepository`   | learning_paths                                                            | listBySubject                                                                   |
-| `textbookRepository`       | textbooks                                                                 | listByLearningPath                                                              |
-| `semesterRepository`       | semesters                                                                 | listByTextbook                                                                  |
-| `chapterRepository`        | chapters                                                                  | listBySemester                                                                  |
-| `knowledgeRepository`      | knowledge                                                                 | listByChapter（V1 单章 ≤100 条）                                                |
-| `learningRecordRepository` | learning_records                                                          | find/upsert/updateState/listByUserAndChapters                                   |
-| `favoriteRepository`       | favorites（ADR-005）                                                      | listByUser / add（防重）/ remove                                                |
-| `userRepository`           | users（经 login 云函数）                                                  | fetchCurrent                                                                    |
-| `reviewRepository`         | review_records（Chapter 05 §8）                                           | listDueByUser / createMany / update / countReviewedSince / resetReviewingByUser |
-| `bannerRepository`         | banners（§13.2）                                                          | listOpen（getTempFileURL 换临时 HTTPS）                                         |
-| `memoryGameRepository`     | memory_game_records（ADR-006；Chapter 08 §9 追加 gameType/avgResponseMs） | save / listByUser                                                               |
+| Repository                    | 集合                                                                      | 关键方法                                                                        |
+| ----------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `subjectRepository`           | subjects                                                                  | listAll                                                                         |
+| `learningPathRepository`      | learning_paths                                                            | listBySubject                                                                   |
+| `textbookRepository`          | textbooks                                                                 | listByLearningPath                                                              |
+| `semesterRepository`          | semesters                                                                 | listByTextbook                                                                  |
+| `chapterRepository`           | chapters                                                                  | listBySemester                                                                  |
+| `knowledgeRepository`         | knowledge                                                                 | listByChapter（V1 单章 ≤100 条）                                                |
+| `learningRecordRepository`    | learning_records                                                          | find/upsert/updateState/listByUserAndChapters                                   |
+| `favoriteRepository`          | favorites（ADR-005）                                                      | listByUser / add（防重）/ remove                                                |
+| `userRepository`              | users（经 login 云函数）                                                  | fetchCurrent                                                                    |
+| `reviewRepository`            | review_records（Chapter 05 §8）                                           | listDueByUser / createMany / update / countReviewedSince / resetReviewingByUser |
+| `bannerRepository`            | banners（§13.2）                                                          | listOpen（getTempFileURL 换临时 HTTPS）                                         |
+| `memoryGameRepository`        | memory_game_records（ADR-006；Chapter 08 §9 追加 gameType/avgResponseMs） | save / listByUser                                                               |
+| `userMasteryRepository`       | user_mastery（ADR-008）                                                   | getByUser / upsert                                                              |
+| `wrongQuestionRepository`     | user_wrong_questions（ADR-008）                                           | listByUser / add / update                                                       |
+| `questionRepository`          | questions（ADR-008）                                                      | listByKnowledge 等                                                              |
+| `knowledgeRelationRepository` | knowledge_relations（ADR-008）                                            | listAll / listByKnowledge                                                       |
+| `entitlementRepository`       | user_entitlements（ADR-015）                                              | getByUser / upsert                                                              |
+| `mathIslandRepository`        | math_island_progress（2026-09-15 口算冒险岛）                             | getByUser / upsert（每用户一条）                                                |
 
 字段级设计依据：Chapter 04 §5/§7 + `miniprogram/core/`；`cloud/database/collections.json`。
+
+> 集合清单与变更记录以 `cloud/database/collections.json` 为准；新增集合必须同时改那边的
+> `collections` 与 `changelog`，否则云端建不出来。

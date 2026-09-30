@@ -1,37 +1,43 @@
 <!-- 章节列表项共享模板（Chapter 14 §4：章节页与学习 tab 共用，事件绑定到宿主页面的同名方法；
-     semesterId 由宿主页面经 data 传入，供按钮携带章节所属册次） -->
+     semesterId 由宿主页面经 data 传入，供按钮携带章节所属册次）
+     UI v1（2026-09-13）：改用全局 u-* 组件类，状态用彩色 chip 区分，
+     不再是一水儿的 #999 灰字；按钮去掉 emoji 以节省横向空间。 -->
 <template name="chapter-items">
-  <view
-    wx:for="{{items}}"
-    wx:key="id"
-    class="list-item"
-    data-id="{{item.id}}"
-    data-semester-id="{{semesterId}}"
-    bindtap="onTapItem"
-  >
-    <text>{{item.title}}</text>
-    <view class="item-right">
-      <text class="status">{{item.statusText}}</text>
-      <button
-        wx:if="{{item.showTest}}"
-        class="game-entry"
-        size="mini"
-        data-id="{{item.id}}"
-        data-semester-id="{{semesterId}}"
-        catchtap="onTapTest"
-      >
-        📝 测试
-      </button>
-      <button
-        wx:if="{{item.showGame}}"
-        class="game-entry"
-        size="mini"
-        data-id="{{item.id}}"
-        data-semester-id="{{semesterId}}"
-        catchtap="onTapGame"
-      >
-        🎮 挑战
-      </button>
+  <view class="u-list u-list-indent">
+    <view
+      wx:for="{{items}}"
+      wx:key="id"
+      class="u-row"
+      data-id="{{item.id}}"
+      data-semester-id="{{semesterId}}"
+      bindtap="onTapItem" hover-class="u-tap-flat" hover-stay-time="60" hover-stop-propagation
+    >
+      <view class="u-row-body">
+        <view class="u-row-title">{{item.title}}</view>
+        <view class="u-row-tags">
+          <text class="u-chip {{item.statusClass}}">{{item.statusText}}</text>
+        </view>
+      </view>
+      <view class="u-row-extra">
+        <button
+          wx:if="{{item.showTest}}"
+          class="u-btn u-btn-sm"
+          data-id="{{item.id}}"
+          data-semester-id="{{semesterId}}"
+          catchtap="onTapTest" hover-class="u-tap" hover-stay-time="60"
+        >
+          测试
+        </button>
+        <button
+          wx:if="{{item.showGame}}"
+          class="u-btn u-btn-sm u-btn-primary"
+          data-id="{{item.id}}"
+          data-semester-id="{{semesterId}}"
+          catchtap="onTapGame" hover-class="u-tap" hover-stay-time="60"
+        >
+          挑战
+        </button>
+      </view>
     </view>
   </view>
 </template>

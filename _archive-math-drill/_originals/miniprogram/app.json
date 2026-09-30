@@ -1,0 +1,80 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/study/study",
+    "pages/practice/practice",
+    "pages/mine/mine",
+    "pages/login/login",
+    "pages/subject/subject",
+    "pages/learning-path/learning-path",
+    "pages/textbook/textbook",
+    "pages/semester/semester",
+    "pages/chapter/chapter",
+    "pages/study-detail/study-detail",
+    "pages/test/test",
+    "pages/test-result/test-result",
+    "pages/review/review",
+    "pages/review-detail/review-detail",
+    "pages/favorite/favorite",
+    "pages/settings/settings",
+    "pages/statistics/statistics",
+    "pages/memory-game/memory-game",
+    "pages/memory-result/memory-result",
+    "pages/game-center/game-center",
+    "pages/speed-choice/speed-choice",
+    "pages/listen-find/listen-find",
+    "pages/space-shooter/space-shooter",
+    "pages/grammar-game/grammar-game",
+    "pages/math-drill/math-drill",
+    "pages/math-island/math-island",
+    "pages/math-island-run/math-island-run",
+    "pages/ai-tutor/ai-tutor",
+    "pages/coming-soon/coming-soon"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "SuperEasy Learning",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f5f7fa"
+  },
+  "tabBar": {
+    "color": "#9aa3b4",
+    "selectedColor": "#3f6bc4",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页",
+        "iconPath": "assets/tabbar/home.png",
+        "selectedIconPath": "assets/tabbar/home_on.png"
+      },
+      {
+        "pagePath": "pages/study/study",
+        "text": "学习",
+        "iconPath": "assets/tabbar/study.png",
+        "selectedIconPath": "assets/tabbar/study_on.png"
+      },
+      {
+        "pagePath": "pages/practice/practice",
+        "text": "练习",
+        "iconPath": "assets/tabbar/practice.png",
+        "selectedIconPath": "assets/tabbar/practice_on.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的",
+        "iconPath": "assets/tabbar/mine.png",
+        "selectedIconPath": "assets/tabbar/mine_on.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "plugins": {
+    "WechatSI": {
+      "version": "0.3.5",
+      "provider": "wx069ba97219f66d99"
+    }
+  }
+}

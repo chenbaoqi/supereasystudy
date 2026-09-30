@@ -1,0 +1,63 @@
+<!-- 英语示意图（2026-09-26 重写：canvas → WXML/CSS）。
+     为什么换：canvas 那套（createSelectorQuery 查节点 + 绘制时机）在真机上修了三轮仍不出图，
+     而这三类图（时态轴 / 介词方位 / 词族）都是简单图形——用 view + CSS 画：
+     ✔ 没有「节点查不到 / 时机不对」的坑，工具与真机表现一致
+     ✔ 用 rpx 自动适配屏幕、色值走 tokens（canvas 反而拿不到 wxss 变量）
+     ✔ 零体积成本
+     割补图（math-geometry）保留 canvas——它需要拖拽交互，那才是 canvas 的合理场景。 -->
+
+<!-- ============ 时态轴：一条线 + 三个刻度，当前时态高亮 ============ -->
+<view wx:if="{{view.kind === 'tense'}}" class="ed-wrap">
+  <view class="ed-axis"></view>
+  <view class="ed-ticks">
+    <view class="ed-tick" wx:for="{{view.ticks}}" wx:key="label">
+      <!-- 进行时：一段「正在持续」的粗线；完成时：从过去延伸到锚点的条 -->
+      <view
+        wx:if="{{item.bar}}"
+        class="ed-bar"
+        style="left: {{item.barLeft}}%; width: {{item.barWidth}}%;"
+      ></view>
+      <view class="ed-dot {{item.active ? 'ed-dot-on' : ''}}"></view>
+      <text class="ed-label {{item.active ? 'ed-label-on' : ''}}">{{item.label}}</text>
+    </view>
+  </view>
+  <text class="ed-caption">{{view.caption}}</text>
+</view>
+
+<!-- ============ 介词方位：一个盒子 + 一个球，球的位置就是介词的意思 ============ -->
+<view wx:elif="{{view.kind === 'preposition'}}" class="ed-wrap">
+  <view class="ed-scene">
+    <!-- between：两个盒子，球在中间；behind：球先画（被盒子盖住一部分） -->
+    <view
+      wx:if="{{view.twinBoxes}}"
+      class="ed-box ed-box-twin"
+      style="left: 10%;"
+    ></view>
+    <view
+      wx:if="{{view.twinBoxes}}"
+      class="ed-box ed-box-twin"
+      style="left: 56%;"
+    ></view>
+    <view
+      wx:if="{{!view.twinBoxes}}"
+      class="ed-box {{view.behindBox ? 'ed-box-front' : ''}}"
+    ></view>
+    <view
+      class="ed-ball {{view.behindBox ? 'ed-ball-behind' : ''}}"
+      style="left: {{view.ballLeft}}%; top: {{view.ballTop}}%;"
+    ></view>
+  </view>
+  <text class="ed-caption">{{view.position}} the box</text>
+</view>
+
+<!-- ============ 词族：中心词 + 一排派生词 ============ -->
+<view wx:elif="{{view.kind === 'word-family'}}" class="ed-wrap">
+  <view class="ed-family">
+    <view class="ed-root">{{view.root}}</view>
+    <view class="ed-arrow">→</view>
+    <view class="ed-members">
+      <view class="ed-member" wx:for="{{view.members}}" wx:key="*this">{{item}}</view>
+    </view>
+  </view>
+  <text class="ed-caption">记住一个词根，一串词一起记</text>
+</view>

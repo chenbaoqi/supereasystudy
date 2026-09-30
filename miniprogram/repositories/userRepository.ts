@@ -7,7 +7,8 @@ export interface UserRepository {
   // 调用 login 云函数：按 openid 查用户，不存在则建档；返回完整用户记录
   fetchCurrent(): Promise<User>;
   // 调用 updateUserPreferences 云函数：保存教材偏好（Chapter 14 §3）
-  updatePreferences(preferences: UserPreferences): Promise<User>;
+  // subjectId 有值时同时写入 preferencesBySubject[subjectId]（多科各自记住册次）
+  updatePreferences(preferences: UserPreferences, subjectId?: string): Promise<User>;
 }
 
 export const userRepository: UserRepository = {
@@ -16,10 +17,10 @@ export const userRepository: UserRepository = {
     return res.result as User;
   },
 
-  async updatePreferences(preferences) {
+  async updatePreferences(preferences, subjectId) {
     const res = await wx.cloud.callFunction({
       name: 'updateUserPreferences',
-      data: { preferences },
+      data: subjectId ? { preferences, subjectId } : { preferences },
     });
     return res.result as User;
   },

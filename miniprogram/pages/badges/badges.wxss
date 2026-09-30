@@ -1,0 +1,86 @@
+/* 勋章墙：网格排列，未获得的整块置灰但保留解锁条件（看得到才够得着）。 */
+.bd-progress {
+  margin: 0 var(--gutter) var(--sp-3);
+  text-align: center;
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+}
+
+.bd-grid {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 var(--gutter);
+}
+
+/* ⚠️ 三列排得下靠的是这两行，缺一行就变成两列（右边空一块）：
+   ① box-sizing: border-box —— 小程序默认 content-box，`width: 31%` 再加左右 padding
+      实际宽度会超过 33%，第三个就挤到下一行去了；
+   ② 31% × 3 + 3.5% × 2 = 100% —— 最后一列没有右边距，所以 nth-child(3n) 要清掉它。 */
+.bd-item {
+  box-sizing: border-box;
+  width: 31%;
+  margin: 0 3.5% var(--sp-3) 0;
+  padding: var(--sp-3) var(--sp-2);
+  border-radius: var(--radius-card);
+  background: var(--bg-card);
+  text-align: center;
+}
+
+.bd-item:nth-child(3n) {
+  margin-right: 0;
+}
+
+/* 置灰：降低不透明度而不是换一套配色——保持一眼能认出「这还是勋章，只是没拿到」 */
+.bd-item-locked {
+  opacity: 0.45;
+}
+
+.bd-icon {
+  font-size: 56rpx;
+  line-height: 1.2;
+}
+
+.bd-name {
+  margin-top: 8rpx;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--ink-1);
+}
+
+.bd-desc {
+  margin-top: 4rpx;
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+  line-height: 1.4;
+}
+
+.bd-flag {
+  margin-top: 8rpx;
+  font-size: var(--fs-xs);
+  color: var(--success);
+}
+
+/* 进度条（2026-09-29）：未获得徽章的「还差多少」，把冷冰冰的锁变成看得见的小目标 */
+.bd-bar {
+  margin-top: 8rpx;
+  height: 10rpx;
+  border-radius: var(--r-pill);
+  background: var(--brand-50);
+  overflow: hidden;
+}
+
+.bd-bar-fill {
+  height: 100%;
+  border-radius: var(--r-pill);
+  background: var(--grad-brand);
+}
+
+.bd-num {
+  margin-top: 4rpx;
+  font-size: var(--fs-xs);
+  color: var(--ink-2);
+}
+
+.bd-retry {
+  margin-top: var(--sp-3);
+}

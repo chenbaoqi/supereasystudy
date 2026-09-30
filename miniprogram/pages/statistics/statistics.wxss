@@ -1,36 +1,36 @@
-/* 学习统计页样式（§15 UI 从简） */
-.hint {
-  padding: 120rpx 0;
-  text-align: center;
-  color: #999999;
-  font-size: 28rpx;
+/* 学习统计页 UI v1.1（2026-09-14）
+   原 .card / .grid 与 pages/shared/card.wxss 同名（后者已删），这里改用本地 st- 前缀，
+   2 列布局直接复用 components.wxss 的 .u-grid。 */
+.st-grid {
+  margin-top: var(--sp-4);
 }
 
-.grid {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 20rpx 15rpx;
-}
-
-.card {
-  width: calc(50% - 40rpx);
-  margin: 15rpx 20rpx;
-  padding: 48rpx 0;
-  background: #ffffff;
-  border-radius: 16rpx;
+.st-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12rpx;
+  gap: var(--sp-1);
+  padding: var(--sp-5) var(--sp-3);
+  background: var(--bg-card);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
   box-sizing: border-box;
 }
 
-.num {
-  font-size: 48rpx;
-  font-weight: 600;
+.st-icon {
+  font-size: 40rpx;
+  line-height: 1;
+  margin-bottom: 4rpx;
 }
 
-.label {
-  color: #999999;
-  font-size: 24rpx;
+.st-num {
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  color: var(--brand-700);
+  line-height: 1.2;
+}
+
+.st-label {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
 }

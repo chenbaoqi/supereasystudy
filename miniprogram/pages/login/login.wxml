@@ -1,7 +1,25 @@
-<view class="container">
-  <view wx:if="{{loading}}" class="hint">正在登录…</view>
-  <block wx:else>
-    <view class="hint" wx:if="{{failed}}">登录失败，请检查网络后重试</view>
-    <button type="primary" bindtap="tryLogin">微信登录</button>
-  </block>
+<!-- 登录页（Chapter 04 §5 / §8：进入即静默登录，失败必须可重试）
+     UI v1.1（2026-09-14）：补上品牌区（原来只有一个裸按钮，第一次打开不知道进的是哪个 App），
+     失败态给一句排查方向，按钮走 u-btn（微信自带的 type="primary" 是绿色，与全站清爽蓝冲突）。 -->
+<view class="lg-page">
+  <view class="lg-brand">
+    <view class="lg-logo">📖</view>
+    <view class="lg-name">SuperEasy 学习</view>
+    <view class="lg-slogan">跟着课本走，每天进步一点点</view>
+  </view>
+
+  <view class="lg-panel">
+    <view wx:if="{{loading}}" class="lg-status">
+      <text class="lg-status-text">正在登录…</text>
+    </view>
+    <block wx:else>
+      <view wx:if="{{failed}}" class="u-tip lg-tip">
+        <text class="u-tip-text">登录失败，请检查网络后重试</text>
+      </view>
+      <button class="u-btn u-btn-primary u-btn-block" bindtap="tryLogin" hover-class="u-tap" hover-stay-time="60">
+        {{failed ? '重新登录' : '微信登录'}}
+      </button>
+      <view class="lg-note">登录即表示同意使用微信账号快速登录</view>
+    </block>
+  </view>
 </view>

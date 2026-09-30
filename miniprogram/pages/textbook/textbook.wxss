@@ -1,1 +1,4 @@
-@import '../shared/list.wxss';
+/* 教材选择页：无私有样式。
+   样式全部来自全局的 styles/tokens.wxss（令牌）与 styles/components.wxss（u-* 组件），
+   由 app.wxss @import，本页不再维护任何色值 —— 色值只有 tokens 一个来源。
+   （2026-09-14 UI v1.1 迁移：原先 @import '../shared/list.wxss' 的 59 行旧样式已废弃。） */

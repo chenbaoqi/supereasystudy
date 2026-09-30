@@ -1,0 +1,121 @@
+<!-- 口算冒险岛 · 答题页
+     一次一题：HUD（生命/连胜/进度）→ 算式卡 → 数字键盘 → 反馈层 → 结算弹层。
+     各关卡的进度表现不同（步数点 / 桥板 / 能量条 / 血条 / 题号条），由 mode 切换。
+     本页独有样式走 miq- 前缀，色值一律 var(--token)。 -->
+<view class="miq-page">
+  <!-- 顶部状态 -->
+  <view class="miq-hud">
+    <text class="miq-hearts">{{hearts}}</text>
+    <text class="miq-meta">{{metaText}}</text>
+    <text class="miq-stars">⭐ {{stars}}</text>
+    <text class="miq-combo" wx:if="{{combo >= 2}}">🔥 {{combo}}</text>
+  </view>
+
+  <!-- 关卡进度：森林用步数点 -->
+  <view class="miq-panel" wx:if="{{mode === 'forest'}}">
+    <view class="miq-line">
+      <text>{{barLabel}}</text>
+      <text>{{barRight}}</text>
+    </view>
+    <view class="miq-dots">
+      <block wx:for="{{forestDots}}" wx:for-item="d" wx:key="i">
+        <text wx:if="{{d.state === 'done'}}" class="miq-dot is-done">🥕</text>
+        <text wx:elif="{{d.state === 'now'}}" class="miq-dot is-now">🐰</text>
+        <text wx:else class="miq-dot"></text>
+      </block>
+    </view>
+  </view>
+
+  <!-- 关卡进度：独木桥用桥板 -->
+  <view class="miq-panel" wx:elif="{{mode === 'bridge'}}">
+    <view class="miq-line">
+      <text>{{barLabel}}</text>
+      <text>{{barRight}}</text>
+    </view>
+    <view class="miq-planks">
+      <view
+        wx:for="{{bridgePlanks}}"
+        wx:for-item="p"
+        wx:key="i"
+        class="miq-plank {{p.on ? 'is-on' : ''}}"
+      ></view>
+    </view>
+  </view>
+
+  <!-- 关卡进度：火山 / 巨龙 / 固定题量 -->
+  <view class="miq-panel" wx:elif="{{barLabel}}">
+    <view class="miq-line">
+      <text>{{barLabel}}</text>
+      <text>{{barRight}}</text>
+    </view>
+    <view class="miq-track">
+      <view class="miq-fill is-{{mode}}" style="width: {{barPercent}}%"></view>
+    </view>
+    <view class="miq-hint" wx:if="{{barHint}}">{{barHint}}</view>
+  </view>
+
+  <!-- 算式 -->
+  <view class="miq-card is-{{feedback}}">
+    <view class="miq-q">{{question.text}} = ?</view>
+    <view class="miq-input">{{input || '?'}}</view>
+  </view>
+
+  <!-- 数字键盘（3×4 实体键位，保持输入手感） -->
+  <view class="miq-keypad">
+    <button class="miq-key" data-k="7" bindtap="onKey" hover-class="u-tap-deep" hover-start-time="0" hover-stay-time="60">7</button>
+    <button class="miq-key" data-k="8" bindtap="onKey" hover-class="u-tap-deep" hover-start-time="0" hover-stay-time="60">8</button>
+    <button class="miq-key" data-k="9" bindtap="onKey" hover-class="u-tap-deep" hover-start-time="0" hover-stay-time="60">9</button>
+    <button class="miq-key" data-k="4" bindtap="onKey" hover-class="u-tap-deep" hover-start-time="0" hover-stay-time="60">4</button>
+    <button class="miq-key" data-k="5" bindtap="onKey" hover-class="u-tap-deep" hover-start-time="0" hover-stay-time="60">5</button>
+    <button class="miq-key" data-k="6" bindtap="onKey" hover-class="u-tap-deep" hover-start-time="0" hover-stay-time="60">6</button>
+    <button class="miq-key" data-k="1" bindtap="onKey" hover-class="u-tap-deep" hover-start-time="0" hover-stay-time="60">1</button>
+    <button class="miq-key" data-k="2" bindtap="onKey" hover-class="u-tap-deep" hover-start-time="0" hover-stay-time="60">2</button>
+    <button class="miq-key" data-k="3" bindtap="onKey" hover-class="u-tap-deep" hover-start-time="0" hover-stay-time="60">3</button>
+    <button class="miq-key is-del" data-k="del" bindtap="onKey" hover-class="u-tap-deep" hover-start-time="0" hover-stay-time="60">⌫</button>
+    <button class="miq-key" data-k="0" bindtap="onKey" hover-class="u-tap-deep" hover-start-time="0" hover-stay-time="60">0</button>
+    <button class="miq-key is-ok" data-k="ok" bindtap="onKey" hover-class="u-tap-deep" hover-start-time="0" hover-stay-time="60">确定</button>
+  </view>
+
+  <button class="u-btn u-btn-ghost u-btn-block miq-exit" bindtap="onExit" hover-class="u-tap" hover-stay-time="60">退出本关</button>
+
+  <!-- 作答反馈（覆盖在算式卡上，不推动布局） -->
+  <view class="miq-fb is-{{feedback}}" wx:if="{{feedback}}">
+    <view class="miq-fb-box">
+      <view class="miq-fb-title">{{feedbackTitle}}</view>
+      <view class="miq-fb-sub">{{feedbackSub}}</view>
+    </view>
+  </view>
+
+  <!-- 结算弹层 -->
+  <view class="miq-mask" wx:if="{{showResult}}">
+    <view class="miq-result">
+      <view class="miq-result-env">{{summary.cleared ? '🎉' : '💪'}}</view>
+      <view class="miq-result-title">
+        {{summary.cleared ? '通关啦！' : (summary.success ? '完成！再试试通关条件' : '差一点！')}}
+      </view>
+      <view class="miq-result-level">{{levelName}}</view>
+
+      <view class="miq-result-gain">{{walletGain}}</view>
+      <view class="miq-result-badge" wx:if="{{walletBadgeText}}">{{walletBadgeText}}</view>
+
+      <view class="miq-result-stats">
+        答对 {{summary.correct}} 题 · 正确率 {{summary.accuracy}}% · 最高连胜 {{summary.maxCombo}}
+      </view>
+
+      <view class="miq-result-castle" wx:if="{{summary.castleStars > 0}}">
+        {{summary.castleStars === 3 ? '⭐⭐⭐' : (summary.castleStars === 2 ? '⭐⭐' : '⭐')}} 宝箱
+      </view>
+
+      <view class="miq-result-unlock" wx:if="{{summary.unlockedName}}">
+        🔓 已解锁 {{summary.unlockedName}}
+      </view>
+
+      <view class="miq-result-reason" wx:if="{{!summary.success}}">{{summary.reason}}还要再试一次吗？</view>
+
+      <button class="u-btn u-btn-primary u-btn-block" bindtap="onReplay" hover-class="u-tap" hover-stay-time="60">🔄 再挑战一次</button>
+      <button class="u-btn u-btn-ghost u-btn-block miq-result-back" bindtap="onBackToMap" hover-class="u-tap" hover-stay-time="60">
+        回冒险地图
+      </button>
+    </view>
+  </view>
+</view>

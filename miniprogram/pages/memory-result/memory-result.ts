@@ -1,7 +1,7 @@
 // 游戏结果统一页（Chapter 07 §8 / Chapter 08 §10 泛化：Memory Challenge 全系列共用）。
 // 数据源为 gameResultStore（当局登记，仅当局后可达）。
 import type { Knowledge } from '../../core/knowledge';
-import { gameResultStore } from '../../services/gameResultStore';
+import { gameResultStore, type GameResultWallet } from '../../services/gameResultStore';
 
 Page({
   data: {
@@ -13,6 +13,7 @@ Page({
     avgResponseText: '', // 平均反应时间（秒，TS 层格式化；WXML 不支持 toFixed 等方法调用）
     mastered: [] as Knowledge[],
     weak: [] as Knowledge[],
+    wallet: null as GameResultWallet | null, // 全站钱包入账（一题没对时为 null，整块隐藏）
     integrating: false,
     integrated: false,
   },
@@ -38,6 +39,7 @@ Page({
       avgResponseText: detail.avgResponseMs != null ? (detail.avgResponseMs / 1000).toFixed(1) : '',
       mastered: detail.mastered,
       weak: detail.weak,
+      wallet: detail.wallet ?? null,
     });
   },
 

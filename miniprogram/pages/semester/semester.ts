@@ -4,6 +4,8 @@ import type { ListPageItem } from '../shared/createListPage';
 import { semesterRepository } from '../../repositories/semesterRepository';
 import { textbookRepository } from '../../repositories/textbookRepository';
 import { userService } from '../../services/userService';
+import { resolveSubjectOfSemester } from '../../services/subjectResolver';
+import { compareSemesterNames } from '../../utils/stage';
 import { createListPage } from '../shared/createListPage';
 
 // 保存偏好后回到学习页
@@ -19,12 +21,19 @@ async function savePreferenceThenGo(
     textbookName = textbook?.name ?? '';
   }
   if (textbookId) {
-    await userService.savePreferences({
-      textbookId,
-      textbookName,
-      semesterId: item.id,
-      semesterName: item.title,
-    });
+    // 分科保存（多科修复 2026-09-08）：由册次反查所属学科，写入 preferencesBySubject[subjectId]，
+    // 英语与数学各自记住自己的册次，互不覆盖。
+    const resolved = await resolveSubjectOfSemester(item.id);
+    if (resolved) userService.setCurrentSubjectId(resolved.subjectId);
+    await userService.savePreferences(
+      {
+        textbookId,
+        textbookName,
+        semesterId: item.id,
+        semesterName: item.title,
+      },
+      resolved?.subjectId,
+    );
   }
   wx.switchTab({ url: '/pages/study/study' });
 }
@@ -33,7 +42,11 @@ Page(
   createListPage({
     async fetchItems(query) {
       const semesters = await semesterRepository.listByTextbook(query.textbookId ?? '');
-      return semesters.map((item) => ({ id: item._id, title: item.name, open: true }));
+      // ⚠️ 必须自己排：数据里「七年级上册」的 order 排在最末，照搬数据顺序会乱
+      //    （2026-09-21 Owner 反馈）。按册次名算（年级 → 上/下/全）最稳。
+      return [...semesters]
+        .sort((a, b) => compareSemesterNames(a.name, b.name))
+        .map((item) => ({ id: item._id, title: item.name, open: true }));
     },
     onTapItem(item, query) {
       void savePreferenceThenGo(item, query);

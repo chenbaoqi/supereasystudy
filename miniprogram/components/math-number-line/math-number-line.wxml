@@ -1,0 +1,19 @@
+<!-- 数轴（B-7 之一）。刻度与小圆点都按百分比绝对定位，宽度自适应父容器。
+     刻度数字在轴下方，标记点（value）在轴上——两者叠在一起会互相盖住。 -->
+<view class="nl">
+  <view class="nl-track">
+    <view wx:if="{{hasRange}}" class="nl-range" style="left: {{rangeLeft}}%; width: {{rangeWidth}}%"></view>
+
+    <view
+      wx:for="{{ticks}}"
+      wx:key="value"
+      class="nl-tick"
+      style="left: {{item.left}}%"
+    >
+      <view class="nl-tick-line"></view>
+      <view wx:if="{{showLabels}}" class="nl-tick-label">{{item.label}}</view>
+    </view>
+
+    <view wx:if="{{hasValue}}" class="nl-dot" style="left: {{valueLeft}}%"></view>
+  </view>
+</view>

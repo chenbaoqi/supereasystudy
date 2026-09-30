@@ -1,26 +1,62 @@
+<!-- 学习 tab「我的课程」（Chapter 14 §4 课程统一视图）
+     UI v1（2026-09-13）：渐变头部代替原来的绿色横条；分区卡与章节行统一走全局组件类。 -->
 <import src="../shared/chapter-items.wxml" />
 
-<view wx:if="{{loading}}" class="hint">加载中…</view>
+<view wx:if="{{loading}}" class="u-empty">
+  <text class="u-empty-text">加载中…</text>
+</view>
 
 <block wx:elif="{{!hasPreference}}">
-  <view class="guide-card">
-    <view class="guide-title">📚 先选择你的教材</view>
-    <view class="guide-desc">选一次教材和册次，以后进来直达课程</view>
-    <button type="primary" class="guide-btn" bindtap="onTapGuide">去选择</button>
+  <view class="u-empty">
+    <text class="u-empty-icon">📚</text>
+    <text class="u-empty-text">还没有选择教材</text>
+    <text class="u-empty-sub">选一次教材和册次，以后进来直达课程</text>
+    <button class="u-btn u-btn-primary" bindtap="onTapGuide" hover-class="u-tap" hover-stay-time="60">去选择</button>
   </view>
 </block>
 
 <block wx:else>
-  <view class="current-bar" bindtap="onTapSwitch">
-    <text class="current-text">{{textbookName}} · {{semesterName}}</text>
-    <text class="switch-tag">教材选择 ▾</text>
+  <!-- 当前教材头部 -->
+  <view class="u-hero">
+    <view class="u-hero-sub">当前教材</view>
+    <view class="u-hero-title study-book">{{subjectName ? subjectName + ' · ' : ''}}{{textbookName}} · {{semesterName}}</view>
+    <view class="study-switch-row">
+      <!-- 换科目（2026-09-21 Owner 反馈「进选教材却不能选科目」）：
+           原来看不到入口——切换教材时学科是写死在 URL 里的，只能换教材、换不了科目。 -->
+      <view class="study-switch" bindtap="onTapSwitchSubject" hover-class="u-tap" hover-stay-time="60">
+        <text>换科目</text>
+        <view class="u-arrow u-arrow-down"></view>
+      </view>
+      <view class="study-switch" bindtap="onTapSwitch" hover-class="u-tap" hover-stay-time="60">
+        <text>切换教材</text>
+        <view class="u-arrow u-arrow-down"></view>
+      </view>
+    </view>
   </view>
 
-  <view class="section-title">单词</view>
-  <template is="chapter-items" data="{{ items, semesterId }}" />
+  <!-- 分区（主分区 = 该册单元；专题分区 = 学段专题包，已按年级过滤） -->
+  <view wx:for="{{partitions}}" wx:key="key" class="partition">
+    <view class="u-list">
+      <view class="u-row" data-key="{{item.key}}" bindtap="onToggle" hover-class="u-tap-flat" hover-stay-time="60">
+        <view class="u-row-icon cat-icon {{item.iconClass}}">{{item.iconText}}</view>
+        <view class="u-row-body">
+          <view class="u-row-title">{{item.label}}</view>
+          <view class="u-row-sub">{{item.count}} {{item.unit}}</view>
+        </view>
+        <view class="u-row-extra">
+          <view class="u-arrow {{item.expanded ? 'u-arrow-up' : 'u-arrow-down'}}"></view>
+        </view>
+      </view>
+    </view>
+    <view wx:if="{{item.expanded}}">
+      <template is="chapter-items" data="{{ items: item.items, semesterId: item.semesterId }}" />
+    </view>
+  </view>
 
-  <block wx:if="{{hasGrammar}}">
-    <view class="section-title">语法</view>
-    <template is="chapter-items" data="{{ items: grammarItems, semesterId: grammarSemesterId }}" />
-  </block>
+  <!-- 全部收起时给一句说明，避免看起来像「加载失败」 -->
+  <view wx:if="{{partitions.length === 0}}" class="u-card">
+    <text class="u-empty-sub">当前年级还没有可学的单元，换个册次试试</text>
+  </view>
+
+  <view class="u-safe-bottom"></view>
 </block>

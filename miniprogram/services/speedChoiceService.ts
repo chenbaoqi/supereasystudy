@@ -9,9 +9,12 @@ import {
   type MemoryGameRepository,
 } from '../repositories/memoryGameRepository';
 import { reviewService } from './reviewService';
+import { withinGrade } from './gradeScope';
 import { gameResultStore, type GameResultDetail } from './gameResultStore';
 import { selectPool, scoreForCorrect } from './memoryGameLogic';
 import { buildChoiceQuestions, type ChoiceQuestion } from './quizLogic';
+import { gameRewardService, walletViewOf, type RunRewarder } from './gameRewardService';
+import { loadUnfixedKnowledgeIds } from './wrongQuestionService';
 
 export interface SpeedGameStart {
   readonly eligible: boolean; // false = 章节知识点不足（§13）
@@ -56,15 +59,28 @@ export interface SpeedChoiceServiceDeps {
       correctIds: string[],
     ): Promise<void>;
   };
+  // 全站钱包入账（缺省 = 真实服务；单测可注入替身）
+  rewarder?: RunRewarder;
   random?: () => number;
 }
 
 export function createSpeedChoiceService(deps: SpeedChoiceServiceDeps) {
+  const rewarder = deps.rewarder ?? gameRewardService;
   return {
-    async startGame(_userId: string, chapterId: string): Promise<SpeedGameStart> {
-      const knowledgeList = await deps.knowledgeRepository.listByChapter(chapterId);
+    // ADR-012：末尾 grade 用于按当前年级过滤跨年级专题包，不传 = 不限年级
+    async startGame(
+      userId: string,
+      chapterId: string,
+      grade: number | null = null,
+    ): Promise<SpeedGameStart> {
       const random = deps.random ?? Math.random;
-      const { pool, eligible } = selectPool(knowledgeList, random);
+      // L4：未修复的错题优先进本局池子（与拉知识点并行，不额外拖慢开局）
+      const [rawList, wrongIds] = await Promise.all([
+        deps.knowledgeRepository.listByChapter(chapterId),
+        loadUnfixedKnowledgeIds(userId),
+      ]);
+      const knowledgeList = withinGrade(rawList, grade);
+      const { pool, eligible } = selectPool(knowledgeList, random, wrongIds);
       if (!eligible) return { eligible: false, questions: [] };
       return { eligible: true, questions: buildChoiceQuestions(pool, random) };
     },
@@ -102,6 +118,15 @@ export function createSpeedChoiceService(deps: SpeedChoiceServiceDeps) {
         wrongIds: input.wrongIds,
         avgResponseMs,
         replayUrl: '/pages/speed-choice/speed-choice',
+        wallet: walletViewOf(
+          await rewarder.reward({
+            userId: input.userId,
+            gameId: 'speed',
+            correct: input.correctIds.length,
+            total: input.questions.length,
+            attempts: { correctIds: input.correctIds, wrongIds: input.wrongIds },
+          }),
+        ),
         integrateToReview: async () => {
           await deps.reviewResultApplier.applyGameResults(
             input.userId,

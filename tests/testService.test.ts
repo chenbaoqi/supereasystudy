@@ -4,6 +4,7 @@ import type { Knowledge } from '../miniprogram/core/knowledge';
 import type { LearningRecord } from '../miniprogram/core/learningRecord';
 import type { LearningRecordUpsert } from '../miniprogram/repositories/learningRecordRepository';
 import { createTestService } from '../miniprogram/services/testService';
+import { visualViewOf } from '../miniprogram/core/visual';
 
 const makeKnowledge = (id: string, meaning: string, order: number): Knowledge => ({
   _id: id,
@@ -111,6 +112,29 @@ describe('TestService.buildPaper（Chapter 13 一期：听力 2 + 单词 8）', 
     expect(paper).toHaveLength(5);
     expect(paper.slice(0, 2).every((q) => q.kind === 'listening')).toBe(true);
   });
+
+  // 2026-09-13：数学等非语言学科不出听力题（TTS 固定 en_US，念中文概念是乱码）
+  it('不支持语音的学科：无听力题，全部为普通题', () => {
+    const { buildPaper } = createTestService({ learningRecordRepository: createFakeRepo() });
+    const paper = buildPaper(pool, createSeededRandom([0.1, 0.9]), false);
+    expect(paper).toHaveLength(10);
+    expect(paper.some((q) => q.kind === 'listening')).toBe(false);
+    expect(paper.every((q) => q.kind === 'word')).toBe(true);
+    for (const q of paper) expect(q.audioWord).toBeUndefined();
+  });
+
+  it('不支持语音的学科：知识点不足时仍按实际数量出卷且无听力题', () => {
+    const { buildPaper } = createTestService({ learningRecordRepository: createFakeRepo() });
+    const paper = buildPaper(pool.slice(0, 5), createSeededRandom([0.5]), false);
+    expect(paper).toHaveLength(5);
+    expect(paper.some((q) => q.kind === 'listening')).toBe(false);
+  });
+
+  it('默认 third 参数缺省 → 保持含听力题的旧行为（英语零回归）', () => {
+    const { buildPaper } = createTestService({ learningRecordRepository: createFakeRepo() });
+    const paper = buildPaper(pool, createSeededRandom([0.1, 0.9]));
+    expect(paper.slice(0, 2).every((q) => q.kind === 'listening')).toBe(true);
+  });
 });
 
 describe('TestService.buildPaper 语法题（Chapter 13 二期）', () => {
@@ -165,6 +189,87 @@ describe('TestService.submitTest', () => {
     const record = await repo.findByUserAndChapter('user-1', 'chapter-1');
     expect(record?.state).toBe('REVIEW_DUE');
     expect(record?.progress).toBe(5); // 进度不受测试影响
+  });
+});
+
+describe('TestService.buildPaper（专项题组卷 + 可视化透传）', () => {
+  // 带专项题的数学知识点（type 缺省 → 以前会被当成「单词」出释义题）
+  const withQuiz = (id: string, stem: string, visual?: unknown): Knowledge => ({
+    _id: id,
+    chapterId: 'chapter-math',
+    word: `点${id}`,
+    meaning: `释义${id}`,
+    order: 1,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    quiz: [
+      {
+        stem,
+        options: ['A', 'B', 'C', 'D'],
+        answerIndex: 2,
+        ...(visual ? { visual: visual as never } : {}),
+      },
+    ],
+  });
+
+  const seeded = createSeededRandom([0.2, 0.8]);
+
+  it('★ 带专项题的知识点不再出「背释义」题（同一知识点不出两道）', () => {
+    const { buildPaper } = createTestService({ learningRecordRepository: createFakeRepo() });
+    const paper = buildPaper([withQuiz('m1', '点A在第几象限')], seeded, false);
+    expect(paper).toHaveLength(1);
+    expect(paper[0]?.prompt).toBe('点A在第几象限');
+    // 不是自动生成的「释义是什么」
+    expect(paper[0]?.prompt).not.toContain('释义');
+  });
+
+  it('★ 数学公式题（type=formula + quiz）现在能被组卷用上（以前只认 grammar）', () => {
+    const formula: Knowledge = {
+      ...withQuiz('f1', '三角形面积 = ?'),
+      type: 'formula',
+    };
+    const { buildPaper } = createTestService({ learningRecordRepository: createFakeRepo() });
+    const paper = buildPaper([formula], seeded, false);
+    expect(paper.some((q) => q.prompt === '三角形面积 = ?')).toBe(true);
+    expect(paper.every((q) => q.kind === 'quiz')).toBe(true);
+  });
+
+  it('英语语法题仍是 kind=grammar（标签不变，不回归）', () => {
+    const grammar: Knowledge = {
+      ...withQuiz('g1', 'He ___ to school.'),
+      type: 'grammar',
+    };
+    const { buildPaper } = createTestService({ learningRecordRepository: createFakeRepo() });
+    const paper = buildPaper([grammar], seeded, false);
+    expect(paper[0]?.kind).toBe('grammar');
+  });
+
+  it('★ 题目的 visual 原样透传（渲染层据此决定画什么）', () => {
+    const visual = { type: 'coordinate-plane', props: { xMin: -3, xMax: 3 } };
+    const { buildPaper } = createTestService({ learningRecordRepository: createFakeRepo() });
+    const paper = buildPaper([withQuiz('m2', '看图选坐标', visual)], seeded, false);
+    expect(paper[0]?.visual).toEqual(visual);
+  });
+
+  it('没声明 visual 的题：visual 为 undefined（页面不画图，正常答题）', () => {
+    const { buildPaper } = createTestService({ learningRecordRepository: createFakeRepo() });
+    const paper = buildPaper([withQuiz('m3', '普通题')], seeded, false);
+    expect(paper[0]?.visual).toBeUndefined();
+  });
+
+  it('★ 污数据的 visual 也照样透传，由渲染层 visualOf 拦（服务层不做类型审判）', () => {
+    const { buildPaper } = createTestService({ learningRecordRepository: createFakeRepo() });
+    const paper = buildPaper([withQuiz('m4', '拼错类型', { type: 'pie' })], seeded, false);
+    expect(paper[0]?.visual).toEqual({ type: 'pie' });
+    // 渲染层必须把它判掉
+    expect(visualViewOf(paper[0]?.visual).visualType).toBe('');
+  });
+
+  it('普通单词知识点行为不变（仍出释义题）', () => {
+    const { buildPaper } = createTestService({ learningRecordRepository: createFakeRepo() });
+    const paper = buildPaper(knowledgeList, seeded, false);
+    expect(paper.length).toBeGreaterThan(0);
+    expect(paper.every((q) => q.kind === 'word')).toBe(true);
   });
 });
 

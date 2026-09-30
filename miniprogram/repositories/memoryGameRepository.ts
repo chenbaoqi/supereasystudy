@@ -1,5 +1,5 @@
 // memory_game_records 集合访问（Chapter 07 §11：保存和查询游戏记录；ADR-006）。
-import type { MemoryGameRecord } from '../core/memoryGame';
+import type { MemoryGameRecord, MemoryGameType } from '../core/memoryGame';
 
 export interface MemoryGameRecordCreate {
   readonly userId: string;
@@ -9,7 +9,9 @@ export interface MemoryGameRecordCreate {
   readonly correctCount: number;
   readonly wrongCount: number;
   readonly duration: number;
-  readonly gameType: 'match' | 'speed' | 'listen' | 'shooter';
+  // ⚠️ 直接复用 MemoryGameType：以前这里是抄一份字面量联合，加新游戏时漏改就会类型报错
+  //    报在调用方（看不出到底是什么问题）。现在只有一处定义。
+  readonly gameType: MemoryGameType;
   readonly avgResponseMs?: number; // 平均反应时间（极速选择/听音找词）
 }
 

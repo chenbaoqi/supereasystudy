@@ -1,0 +1,12 @@
+/* 语法闯关 UI v1.1（2026-09-14）
+   唯一独有样式：题干。语法题干常是完整句子（比单词题长得多），
+   共用 .g-stem 的 52rpx 会溢出，这里降一档并放宽行高。 */
+.gg-stem {
+  margin: var(--sp-5) var(--gutter) var(--sp-3);
+  text-align: center;
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  color: var(--ink-1);
+  line-height: 1.6;
+  word-break: break-all;
+}

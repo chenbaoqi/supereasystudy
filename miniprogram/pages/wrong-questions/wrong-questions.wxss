@@ -1,0 +1,16 @@
+/* 错题本：整页只用 u-* 通用件，这里只有两个本页专用的小东西。 */
+.wq-icon-fixed {
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.wq-summary {
+  margin: 0 var(--gutter) var(--sp-4);
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+  text-align: center;
+}
+
+.wq-retry {
+  margin-top: var(--sp-3);
+}

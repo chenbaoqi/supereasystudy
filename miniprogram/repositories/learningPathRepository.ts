@@ -3,6 +3,8 @@ import type { LearningPath } from '../core/learningPath';
 
 export interface LearningPathRepository {
   listBySubject(subjectId: string): Promise<LearningPath[]>;
+  // 按 id 取单条（学科解析：由 textbook.learningPathId 反查所属学科）
+  getById(id: string): Promise<LearningPath | null>;
 }
 
 export const learningPathRepository: LearningPathRepository = {
@@ -15,5 +17,10 @@ export const learningPathRepository: LearningPathRepository = {
       .limit(100)
       .get();
     return res.data as LearningPath[];
+  },
+
+  async getById(id) {
+    const res = await wx.cloud.database().collection('learning_paths').doc(id).get();
+    return (res.data as LearningPath | undefined) ?? null;
   },
 };

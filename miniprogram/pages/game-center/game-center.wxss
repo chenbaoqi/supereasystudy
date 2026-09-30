@@ -1,24 +1,60 @@
-/* 游戏中心样式（§15 UI 从简） */
-.game-list {
-  padding: 30rpx;
+/* 游戏中心 UI v1.1（2026-09-14）：列表/行/图标/箭头全部取自 styles/components.wxss，
+   本文件只写 .gc- 前缀的行内元素。 */
+
+/* L2 战绩入口：紧跟成长条，与游戏列表拉开一点距离区分「账户」和「入口清单」 */
+.gc-entry {
+  margin-bottom: var(--sp-2);
+}
+
+/* ------------------------------------------------- 全站成长条（L1 全站钱包） */
+.gc-growth {
+  margin: 0 var(--gutter) var(--sp-4);
+}
+
+.gc-growth-head {
   display: flex;
-  flex-direction: column;
-  gap: 24rpx;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-2);
 }
 
-.game-card {
-  background: #ffffff;
-  border-radius: 16rpx;
-  padding: 40rpx 32rpx;
-}
-
-.game-name {
-  font-size: 36rpx;
+.gc-growth-rank {
+  font-size: var(--fs-md);
   font-weight: 600;
+  color: var(--ink-1);
 }
 
-.game-desc {
-  margin-top: 12rpx;
-  color: #999999;
-  font-size: 26rpx;
+.gc-growth-next {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+.gc-growth-bar {
+  height: 16rpx;
+  margin-top: var(--sp-2);
+  border-radius: 8rpx;
+  background: var(--line);
+  overflow: hidden;
+}
+
+/* 进度条用实色品牌渐变（--grad-brand），不用 --grad-hero（淡蓝底配深字是给页头的） */
+.gc-growth-fill {
+  height: 100%;
+  border-radius: 8rpx;
+  background: var(--grad-brand);
+  transition: width 0.3s ease;
+}
+
+.gc-growth-meta {
+  margin-top: var(--sp-2);
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+.gc-growth-more {
+  margin-top: 8rpx;
+  text-align: right;
+  font-size: var(--fs-sm);
+  color: var(--brand-600);
 }

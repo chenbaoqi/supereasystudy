@@ -1,0 +1,61 @@
+<!-- 跟读练习：听发音 → 按住说话复读 → 判对错。
+     ⚠️ 这是「开口说」的产出型练习，与拼写（动手写）对称，补上「说」这半边。 -->
+<view wx:if="{{loading}}" class="u-empty">
+  <text class="u-empty-text">准备单词中…</text>
+</view>
+
+<view wx:elif="{{loadFailed}}" class="u-empty">
+  <text class="u-empty-icon">📶</text>
+  <text class="u-empty-text">读不到单词</text>
+  <button class="u-btn u-btn-primary u-btn-sm fr-retry" bindtap="onRetry" hover-class="u-tap" hover-stay-time="60">重试</button>
+</view>
+
+<view wx:elif="{{items.length === 0}}" class="u-empty">
+  <text class="u-empty-icon">🎤</text>
+  <text class="u-empty-text">这一册没有可以跟读的单词</text>
+</view>
+
+<!-- 结算 -->
+<view wx:elif="{{showResult}}" class="fr-result">
+  <view class="fr-result-title">读完啦</view>
+  <view class="fr-result-score">读对 {{correctCount}} / {{total}} 个</view>
+  <view wx:if="{{gainedStars > 0}}" class="fr-result-stars">+{{gainedStars}}⭐</view>
+  <view class="fr-result-tip">多听多读，慢慢就说得准了</view>
+  <button class="u-btn u-btn-primary u-btn-block fr-back" bindtap="onBack" hover-class="u-tap" hover-stay-time="60">完成</button>
+</view>
+
+<block wx:else>
+  <view class="fr-progress">{{index + 1}} / {{total}}</view>
+
+  <view class="u-card fr-card">
+    <view class="fr-meaning">{{current.meaning}}</view>
+    <view class="fr-hint">先听一遍，再按住说话读出来</view>
+    <button class="u-btn u-btn-ghost u-btn-sm fr-audio" bindtap="onPlayAudio" hover-class="u-tap-flat" hover-stay-time="60">🔊 听发音</button>
+  </view>
+
+  <!-- 按住说话：view 承载，避开 button 内置 184px 与默认样式 -->
+  <view
+    class="fr-record {{recording ? 'is-recording' : ''}}"
+    bindtouchstart="onTouchStart"
+    bindtouchend="onTouchEnd"
+    bindtouchcancel="onTouchCancel"
+  >
+    <text class="fr-record-icon">🎤</text>
+    <text class="fr-record-label">{{recording ? '松开识别' : '按住说话'}}</text>
+  </view>
+
+  <view wx:if="{{result === 'correct'}}" class="fr-feedback fr-ok">✓ 读对了</view>
+  <view wx:elif="{{result === 'wrong'}}" class="fr-feedback fr-bad">
+    你读成了「{{recognized}}」，正确答案是 {{current.word}}
+  </view>
+
+  <button
+    wx:if="{{result !== ''}}"
+    class="u-btn u-btn-primary u-btn-block fr-next"
+    bindtap="onNext"
+    hover-class="u-tap"
+    hover-stay-time="60"
+  >{{index + 1 >= total ? '看结果' : '下一个'}}</button>
+
+  <view class="u-safe-bottom"></view>
+</block>

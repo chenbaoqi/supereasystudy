@@ -1,17 +1,23 @@
-/* 全局样式。
-   UI 规范以 Specification 第 12 章为准（该章节待补写），
-   在此之前禁止在此文件中沉淀任何业务组件样式。 */
+/* 全局样式入口。
+   设计令牌：styles/tokens.wxss    通用组件样式：styles/components.wxss
+   小游戏通用样式：styles/game.wxss（g- 前缀）
+
+   历史说明：本文件原先写着「UI 规范以 Specification 第 12 章为准（该章节待补写），
+   在此之前禁止在此文件中沉淀任何业务组件样式」。但该章节一直没补写，界面因此长期
+   停留在占位水平。自 UI v1「清爽蓝」（2026-09-13）起，令牌 + 组件样式即规范本身；
+   本文件仍只放全局基础样式，业务组件样式一律进 styles/components.wxss。 */
+@import './styles/tokens.wxss';
+@import './styles/components.wxss';
+@import './styles/game.wxss';
+
 page {
-  background-color: #f6f7f9;
+  background-color: var(--bg-page);
+  color: var(--ink-1);
+  font-size: var(--fs-base);
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', Helvetica, sans-serif;
 }
 
-/* 路由占位页共用样式（Baseline Spec §3 空页面）：17 个占位页复用，
-   UI 规范确认后随占位页一起移除。 */
-.page-placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 60vh;
-  color: #999999;
-  font-size: 28rpx;
-}
+/* 2026-09-14：原 .page-placeholder（一行居中灰字的占位样式）已删除。
+   最后两个使用者——设置页与敬请期待页——都已改用 .u-empty 空态组件，
+   全局不再保留业务样式（本文件只放全局基础样式）。 */

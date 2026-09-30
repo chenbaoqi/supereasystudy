@@ -1,0 +1,119 @@
+/* 跟读练习：按住说话按钮是主角。色值全部走 tokens，不新造。 */
+.fr-progress {
+  margin: 0 var(--gutter) var(--sp-3);
+  text-align: center;
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+}
+
+.fr-card {
+  margin: 0 var(--gutter) var(--sp-4);
+  text-align: center;
+}
+
+.fr-meaning {
+  font-size: var(--fs-lg);
+  font-weight: 500;
+  color: var(--ink-1);
+}
+
+.fr-hint {
+  margin-top: 8rpx;
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+}
+
+.fr-audio {
+  margin-top: var(--sp-3);
+}
+
+/* 按住说话：大圆形，未录音 = 淡蓝底 + 品牌色，录音中 = 实色蓝 + 白字（与 u-btn-primary 同调） */
+.fr-record {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 240rpx;
+  height: 240rpx;
+  margin: var(--sp-6) auto 0;
+  border-radius: 50%;
+  background: var(--brand-50);
+  border: 2rpx solid var(--brand-200);
+  color: var(--brand-600);
+  transition: var(--tap-transition);
+}
+
+.fr-record.is-recording {
+  background: var(--grad-brand);
+  border-color: transparent;
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+.fr-record-icon {
+  font-size: 80rpx;
+  line-height: 1;
+}
+
+.fr-record-label {
+  margin-top: var(--sp-2);
+  font-size: var(--fs-md);
+  font-weight: 500;
+}
+
+.fr-feedback {
+  margin: var(--sp-3) var(--gutter) 0;
+  text-align: center;
+  font-size: var(--fs-md);
+}
+
+.fr-ok {
+  color: var(--success);
+}
+
+.fr-bad {
+  color: var(--danger);
+}
+
+.fr-next {
+  margin: var(--sp-4) var(--gutter) 0;
+}
+
+.fr-result {
+  padding: var(--sp-8) var(--gutter) 0;
+  text-align: center;
+}
+
+.fr-result-title {
+  font-size: var(--fs-lg);
+  font-weight: 500;
+  color: var(--ink-1);
+}
+
+.fr-result-score {
+  margin-top: var(--sp-3);
+  font-size: 40rpx;
+  color: var(--brand-600);
+}
+
+/* 本局学分（+N⭐）：读对多少是「表现」，这是「得到多少」 */
+.fr-result-stars {
+  margin-top: var(--sp-2);
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  color: var(--brand-600);
+}
+
+.fr-result-tip {
+  margin-top: var(--sp-3);
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+}
+
+.fr-back {
+  margin-top: var(--sp-8);
+}
+
+.fr-retry {
+  margin-top: var(--sp-3);
+}

@@ -1,31 +1,62 @@
-/* 测试结果页样式（§15：UI 从简） */
-.container {
+/* 测试结果页（Chapter 04 §5）UI v1.1（2026-09-14）
+   正确率按分数段着色：原来固定绿色 —— 90% 和 40% 长得一样，看不出刚才考得怎样。 */
+.tr-page {
+  padding-top: var(--sp-6);
+}
+
+.tr-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 160rpx;
-  gap: 24rpx;
+  padding: var(--sp-6) var(--sp-4);
 }
 
-.accuracy {
+.tr-accuracy {
   font-size: 96rpx;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+/* 大数字是"被读取"的信息，用深一档的语义色而不是浅底 —— 淡色原则只淡化大面积底色 */
+.tr-accuracy.is-good {
+  color: var(--success);
+}
+
+.tr-accuracy.is-mid {
+  color: var(--warning);
+}
+
+.tr-accuracy.is-low {
+  color: var(--danger);
+}
+
+.tr-label {
+  margin-top: var(--sp-2);
+  font-size: var(--fs-md);
+  color: var(--ink-2);
+}
+
+.tr-duration {
+  margin-top: var(--sp-1);
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+}
+
+/* 本次学分（+N⭐）：正确率是「考得怎样」，这是「得到多少」，值得单独醒目一行 */
+.tr-stars {
+  margin-top: var(--sp-2);
+  font-size: var(--fs-lg);
   font-weight: 600;
-  color: #07c160;
+  color: var(--brand-600);
 }
 
-.label {
-  font-size: 30rpx;
-}
-
-.duration {
-  color: #999999;
-  font-size: 26rpx;
-}
-
-.actions {
-  margin-top: 64rpx;
+.tr-actions {
   display: flex;
   flex-direction: column;
-  gap: 20rpx;
-  width: 60%;
+  gap: var(--sp-3);
+  margin: var(--sp-6) var(--gutter) 0;
+}
+
+.tr-btn {
+  width: 100%;
 }

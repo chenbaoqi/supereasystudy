@@ -1,2 +1,2 @@
 <import src="../shared/list.wxml" />
-<template is="list" data="{{ items, loading, loadFailed }}" />
+<template is="list" data="{{ items, loading, loadFailed, title: '选择教材', icon: '📘' }}" />
